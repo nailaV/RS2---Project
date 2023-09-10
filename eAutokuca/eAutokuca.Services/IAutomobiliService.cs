@@ -1,4 +1,5 @@
 ﻿using eAutokuca.Models;
+using eAutokuca.Services.Database;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,6 @@ namespace eAutokuca.Services
 {
     public interface IAutomobiliService
     {
-        IList<Automobili> Get();
+        IList<Automobil> Get();
     }
 }

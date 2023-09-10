@@ -1,5 +1,6 @@
 using eAutokuca.Models;
 using eAutokuca.Services;
+using eAutokuca.Services.Database;
 using Microsoft.AspNetCore.Mvc;
 
 namespace eAutokuca.Controllers
@@ -18,9 +19,9 @@ namespace eAutokuca.Controllers
         }
 
         [HttpGet()]
-        public IEnumerable<Automobili> Get()
+        public IEnumerable<Automobil> Get()
         {
-           return _automobiliService.Get();
+            return _automobiliService.Get();
         }
     }
 }
