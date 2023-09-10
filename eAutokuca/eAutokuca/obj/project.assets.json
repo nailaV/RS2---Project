@@ -95,6 +95,29 @@
         "frameworkReferences": [
           "Microsoft.AspNetCore.App"
         ]
+      },
+      "eAutokuca.Models/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "compile": {
+          "bin/placeholder/eAutokuca.Models.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/eAutokuca.Models.dll": {}
+        }
+      },
+      "eAutokuca.Services/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "dependencies": {
+          "eAutokuca.Models": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/eAutokuca.Services.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/eAutokuca.Services.dll": {}
+        }
       }
     }
   },
@@ -304,12 +327,24 @@
         "swashbuckle.aspnetcore.swaggerui.6.2.3.nupkg.sha512",
         "swashbuckle.aspnetcore.swaggerui.nuspec"
       ]
+    },
+    "eAutokuca.Models/1.0.0": {
+      "type": "project",
+      "path": "../eAutokuca.Models/eAutokuca.Models.csproj",
+      "msbuildProject": "../eAutokuca.Models/eAutokuca.Models.csproj"
+    },
+    "eAutokuca.Services/1.0.0": {
+      "type": "project",
+      "path": "../eAutokuca.Services/eAutokuca.Services.csproj",
+      "msbuildProject": "../eAutokuca.Services/eAutokuca.Services.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net6.0": [
       "Microsoft.VisualStudio.Azure.Containers.Tools.Targets >= 1.17.2",
-      "Swashbuckle.AspNetCore >= 6.2.3"
+      "Swashbuckle.AspNetCore >= 6.2.3",
+      "eAutokuca.Models >= 1.0.0",
+      "eAutokuca.Services >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -318,11 +353,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\User\\Desktop\\RS2---Project\\eAutokuca\\eAutokuca\\eAutokuca.csproj",
+      "projectUniqueName": "C:\\Users\\User\\Desktop\\RS2\\RS2---Project\\eAutokuca\\eAutokuca\\eAutokuca.csproj",
       "projectName": "eAutokuca",
-      "projectPath": "C:\\Users\\User\\Desktop\\RS2---Project\\eAutokuca\\eAutokuca\\eAutokuca.csproj",
+      "projectPath": "C:\\Users\\User\\Desktop\\RS2\\RS2---Project\\eAutokuca\\eAutokuca\\eAutokuca.csproj",
       "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\User\\Desktop\\RS2---Project\\eAutokuca\\eAutokuca\\obj\\",
+      "outputPath": "C:\\Users\\User\\Desktop\\RS2\\RS2---Project\\eAutokuca\\eAutokuca\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -338,7 +373,14 @@
       "frameworks": {
         "net6.0": {
           "targetAlias": "net6.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\User\\Desktop\\RS2\\RS2---Project\\eAutokuca\\eAutokuca.Models\\eAutokuca.Models.csproj": {
+              "projectPath": "C:\\Users\\User\\Desktop\\RS2\\RS2---Project\\eAutokuca\\eAutokuca.Models\\eAutokuca.Models.csproj"
+            },
+            "C:\\Users\\User\\Desktop\\RS2\\RS2---Project\\eAutokuca\\eAutokuca.Services\\eAutokuca.Services.csproj": {
+              "projectPath": "C:\\Users\\User\\Desktop\\RS2\\RS2---Project\\eAutokuca\\eAutokuca.Services\\eAutokuca.Services.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

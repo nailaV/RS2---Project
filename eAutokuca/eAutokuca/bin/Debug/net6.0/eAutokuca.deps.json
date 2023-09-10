@@ -9,7 +9,9 @@
       "eAutokuca/1.0.0": {
         "dependencies": {
           "Microsoft.VisualStudio.Azure.Containers.Tools.Targets": "1.17.2",
-          "Swashbuckle.AspNetCore": "6.2.3"
+          "Swashbuckle.AspNetCore": "6.2.3",
+          "eAutokuca.Models": "1.0.0",
+          "eAutokuca.Services": "1.0.0"
         },
         "runtime": {
           "eAutokuca.dll": {}
@@ -61,6 +63,19 @@
             "assemblyVersion": "6.2.3.0",
             "fileVersion": "6.2.3.0"
           }
+        }
+      },
+      "eAutokuca.Models/1.0.0": {
+        "runtime": {
+          "eAutokuca.Models.dll": {}
+        }
+      },
+      "eAutokuca.Services/1.0.0": {
+        "dependencies": {
+          "eAutokuca.Models": "1.0.0"
+        },
+        "runtime": {
+          "eAutokuca.Services.dll": {}
         }
       }
     }
@@ -119,6 +134,16 @@
       "sha512": "sha512-bCRI87uKJVb4G+KURWm8LQrL64St04dEFZcF6gIM67Zc0Sr/N47EO83ybLMYOvfNdO1DCv8xwPcrz9J/VEhQ5g==",
       "path": "swashbuckle.aspnetcore.swaggerui/6.2.3",
       "hashPath": "swashbuckle.aspnetcore.swaggerui.6.2.3.nupkg.sha512"
+    },
+    "eAutokuca.Models/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "eAutokuca.Services/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
     }
   }
 }
