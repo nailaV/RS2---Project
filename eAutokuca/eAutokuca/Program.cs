@@ -1,5 +1,6 @@
 using eAutokuca.Services;
 using eAutokuca.Services.Database;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,6 +17,8 @@ builder.Services.AddSwaggerGen();
 var connectionString = builder.Configuration.GetConnectionString("DeafaultConnection");
 builder.Services.AddDbContext<AutokucaContext>(options =>
     options.UseSqlServer(connectionString));
+
+builder.Services.AddAutoMapper(typeof(IKorisniciService));
 
 var app = builder.Build();
 

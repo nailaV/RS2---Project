@@ -1,4 +1,5 @@
 ﻿using eAutokuca.Models;
+using eAutokuca.Models.Requests;
 using eAutokuca.Services;
 using eAutokuca.Services.Database;
 using Microsoft.AspNetCore.Mvc;
@@ -19,9 +20,21 @@ namespace eAutokuca.Controllers
         }
 
         [HttpGet()]
-        public IEnumerable<Models.Korisnik> Get()
+        public async Task<List<Models.Korisnik>> Get()
         {
-            return _service.Get();
+            return await _service.Get();
         }
+        [HttpPost]
+        public Models.Korisnik Insert (KorisniciInsert request)
+        {
+            return _service.Insert(request);
+        }
+        [HttpPut("{id}")]
+        public Models.Korisnik Update (int id, KorisniciUpdate request)
+        {
+            return _service.Update(id, request);
+        }
+
+
     }
 }

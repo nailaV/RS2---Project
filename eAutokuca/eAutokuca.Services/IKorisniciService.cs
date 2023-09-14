@@ -1,4 +1,5 @@
-﻿using eAutokuca.Services.Database;
+﻿using eAutokuca.Models.Requests;
+using eAutokuca.Services.Database;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,8 @@ namespace eAutokuca.Services
 {
     public interface IKorisniciService
     {
-        List<Models.Korisnik> Get();
+        Task<List<Models.Korisnik>> Get();
+        Models.Korisnik Insert(KorisniciInsert request);
+        Models.Korisnik Update(int id, KorisniciUpdate request);
     }
 }
