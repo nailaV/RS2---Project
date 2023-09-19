@@ -14,6 +14,8 @@ namespace eAutokuca.Services
             CreateMap<Database.Korisnik, Models.Korisnik>();
             CreateMap<Models.Requests.KorisniciInsert, Database.Korisnik>();
             CreateMap<Models.Requests.KorisniciUpdate, Database.Korisnik>();
+
+            CreateMap<Database.Autodio, Models.Autodio>();
         }
     }
 }
