@@ -1,8 +1,10 @@
-﻿namespace eAutokuca.Services
+﻿using eAutokuca.Models;
+
+namespace eAutokuca.Services
 {
-    public interface IService<T>
+    public interface IService<T, TSearch > where TSearch : class
     {
-        Task<List<T>> Get();
+        Task<PagedResult<T>> Get(TSearch? search = null);
         Task<T> GetByID(int id);
     }
 }

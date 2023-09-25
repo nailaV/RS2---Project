@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using eAutokuca.Models.Requests;
+using eAutokuca.Models.SearchObjects;
 using eAutokuca.Services.Database;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -11,21 +12,13 @@ using System.Threading.Tasks;
 
 namespace eAutokuca.Services
 {
-    public class KorisniciService : IKorisniciService
+    public class KorisniciService : BaseService<Models.Korisnik, Database.Korisnik, KorisnikSearchObject>, IKorisniciService
     {
-        AutokucaContext _context;
-        public IMapper _mapper { get; set; }
-        public KorisniciService(AutokucaContext context, IMapper mapper)
+   
+        public KorisniciService(AutokucaContext context, IMapper mapper):base(context, mapper) 
         {
-            _context = context;
-            _mapper = mapper;
+            
         }
-        public async Task<List<Models.Korisnik>> Get()
-        {
-            var entityList= await _context.Korisniks.ToListAsync();
-            return _mapper.Map<List<Models.Korisnik>>(entityList);
-        }
-
         public Models.Korisnik Insert(KorisniciInsert request)
         {
             var entity=new Korisnik();
@@ -71,6 +64,15 @@ namespace eAutokuca.Services
             HashAlgorithm algorithm = HashAlgorithm.Create("SHA1");
             byte[] inArray = algorithm.ComputeHash(dst);
             return Convert.ToBase64String(inArray);
+        }
+
+        public override IQueryable<Korisnik> AddInclude(IQueryable<Korisnik> query, KorisnikSearchObject? search = null)
+        {
+            if (search?.UlogeIncluded == true)
+            {
+                query = query.Include("KorisnikUlogas.Uloga");
+            }
+            return base.AddInclude(query, search);
         }
 
     }

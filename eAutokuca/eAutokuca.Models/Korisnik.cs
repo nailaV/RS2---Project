@@ -15,5 +15,7 @@
         public string Username { get; set; } = null!;
 
         public bool Stanje { get; set; }
+
+        public virtual ICollection<KorisnikUloga> KorisnikUlogas { get; } = new List<KorisnikUloga>();
     }
 }
