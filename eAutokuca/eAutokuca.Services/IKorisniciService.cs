@@ -9,9 +9,8 @@ using System.Threading.Tasks;
 
 namespace eAutokuca.Services
 {
-    public interface IKorisniciService:IService<Models.Korisnik, KorisnikSearchObject>
+    public interface IKorisniciService:ICrudService<Models.Korisnik, KorisnikSearchObject, KorisniciInsert, KorisniciUpdate>
     {
-        Models.Korisnik Insert(KorisniciInsert request);
-        Models.Korisnik Update(int id, KorisniciUpdate request);
+       
     }
 }

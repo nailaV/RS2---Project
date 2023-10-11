@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Azure.Core;
 using eAutokuca.Models.Requests;
 using eAutokuca.Models.SearchObjects;
 using eAutokuca.Services.Database;
@@ -12,26 +13,21 @@ using System.Threading.Tasks;
 
 namespace eAutokuca.Services
 {
-    public class KorisniciService : BaseService<Models.Korisnik, Database.Korisnik, KorisnikSearchObject>, IKorisniciService
+    public class KorisniciService : BaseCrudService<Models.Korisnik, Database.Korisnik,KorisnikSearchObject, KorisniciInsert, KorisniciUpdate>, IKorisniciService
     {
    
         public KorisniciService(AutokucaContext context, IMapper mapper):base(context, mapper) 
         {
             
         }
-        public Models.Korisnik Insert(KorisniciInsert request)
+        
+        public override async Task BeforeInsert(Korisnik entity, KorisniciInsert insert)
         {
-            var entity=new Korisnik();
-            _mapper.Map(request, entity);
 
             entity.LozinkaSalt = GenerateSalt();
-            entity.LozinkaHash = GenerateHash(entity.LozinkaSalt, request.Password);
-
-            _context.Korisniks.Add(entity);
-            _context.SaveChanges(); 
-
-            return _mapper.Map<Models.Korisnik>(entity);    
+            entity.LozinkaHash = GenerateHash(entity.LozinkaSalt, insert.Password);
         }
+
 
         public Models.Korisnik Update(int id, KorisniciUpdate request)
         {

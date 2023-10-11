@@ -15,11 +15,18 @@ namespace eAutokuca.Services
         {
         }
 
+        public virtual async Task BeforeInsert(TDb entity, TInsert insert)
+        {
+
+        }
+
         public virtual async Task<T> Insert(TInsert insert)
         {
             var set=_context.Set<TDb>();
             TDb entity= _mapper.Map<TDb>(insert);
             set.Add(entity);
+
+            await BeforeInsert(entity, insert);
             await _context.SaveChangesAsync(); 
             return _mapper.Map<T>(entity); 
         }

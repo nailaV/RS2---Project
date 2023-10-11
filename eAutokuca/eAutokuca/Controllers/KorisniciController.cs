@@ -8,25 +8,12 @@ using Microsoft.AspNetCore.Mvc;
 namespace eAutokuca.Controllers
 {
     [ApiController]
-    public class KorisniciController : BaseController<Models.Korisnik, KorisnikSearchObject>
+    public class KorisniciController : BaseCrudController<Models.Korisnik, KorisnikSearchObject, KorisniciInsert, KorisniciUpdate>
     {
-        protected IKorisniciService _korisniciService;
-        public KorisniciController(ILogger<BaseController<Models.Korisnik,KorisnikSearchObject>>logger, IKorisniciService service): base(logger, service)
-        {
-            _korisniciService= service;
-        }
 
-        [HttpPost]
-        public Models.Korisnik Insert (KorisniciInsert request)
+        public KorisniciController(ILogger<BaseController<Models.Korisnik, KorisnikSearchObject>> logger, IKorisniciService service) : base(logger, service)
         {
-            return _korisniciService.Insert(request);
         }
-        [HttpPut("{id}")]
-        public Models.Korisnik Update (int id, KorisniciUpdate request)
-        {
-            return _korisniciService.Update(id, request);
-        }
-
 
     }
 }
