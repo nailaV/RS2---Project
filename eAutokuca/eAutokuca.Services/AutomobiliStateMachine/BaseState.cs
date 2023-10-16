@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using eAutokuca.Models;
 using eAutokuca.Models.Requests;
 using eAutokuca.Services.Database;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,27 +24,27 @@ namespace eAutokuca.Services.AutomobiliStateMachine
         }
         public virtual Task<Models.Automobil> Insert(AutomobilInsert request)
         {
-            throw new Exception("This action is not allowed.");
+            throw new UserExceptions("This action is not allowed.");
         }
 
         public virtual Task<Models.Automobil> Update(int id, AutomobilUpdate request)
         {
-            throw new Exception("This action is not allowed.");
+            throw new UserExceptions("This action is not allowed.");
         }
 
         public virtual Task<Models.Automobil> Activate(int id)
         {
-            throw new Exception("This action is not allowed.");
+            throw new UserExceptions("This action is not allowed.");
         }
 
         public virtual Task<Models.Automobil> Hide(int id)
         {
-            throw new Exception("This action is not allowed.");
+            throw new UserExceptions("This action is not allowed.");
         }
 
         public virtual Task<Models.Automobil> Delete(int id)
         {
-            throw new Exception("This action is not allowed.");
+            throw new UserExceptions("This action is not allowed.");
         }
 
         public BaseState CreateState(string stateName)
@@ -51,6 +52,7 @@ namespace eAutokuca.Services.AutomobiliStateMachine
             switch (stateName)
             {
                 case "Initial":
+                case null:
                     return _serviceProvider.GetService<InitialState>();
                     break;
                 case "Draft":
@@ -61,8 +63,13 @@ namespace eAutokuca.Services.AutomobiliStateMachine
                     break;
 
                 default:
-                    throw new Exception("Not allowed");
+                    throw new UserExceptions("Not allowed");
             }
+        }
+
+        public virtual async Task<List<string>> AllowedActions()
+        {
+            return new List<string>();
         }
     }
 }

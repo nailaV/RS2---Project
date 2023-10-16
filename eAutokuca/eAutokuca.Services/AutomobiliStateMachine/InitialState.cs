@@ -26,5 +26,14 @@ namespace eAutokuca.Services.AutomobiliStateMachine
             await _context.SaveChangesAsync();
             return _mapper.Map<Models.Automobil>(entity);
         }
+
+        public override async Task<List<string>> AllowedActions()
+        {
+            var list=  await base.AllowedActions();
+
+            list.Add("Insert");
+
+            return list;
+        }
     }
 }

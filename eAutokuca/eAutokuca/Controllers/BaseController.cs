@@ -16,13 +16,13 @@ namespace eAutokuca.Controllers
             _service = service;
         }
 
-        [HttpGet()]
+        [HttpGet("getAll")]
         public async Task<PagedResult<T>> Get([FromQuery]TSearch search)
         {
             return await _service.Get(search);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id}/getByID")]
         public async Task<T> GetByID(int id)
         {
             return await _service.GetByID(id);

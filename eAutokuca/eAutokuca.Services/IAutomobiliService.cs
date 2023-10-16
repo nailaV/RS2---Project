@@ -14,5 +14,7 @@ namespace eAutokuca.Services
     public interface IAutomobiliService:ICrudService<Models.Automobil, AutomobilSearchObject, AutomobilInsert, AutomobilUpdate>
     {
         Task<Models.Automobil> Activate(int id);
+        Task<Models.Automobil> Hide(int id);
+        Task<List<string>> AllowedActions(int id);
     }
 }

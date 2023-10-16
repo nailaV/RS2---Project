@@ -49,6 +49,21 @@ namespace eAutokuca.Services
             return await state.Activate(id);
         }
 
+        public async Task<Models.Automobil> Hide(int id)
+        {
+            var entity = await _context.Automobils.FindAsync(id);
+            var state = _baseState.CreateState(entity.Status);
 
+            return await state.Hide(id);
+        }
+
+        public async Task<List<string>> AllowedActions(int id)
+        {
+            var entity = await _context.Automobils.FindAsync(id);
+            var state=_baseState.CreateState(entity?.Status ?? "Initial");
+
+            return await state.AllowedActions();
+            
+        }
     }
 }

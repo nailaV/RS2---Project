@@ -1,3 +1,4 @@
+using eAutokuca.Filters;
 using eAutokuca.Services;
 using eAutokuca.Services.AutomobiliStateMachine;
 using eAutokuca.Services.Database;
@@ -16,7 +17,10 @@ builder.Services.AddTransient<InitialState>();
 builder.Services.AddTransient<DraftState>();
 builder.Services.AddTransient<ActiveState>();
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(x=>
+{
+    x.Filters.Add<GeneralErrorFilter>();
+});
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

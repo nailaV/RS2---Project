@@ -17,13 +17,13 @@ namespace eAutokuca.Controllers
             _service = service;
         }
 
-        [HttpPost]
+        [HttpPost("insert")]
         public virtual async Task<T> Insert([FromBody]TInsert insert)
         {
             return await _service.Insert(insert);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{id}/update")]
         public virtual async Task<T> Update(int id, [FromBody] TUpdate update)
         {
             return await _service.Update(id, update);
