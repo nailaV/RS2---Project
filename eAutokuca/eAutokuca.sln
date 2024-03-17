@@ -5,9 +5,14 @@ VisualStudioVersion = 17.5.33530.505
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eAutokuca", "eAutokuca\eAutokuca.csproj", "{73C6E1EE-F605-44B1-9DCB-A10AA44CC195}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eAutokuca.Models", "eAutokuca.Models\eAutokuca.Models.csproj", "{B6D2079B-8543-4D91-9AD1-42B5C65DA6FB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eAutokuca.Models", "eAutokuca.Models\eAutokuca.Models.csproj", "{B6D2079B-8543-4D91-9AD1-42B5C65DA6FB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eAutokuca.Services", "eAutokuca.Services\eAutokuca.Services.csproj", "{5D2E601D-A85E-4D48-AEF4-11A35FEC7F0A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eAutokuca.Services", "eAutokuca.Services\eAutokuca.Services.csproj", "{5D2E601D-A85E-4D48-AEF4-11A35FEC7F0A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F96EAADF-6F00-4899-A289-3A0E0A17ACAB}"
+	ProjectSection(SolutionItems) = preProject
+		Dockerfile = Dockerfile
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
