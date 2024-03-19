@@ -19,7 +19,9 @@ namespace eAutokuca.Filters
                 context.ModelState.AddModelError("Error", "Server-side error.");
                 context.HttpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
             }
-            var list = context.ModelState.Where(x => x.Value.Errors.Count() > 0).ToDictionary(x => x.Key, y => y.Value.Errors.Select(a => a.ErrorMessage));
+
+            var list = context.ModelState.Where(x => x.Value.Errors.Count() > 0)
+                .ToDictionary(x => x.Key, y => y.Value.Errors.Select(a => a.ErrorMessage));
             
             context.Result=new JsonResult(new {errors = list});
         }

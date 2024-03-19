@@ -11,6 +11,6 @@ namespace eAutokuca.Services
 {
     public interface IKorisniciService:ICrudService<Models.Korisnik, KorisnikSearchObject, KorisniciInsert, KorisniciUpdate>
     {
-       
+        public Task<Models.Korisnik> Login(string username, string password);
     }
 }

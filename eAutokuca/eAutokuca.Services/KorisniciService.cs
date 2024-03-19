@@ -71,5 +71,25 @@ namespace eAutokuca.Services
             return base.AddInclude(query, search);
         }
 
+
+        public async Task<Models.Korisnik> Login(string username, string password)
+        {
+            var entity = await _context.Korisniks.Include("KorisniciUloges.Uloga").FirstOrDefaultAsync(x => x.Username == username);
+
+            if (entity == null)
+            {
+                return null;
+            }
+
+            var hash = GenerateHash(entity.LozinkaSalt, password);
+
+            if (hash != entity.LozinkaHash)
+            {
+                return null;
+            }
+
+            return _mapper.Map<Models.Korisnik>(entity);
+        }
+
     }
 }

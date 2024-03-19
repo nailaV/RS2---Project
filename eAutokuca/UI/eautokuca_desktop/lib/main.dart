@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, must_be_immutable
 
 import 'package:eautokuca_desktop/screens/lista_automobila.dart';
 import 'package:flutter/material.dart';
@@ -104,13 +104,17 @@ class MyMaterialApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'eAutokuca Desktop App',
+      theme: ThemeData(primarySwatch: Colors.yellow),
       home: LoginPage(),
     );
   }
 }
 
 class LoginPage extends StatelessWidget {
-  const LoginPage({Key? key}) : super(key: key);
+  LoginPage({Key? key}) : super(key: key);
+
+  TextEditingController _usernameController = new TextEditingController();
+  TextEditingController _passwordController = new TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -123,7 +127,7 @@ class LoginPage extends StatelessWidget {
         child: Container(
           constraints: BoxConstraints(maxWidth: 400, maxHeight: 400),
           child: Card(
-            color: Colors.grey[900],
+            color: Colors.grey,
             child: Padding(
               padding: EdgeInsets.all(12.0),
               child: Column(
@@ -141,6 +145,7 @@ class LoginPage extends StatelessWidget {
                       enabledBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: Colors.yellow)),
                     ),
+                    controller: _usernameController,
                   ),
                   SizedBox(height: 20),
                   TextField(
@@ -151,10 +156,14 @@ class LoginPage extends StatelessWidget {
                       enabledBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: Colors.yellow)),
                     ),
+                    controller: _passwordController,
                   ),
                   SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: () {
+                      var username = _usernameController.text;
+                      var password = _passwordController.text;
+                      print("LOgin proceed $username $password");
                       Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => const ListaAutomobila(),
                       ));
