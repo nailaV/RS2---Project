@@ -1,5 +1,6 @@
 ﻿using eAutokuca.Models;
 using eAutokuca.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace eAutokuca.Controllers
@@ -17,7 +18,8 @@ namespace eAutokuca.Controllers
             _service = service;
         }
 
-        [HttpPost("insert")]
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
         public virtual async Task<T> Insert([FromBody]TInsert insert)
         {
             return await _service.Insert(insert);

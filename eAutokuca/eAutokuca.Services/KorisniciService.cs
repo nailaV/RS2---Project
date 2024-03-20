@@ -74,7 +74,7 @@ namespace eAutokuca.Services
 
         public async Task<Models.Korisnik> Login(string username, string password)
         {
-            var entity = await _context.Korisniks.Include("KorisniciUloges.Uloga").FirstOrDefaultAsync(x => x.Username == username);
+            var entity = await _context.Korisniks.Include("KorisnikUlogas.Uloga").FirstOrDefaultAsync(x => x.Username == username);
 
             if (entity == null)
             {

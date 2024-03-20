@@ -1,10 +1,16 @@
 // ignore_for_file: prefer_const_constructors, must_be_immutable
 
+import 'package:eautokuca_desktop/providers/car_provider.dart';
 import 'package:eautokuca_desktop/screens/lista_automobila.dart';
+import 'package:eautokuca_desktop/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MultiProvider(
+    providers: [ChangeNotifierProvider(create: (_) => CarProvider())],
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -116,8 +122,11 @@ class LoginPage extends StatelessWidget {
   TextEditingController _usernameController = new TextEditingController();
   TextEditingController _passwordController = new TextEditingController();
 
+  late CarProvider _carProvider;
+
   @override
   Widget build(BuildContext context) {
+    _carProvider = context.read<CarProvider>();
     return Scaffold(
       appBar: AppBar(
         title: Text('Log in'),
@@ -160,13 +169,33 @@ class LoginPage extends StatelessWidget {
                   ),
                   SizedBox(height: 20),
                   ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       var username = _usernameController.text;
                       var password = _passwordController.text;
-                      print("LOgin proceed $username $password");
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const ListaAutomobila(),
-                      ));
+                      print("Login proceed $username $password");
+
+                      Authorization.username = username;
+                      Authorization.password = password;
+
+                      try {
+                        await _carProvider.get();
+
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const ListaAutomobila(),
+                        ));
+                      } on Exception catch (e) {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) => AlertDialog(
+                                    title: Text("Error"),
+                                    content: Text(e.toString()),
+                                    actions: [
+                                      TextButton(
+                                          onPressed: () =>
+                                              Navigator.pop(context),
+                                          child: Text("Ok"))
+                                    ]));
+                      }
                     },
                     style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.yellow[700],

@@ -1,7 +1,8 @@
 // ignore_for_file: must_be_immutable
 
-import 'dart:ffi';
+//import 'dart:ffi';
 
+import 'package:eautokuca_desktop/main.dart';
 import 'package:eautokuca_desktop/screens/car_details_screen.dart';
 import 'package:eautokuca_desktop/screens/lista_automobila.dart';
 import 'package:flutter/material.dart';
@@ -39,6 +40,14 @@ class _MasterScreenWidgetState extends State<MasterScreenWidget> {
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => const CarDetailsScreen(),
+                ));
+              },
+            ),
+            ListTile(
+              title: Text("Login"),
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const MyApp(),
                 ));
               },
             ),
