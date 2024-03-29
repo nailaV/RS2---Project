@@ -16,7 +16,6 @@ namespace eAutokuca.Models.Requests
         [Required]
         public decimal PredjeniKilometri { get; set; }
        
-        [StringLength(17,MinimumLength =17, ErrorMessage ="Broj sasije ima 17 karaktera.")]
         public string BrojSasije { get; set; } = null!;
         
         public string Motor { get; set; } = null!;
@@ -34,5 +33,8 @@ namespace eAutokuca.Models.Requests
         public string Marka { get; set; } = null!;
 
         public string Status { get; set; } = null!;
+
+        public string? slikaBase64 { get; set; } = null!;
+
     }
 }

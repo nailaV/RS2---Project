@@ -33,6 +33,7 @@ namespace eAutokuca.Models
         public string Marka { get; set; } = null!;
 
         public string Status { get; set; } = null!;
+        public byte[]? Slike { get; set; }= null!;
 
     }
 

@@ -31,6 +31,8 @@ public partial class Automobil
 
     public string Status { get; set; } = null!;
 
+    public byte[]? Slike { get; set; }
+
     public virtual ICollection<Oprema> Opremas { get; set; } = new List<Oprema>();
 
     public virtual ICollection<Rezervacija> Rezervacijas { get; set; } = new List<Rezervacija>();

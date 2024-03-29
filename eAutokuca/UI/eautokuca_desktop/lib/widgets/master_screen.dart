@@ -39,7 +39,7 @@ class _MasterScreenWidgetState extends State<MasterScreenWidget> {
               title: Text("Car details"),
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const CarDetailsScreen(),
+                  builder: (context) => CarDetailsScreen(),
                 ));
               },
             ),

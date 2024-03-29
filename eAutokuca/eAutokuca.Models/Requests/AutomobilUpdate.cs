@@ -9,5 +9,6 @@ namespace eAutokuca.Models.Requests
     public class AutomobilUpdate
     {
         public decimal Cijena { get; set; }
+       
     }
 }

@@ -13,7 +13,7 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace eAutokuca.Services
 {
-    public class AutomobiliService : BaseCrudService<Models.Automobil, Database.Automobil, AutodioSearchObject, AutomobilInsert, AutomobilUpdate>, IAutomobiliService
+    public class AutomobiliService : BaseCrudService<Models.Automobil, Database.Automobil, AutomobilSearchObject, AutomobilInsert, AutomobilUpdate>, IAutomobiliService
     {
         public BaseState _baseState { get; set; }
         public AutomobiliService(BaseState baseState, AutokucaContext context, IMapper mapper) :
@@ -22,14 +22,36 @@ namespace eAutokuca.Services
             _baseState = baseState;
         }
 
+        public override IQueryable<Database.Automobil> AddFilter(IQueryable<Database.Automobil> query, AutomobilSearchObject? search = null)
+        {
+            if (!string.IsNullOrWhiteSpace(search?.Boja))
+            {
+                query = query.Where(x => x.Boja.StartsWith(search.Boja));
+            }
+            return base.AddFilter(query, search);
+        }
+
         public Task<PagedResult<Models.Automobil>> Get(AutomobilSearchObject? search = null)
         {
             return base.Get();
         }
-        public override Task<Models.Automobil> Insert(AutomobilInsert insert)
-        {
-            var state = _baseState.CreateState("Initial");
-            return state.Insert(insert);
+        public override async Task<Models.Automobil> Insert(AutomobilInsert insert)
+        {   
+            Database.Automobil entity=new ();
+
+            _mapper.Map(insert, entity);
+            if(!string.IsNullOrEmpty(insert?.slikaBase64))
+            {
+                entity.Slike=Convert.FromBase64String(insert.slikaBase64);
+            }
+            entity.Status = "Aktivan";
+
+            await _context.AddAsync(entity);
+            await _context.SaveChangesAsync();
+
+            return _mapper.Map<Models.Automobil>(entity);
+
+
         }
 
         public override async Task<Models.Automobil> Update(int id, AutomobilUpdate update)

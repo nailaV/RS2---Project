@@ -8,8 +8,9 @@ namespace eAutokuca.Models.SearchObjects
 {
     public class AutomobilSearchObject:BaseSearchObject
     {
-        public string? Model { get; set; }
-        public decimal? Cijena { get; set; }
+        /*public string? Model { get; set; }
+        public string? FTS { get; set; } */
+        public string? Boja { get; set; }
 
     }
 }

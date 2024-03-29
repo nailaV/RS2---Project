@@ -20,15 +20,21 @@ namespace eAutokuca.Services
 
         public override IQueryable<Database.Autodio> AddFilter(IQueryable<Database.Autodio> query, AutodioSearchObject? search = null)
         {
-            if (!string.IsNullOrWhiteSpace(search.Naziv))
+            if (!string.IsNullOrWhiteSpace(search?.Naziv))
             {
                 query = query.Where(x => x.Naziv.StartsWith(search.Naziv));
             }
 
-            if(!string.IsNullOrWhiteSpace(search.FullTextSearch))
+            if(!string.IsNullOrWhiteSpace(search?.FullTextSearch))
             {
                 query=query.Where(x=>x.Naziv.Contains(search.FullTextSearch));  
             }
+
+            if(!string.IsNullOrWhiteSpace(search?.Status)) 
+            {
+                query=query.Where(x=>x.Status.StartsWith(search.Status));
+            }
+
 
             return base.AddFilter(query, search);
         }

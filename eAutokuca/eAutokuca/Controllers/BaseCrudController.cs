@@ -19,7 +19,7 @@ namespace eAutokuca.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         public virtual async Task<T> Insert([FromBody]TInsert insert)
         {
             return await _service.Insert(insert);
@@ -30,6 +30,9 @@ namespace eAutokuca.Controllers
         {
             return await _service.Update(id, update);
         }
+
+
+     
 
     }
 }
