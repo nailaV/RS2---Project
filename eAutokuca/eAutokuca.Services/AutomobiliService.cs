@@ -22,19 +22,24 @@ namespace eAutokuca.Services
             _baseState = baseState;
         }
 
+
+
+
         public override IQueryable<Database.Automobil> AddFilter(IQueryable<Database.Automobil> query, AutomobilSearchObject? search = null)
         {
             if (!string.IsNullOrWhiteSpace(search?.Boja))
             {
-                query = query.Where(x => x.Boja.StartsWith(search.Boja));
+                query = query.Where(x => x.Boja.ToLower().StartsWith(search.Boja.ToLower()));
             }
-            return base.AddFilter(query, search);
+
+            if(!string.IsNullOrWhiteSpace(search?.FTS))
+            {
+                query=query.Where(x=>x.Model.Contains(search.FTS) || x.Marka.Contains(search.FTS));
+            }
+            return query;
         }
 
-        public Task<PagedResult<Models.Automobil>> Get(AutomobilSearchObject? search = null)
-        {
-            return base.Get();
-        }
+        
         public override async Task<Models.Automobil> Insert(AutomobilInsert insert)
         {   
             Database.Automobil entity=new ();
@@ -54,14 +59,6 @@ namespace eAutokuca.Services
 
         }
 
-        public override async Task<Models.Automobil> Update(int id, AutomobilUpdate update)
-        {
-            var entity =await _context.Automobils.FindAsync(id);
-            var state = _baseState.CreateState(entity.Status);
-
-            return await state.Update(id, update);
-           
-        }
 
         public async Task<Models.Automobil> Activate(int id)
         {
@@ -87,5 +84,7 @@ namespace eAutokuca.Services
             return await state.AllowedActions();
             
         }
+
+      
     }
 }

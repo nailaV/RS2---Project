@@ -9,9 +9,9 @@ namespace eAutokuca.Controllers
     public class BaseCrudController<T, TSearch, TInsert, TUpdate> : BaseController<T, TSearch> where T : class where TSearch : class
     {
         protected new readonly ICrudService<T, TSearch, TInsert, TUpdate> _service;
-        protected new  readonly ILogger<BaseController<T, TSearch>> _logger;
+        protected new readonly ILogger<BaseController<T, TSearch>> _logger;
 
-        public BaseCrudController(ILogger<BaseController<T, TSearch>> logger, ICrudService<T, TSearch, TInsert, TUpdate> service):
+        public BaseCrudController(ILogger<BaseController<T, TSearch>> logger, ICrudService<T, TSearch, TInsert, TUpdate> service) :
             base(logger, service)
         {
             _logger = logger;
@@ -20,7 +20,7 @@ namespace eAutokuca.Controllers
 
         [HttpPost]
         //[Authorize(Roles = "Admin")]
-        public virtual async Task<T> Insert([FromBody]TInsert insert)
+        public virtual async Task<T> Insert([FromBody] TInsert insert)
         {
             return await _service.Insert(insert);
         }
@@ -31,6 +31,11 @@ namespace eAutokuca.Controllers
             return await _service.Update(id, update);
         }
 
+        [HttpDelete("{ID}")]
+        public virtual async Task Delete(int ID)
+        {
+            await _service.Delete(ID);
+        }
 
      
 

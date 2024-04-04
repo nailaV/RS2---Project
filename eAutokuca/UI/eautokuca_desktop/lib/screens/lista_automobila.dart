@@ -27,8 +27,9 @@ class ListaAutomobila extends StatefulWidget {
 class _ListaAutomobilaState extends State<ListaAutomobila> {
   late CarProvider _carProvider;
   SearchResult<Car>? result;
+  bool isLoading = true;
   TextEditingController _bojaController = new TextEditingController();
-  //TextEditingController _passwordController = new TextEditingController();
+  TextEditingController _markaModelContorller = new TextEditingController();
 
   @override
   void didChangeDependencies() {
@@ -38,13 +39,42 @@ class _ListaAutomobilaState extends State<ListaAutomobila> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _carProvider = context.read<CarProvider>();
+    getData();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return MasterScreenWidget(
-        title: "CAR LIST",
+        title: "POČETNA",
         child: Container(
             child: Column(
           children: [_buildSeacrh(), _buildDataListView()],
         )));
+  }
+
+  Future<void> getData() async {
+    try {
+      var data = await _carProvider.get();
+      setState(() {
+        result = data;
+        isLoading = false;
+      });
+    } on Exception catch (e) {
+      showDialog(
+          context: context,
+          builder: (BuildContext context) => AlertDialog(
+                  title: Text("Error"),
+                  content: Text(e.toString()),
+                  actions: [
+                    TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: Text("Ok"))
+                  ]));
+    }
   }
 
   Widget _buildSeacrh() {
@@ -64,16 +94,30 @@ class _ListaAutomobilaState extends State<ListaAutomobila> {
               controller: _bojaController,
             ),
           ),
+          SizedBox(width: 20),
+          Expanded(
+            child: TextField(
+              decoration: InputDecoration(
+                labelText: "Model ili marka",
+                labelStyle: TextStyle(color: Colors.yellow),
+                prefixIcon: Icon(Icons.search, color: Colors.yellow),
+                enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.yellow)),
+              ),
+              controller: _markaModelContorller,
+            ),
+          ),
           SizedBox(height: 20),
           ElevatedButton(
               onPressed: () async {
-                var data = await _carProvider
-                    .get(filter: {'boja': _bojaController.text});
+                var data = await _carProvider.get(filter: {
+                  'boja': _bojaController.text,
+                  'FTS': _markaModelContorller.text
+                });
 
                 setState(() {
                   result = data;
                 });
-                //print("${data.result[0].mjenjac}");
               },
               child: Text('Pretraga'))
         ],
@@ -83,62 +127,64 @@ class _ListaAutomobilaState extends State<ListaAutomobila> {
 
   Expanded _buildDataListView() {
     return Expanded(
-        child: SingleChildScrollView(
-      child: DataTable(
-          columns: const [
-            DataColumn(
-                label: Expanded(
-                    child: Text("ID",
-                        style: TextStyle(fontStyle: FontStyle.italic)))),
-            DataColumn(
-                label: Expanded(
-                    child: Text("Mjenjac",
-                        style: TextStyle(fontStyle: FontStyle.italic)))),
-            DataColumn(
-                label: Expanded(
-                    child: Text("Motor",
-                        style: TextStyle(fontStyle: FontStyle.italic)))),
-            DataColumn(
-                label: Expanded(
-                    child: Text("Boja",
-                        style: TextStyle(fontStyle: FontStyle.italic)))),
-            DataColumn(
-                label: Expanded(
-                    child: Text("Cijena",
-                        style: TextStyle(fontStyle: FontStyle.italic)))),
-            DataColumn(
-                label: Expanded(
-                    child: Text("Slika",
-                        style: TextStyle(fontStyle: FontStyle.italic))))
-          ],
-          rows: result?.result
-                  .map((Car e) => DataRow(
-                          onSelectChanged: (s) => {
-                                if (s == true)
-                                  {
-                                    Navigator.of(context)
-                                        .push(MaterialPageRoute(
-                                      builder: (context) =>
-                                          CarDetailsScreen(car: e),
-                                    ))
-                                  }
-                              },
-                          cells: [
-                            DataCell(Text(e.automobilId?.toString() ?? "")),
-                            DataCell(Text(e.mjenjac ?? "")),
-                            DataCell(Text(e.motor ?? "")),
-                            DataCell(Text(e.boja ?? "")),
-                            DataCell(Text(e.cijena.toString())),
-                            DataCell(e.slika != null && e.slika != ""
-                                ? Container(
-                                    width: 100,
-                                    height: 100,
-                                    child: imageFromBase64String(e.slika!),
-                                  )
-                                : Text("No image available."))
-                          ]))
-                  .toList() ??
-              []),
-    ));
+      child: Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: GridView.builder(
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 4,
+            crossAxisSpacing: 10.0,
+            mainAxisSpacing: 10.0,
+          ),
+          itemCount: result?.result.length ?? 0,
+          itemBuilder: (context, index) {
+            Car car = result!.result[index];
+            return GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => CarDetailsScreen(car: car),
+                ));
+              },
+              child: Card(
+                elevation: 3,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    car.slike != null && car.slike != ""
+                        ? Container(
+                            width: double.infinity,
+                            height: 150,
+                            child: imageFromBase64String(car.slike!),
+                          )
+                        : Text("No image available."),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      "${car.marka ?? ""} ${car.model ?? ""}",
+                      style: TextStyle(
+                          fontStyle: FontStyle.italic,
+                          color: Colors.black,
+                          fontSize: 20),
+                    ),
+                    Text(
+                      car.godinaProizvodnje.toString(),
+                      style: TextStyle(
+                          fontStyle: FontStyle.italic, color: Colors.black),
+                    ),
+                    Text(
+                      "${car.cijena.toString()} KM",
+                      style: TextStyle(
+                          fontStyle: FontStyle.italic,
+                          color: Colors.black,
+                          fontSize: 18),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        ),
+      ),
+    );
   }
 }

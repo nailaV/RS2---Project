@@ -16,5 +16,6 @@ namespace eAutokuca.Services
         Task<Models.Automobil> Activate(int id);
         Task<Models.Automobil> Hide(int id);
         Task<List<string>> AllowedActions(int id);
+        
     }
 }

@@ -33,11 +33,39 @@ namespace eAutokuca.Services
 
         public virtual async Task<T> Update(int id, TUpdate update)
         {
-            var set=_context.Set<TDb>();
-            var entity= await set.FindAsync(id);
+            var context=_context.Set<TDb>();
+            var entity= await context.FindAsync(id);
+
+            if(entity == null) {
+                throw new Exception("User sa unesenim ID brojem nije pronađen.");
+            }
+
             _mapper.Map(update, entity);
+
            await _context.SaveChangesAsync(); 
             return _mapper.Map<T>(entity);
+        }
+
+        public virtual async Task Delete (int ID)
+        {
+            var entity = await _context.Set<TDb>().FindAsync(ID);
+
+            if (entity == null)
+            {
+                throw new Exception("User sa unesenim ID brojem nije pronađen.");
+            }
+
+            _context.Set<TDb>().Remove(entity);
+
+            await DeleteCar(ID);
+
+            await _context.SaveChangesAsync();
+
+        }
+
+        public virtual async Task DeleteCar(int id)
+        {
+
         }
     }
 }

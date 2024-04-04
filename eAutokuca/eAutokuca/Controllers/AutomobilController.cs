@@ -10,13 +10,23 @@ namespace eAutokuca.Controllers
     [ApiController]
     public class AutomobilController : BaseCrudController<Models.Automobil, AutomobilSearchObject, AutomobilInsert, AutomobilUpdate>
     {
-
+        IAutomobiliService _service;
         public AutomobilController(ILogger<BaseController<Models.Automobil, AutomobilSearchObject>> logger, IAutomobiliService service) : base(logger, service)
         {
+            _service = service;
+        }
+
+        public override async Task<Models.Automobil> Update(int id, [FromBody] AutomobilUpdate update)
+        {
+            return await base.Update(id, update);
+        }
+
+        public override async Task Delete(int ID)
+        {
+             await base.Delete(ID);
         }
 
 
-      
         //[HttpPut("{id}/activate")]
         //public virtual async Task<Models.Automobil> Activate(int id)
         //{

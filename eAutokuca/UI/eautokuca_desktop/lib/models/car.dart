@@ -8,28 +8,35 @@ class Car {
   String? mjenjac;
   String? motor;
   String? boja;
-  String? slika;
+  String? slike;
   double? cijena;
+  int? godinaProizvodnje;
+  double? predjeniKilometri;
+  String? brojSasije;
+  String? snagaMotora;
+  int? brojVrata;
+  String? model;
+  String? marka;
+  String? status;
 
-  Car(this.automobilId, this.mjenjac, this.motor, this.boja, this.slika,
-      this.cijena);
+  Car(
+      this.automobilId,
+      this.mjenjac,
+      this.motor,
+      this.boja,
+      this.slike,
+      this.cijena,
+      this.godinaProizvodnje,
+      this.predjeniKilometri,
+      this.brojSasije,
+      this.snagaMotora,
+      this.brojVrata,
+      this.model,
+      this.marka,
+      this.status);
 
   factory Car.fromJson(Map<String, dynamic> json) => _$CarFromJson(json);
 
   /// Connect the generated [_$PersonToJson] function to the `toJson` method.
   Map<String, dynamic> toJson() => _$CarToJson(this);
 }
-
-/* "automobilId": 6,
-      "cijena": 3890,
-      "godinaProizvodnje": 2009,
-      "predjeniKilometri": 309879,
-      "brojSasije": "hhjuk8897",
-      "motor": "Dizel",
-      "snagaMotora": "78kW",
-      "mjenjac": "Manuelni",
-      "boja": "Crna",
-      "brojVrata": 5,
-      "model": "5",
-      "marka": "Golf",
-      "status": "Active" */

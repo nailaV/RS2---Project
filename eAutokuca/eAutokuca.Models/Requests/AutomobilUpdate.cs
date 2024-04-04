@@ -8,7 +8,9 @@ namespace eAutokuca.Models.Requests
 {
     public class AutomobilUpdate
     {
-        public decimal Cijena { get; set; }
-       
+        public decimal? Cijena { get; set; }
+        public string? slikabase64 { get; set; }
+        public string? Model { get; set; }
+
     }
 }
