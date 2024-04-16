@@ -23,6 +23,10 @@ public partial class Korisnik
 
     public bool Stanje { get; set; }
 
+    public byte[]? Slika { get; set; }
+
+    public DateTime? DatumRegistracije { get; set; }
+
     public virtual ICollection<KorisnikUloga> KorisnikUlogas { get; set; } = new List<KorisnikUloga>();
 
     public virtual ICollection<Narudzba> Narudzbas { get; set; } = new List<Narudzba>();

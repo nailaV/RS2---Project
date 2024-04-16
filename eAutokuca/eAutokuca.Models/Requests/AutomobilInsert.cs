@@ -32,7 +32,7 @@ namespace eAutokuca.Models.Requests
 
         public string Marka { get; set; } = null!;
 
-        public string Status { get; set; } = null!;
+        public string? Status { get; set; } = null!;
 
         public string? slikaBase64 { get; set; } = null!;
 

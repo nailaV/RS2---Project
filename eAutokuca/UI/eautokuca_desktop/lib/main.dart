@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, must_be_immutable
 
 import 'package:eautokuca_desktop/providers/car_provider.dart';
+import 'package:eautokuca_desktop/providers/korisnici_provider.dart';
 import 'package:eautokuca_desktop/screens/lista_automobila.dart';
 import 'package:eautokuca_desktop/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +9,10 @@ import 'package:provider/provider.dart';
 
 void main() {
   runApp(MultiProvider(
-    providers: [ChangeNotifierProvider(create: (_) => CarProvider())],
+    providers: [
+      ChangeNotifierProvider(create: (_) => CarProvider()),
+      ChangeNotifierProvider(create: (_) => KorisniciProvider())
+    ],
     child: const MyApp(),
   ));
 }

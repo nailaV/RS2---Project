@@ -20,7 +20,25 @@ namespace eAutokuca.Services
         {
             
         }
-        
+
+        public async override Task<Models.Korisnik> Insert(KorisniciInsert insert)
+        {
+            var user = new Korisnik();
+            _mapper.Map(insert, user);
+
+            user.LozinkaSalt=GenerateSalt();
+            user.LozinkaHash = GenerateHash(user.LozinkaSalt, insert.Password);
+            user.DatumRegistracije=DateTime.Now;
+            user.Stanje = true;
+            if(insert?.slikaBase64!=null)
+            {
+                user.Slika=Convert.FromBase64String(insert.slikaBase64!);
+            }
+            await _context.Korisniks.AddAsync(user);
+            await _context.SaveChangesAsync();
+            return _mapper.Map<Models.Korisnik>(user);
+
+        }
         public override async Task BeforeInsert(Korisnik entity, KorisniciInsert insert)
         {
 

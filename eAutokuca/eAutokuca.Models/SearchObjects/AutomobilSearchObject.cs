@@ -12,6 +12,7 @@ namespace eAutokuca.Models.SearchObjects
         public string? Marka { get; set; }
         public string? FTS { get; set; } 
         public string? Boja { get; set; } = null!;
+        //public int? GodinaProizvodnje { get; set; }
 
     }
 }

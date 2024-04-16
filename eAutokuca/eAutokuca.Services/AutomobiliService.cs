@@ -27,14 +27,10 @@ namespace eAutokuca.Services
 
         public override IQueryable<Database.Automobil> AddFilter(IQueryable<Database.Automobil> query, AutomobilSearchObject? search = null)
         {
-            if (!string.IsNullOrWhiteSpace(search?.Boja))
-            {
-                query = query.Where(x => x.Boja.ToLower().StartsWith(search.Boja.ToLower()));
-            }
 
-            if(!string.IsNullOrWhiteSpace(search?.FTS))
+            if (!string.IsNullOrWhiteSpace(search?.FTS))
             {
-                query=query.Where(x=>x.Model.Contains(search.FTS) || x.Marka.Contains(search.FTS));
+                query = query.Where(x => x.Model.Contains(search.FTS) || x.Marka.Contains(search.FTS) || x.Boja.Contains(search.FTS));
             }
             return query;
         }

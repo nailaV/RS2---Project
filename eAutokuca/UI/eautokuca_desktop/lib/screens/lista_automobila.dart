@@ -28,7 +28,6 @@ class _ListaAutomobilaState extends State<ListaAutomobila> {
   late CarProvider _carProvider;
   SearchResult<Car>? result;
   bool isLoading = true;
-  TextEditingController _bojaController = new TextEditingController();
   TextEditingController _markaModelContorller = new TextEditingController();
 
   @override
@@ -85,19 +84,6 @@ class _ListaAutomobilaState extends State<ListaAutomobila> {
           Expanded(
             child: TextField(
               decoration: InputDecoration(
-                labelText: "Boja",
-                labelStyle: TextStyle(color: Colors.yellow),
-                prefixIcon: Icon(Icons.search, color: Colors.yellow),
-                enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.yellow)),
-              ),
-              controller: _bojaController,
-            ),
-          ),
-          SizedBox(width: 20),
-          Expanded(
-            child: TextField(
-              decoration: InputDecoration(
                 labelText: "Model ili marka",
                 labelStyle: TextStyle(color: Colors.yellow),
                 prefixIcon: Icon(Icons.search, color: Colors.yellow),
@@ -107,19 +93,24 @@ class _ListaAutomobilaState extends State<ListaAutomobila> {
               controller: _markaModelContorller,
             ),
           ),
-          SizedBox(height: 20),
+          SizedBox(height: 10),
           ElevatedButton(
               onPressed: () async {
-                var data = await _carProvider.get(filter: {
-                  'boja': _bojaController.text,
-                  'FTS': _markaModelContorller.text
-                });
+                var data = await _carProvider
+                    .get(filter: {'FTS': _markaModelContorller.text});
 
                 setState(() {
                   result = data;
                 });
               },
-              child: Text('Pretraga'))
+              child: Text('Pretraga')),
+          SizedBox(width: 20),
+          ElevatedButton(
+              onPressed: () async {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => CarDetailsScreen(car: null)));
+              },
+              child: Text('Dodaj'))
         ],
       ),
     );

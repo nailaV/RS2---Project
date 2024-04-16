@@ -2,7 +2,9 @@
 
 //import 'dart:ffi';
 
+import 'package:eautokuca_desktop/screens/korisnici_screen.dart';
 import 'package:eautokuca_desktop/screens/lista_automobila.dart';
+import 'package:eautokuca_desktop/screens/rezervacije_screen.dart';
 import 'package:flutter/material.dart';
 
 class MasterScreenWidget extends StatefulWidget {
@@ -87,11 +89,11 @@ class _drawerItems extends StatelessWidget {
               color: Colors.yellow[700],
             ),
           ),
-          // onTap: () {
-          //   Navigator.of(context).push(MaterialPageRoute(
-          //     builder: (context) => CarDetailsScreen(),
-          //   ));
-          // },
+          onTap: () {
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => RezervacijeScreen(),
+            ));
+          },
         ),
         SizedBox(
           height: 12,
@@ -123,11 +125,11 @@ class _drawerItems extends StatelessWidget {
               color: Colors.yellow[700],
             ),
           ),
-          // onTap: () {
-          //   Navigator.of(context).push(MaterialPageRoute(
-          //     builder: (context) => const MyApp(),
-          //   ));
-          // },
+          onTap: () {
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => const KorisniciScreen(),
+            ));
+          },
         ),
         SizedBox(
           height: 12,

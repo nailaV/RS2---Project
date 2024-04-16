@@ -51,6 +51,38 @@ abstract class BaseProvider<T> with ChangeNotifier {
     //print("response: ${response.request} code: ${response.statusCode} body: ${response.body}");
   }
 
+  Future<T> insert(dynamic request) async {
+    var url = "$_baseUrl$_endpoint";
+    var uri = Uri.parse(url);
+    var headers = createdHeaders();
+    var jsonRequest = jsonEncode(request);
+
+    var response = await http.post(uri, headers: headers, body: jsonRequest);
+
+    if (isValidResponse(response)) {
+      var data = jsonDecode(response.body);
+      return fromJson(data);
+    } else {
+      throw new Exception("Unknown error.");
+    }
+  }
+
+  Future<T> update(int ID, [dynamic request]) async {
+    var url = "$_baseUrl$_endpoint/$ID";
+    var uri = Uri.parse(url);
+    var headers = createdHeaders();
+    var jsonRequest = jsonEncode(request);
+
+    var response = await http.put(uri, headers: headers, body: jsonRequest);
+
+    if (isValidResponse(response)) {
+      var data = jsonDecode(response.body);
+      return fromJson(data);
+    } else {
+      throw new Exception("Unknown error.");
+    }
+  }
+
   T fromJson(data) {
     throw Exception("Method not implemented.");
   }
@@ -61,7 +93,8 @@ abstract class BaseProvider<T> with ChangeNotifier {
     } else if (response.statusCode == 401) {
       throw new Exception("Unauthorized.");
     } else {
-      print(response.body);
+      print(
+          "response: ${response.request} code: ${response.statusCode} body: ${response.body}");
       throw new Exception("Something happened.");
     }
   }

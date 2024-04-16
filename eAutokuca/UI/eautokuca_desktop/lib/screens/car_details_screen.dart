@@ -1,11 +1,13 @@
-// ignore_for_file: prefer_const_constructors, use_super_parameters, must_be_immutable
+// ignore_for_file: prefer_const_constructors, use_super_parameters, must_be_immutable, use_build_context_synchronously
 
 import 'package:eautokuca_desktop/models/car.dart';
+import 'package:eautokuca_desktop/providers/car_provider.dart';
 import 'package:eautokuca_desktop/widgets/master_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:provider/provider.dart';
 
 class CarDetailsScreen extends StatefulWidget {
   Car? car;
@@ -17,8 +19,11 @@ class CarDetailsScreen extends StatefulWidget {
 
 class _CarDetailsScreenState extends State<CarDetailsScreen> {
   final _formKey = GlobalKey<FormBuilderState>();
+  late CarProvider _carProvider;
 
   Map<String, dynamic> _initialValue = {};
+
+  bool isLoading = true;
 
   @override
   void initState() {
@@ -39,6 +44,8 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
       "status": widget.car?.status,
       "slike": widget.car?.slike
     };
+
+    _carProvider = context.read<CarProvider>();
   }
 
   @override
@@ -75,7 +82,7 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
                 children: [
                   Expanded(
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         IconButton(
                             onPressed: () {
@@ -85,6 +92,16 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
                         Expanded(
                           child: Column(
                             children: [
+                              FormBuilderTextField(
+                                name: "model",
+                                decoration: InputDecoration(labelText: "Model"),
+                              ),
+                              SizedBox(height: 20),
+                              FormBuilderTextField(
+                                name: "marka",
+                                decoration: InputDecoration(labelText: "Marka"),
+                              ),
+                              SizedBox(height: 20),
                               FormBuilderTextField(
                                 name: "mjenjac",
                                 decoration:
@@ -106,6 +123,12 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
                                 name: "predjeniKilometri",
                                 decoration: InputDecoration(
                                     labelText: "Pređeni kilometri"),
+                              ),
+                              SizedBox(height: 20),
+                              FormBuilderTextField(
+                                name: "status",
+                                decoration:
+                                    InputDecoration(labelText: "Status"),
                               ),
                             ],
                           ),
@@ -136,16 +159,56 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
                                 name: "boja",
                                 decoration: InputDecoration(labelText: "Boja"),
                               ),
+                              SizedBox(height: 30),
+                              FormBuilderTextField(
+                                name: "cijena",
+                                decoration:
+                                    InputDecoration(labelText: "Cijena"),
+                              ),
+                              SizedBox(height: 20),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  ElevatedButton(
+                                    onPressed: () async {
+                                      _formKey.currentState?.saveAndValidate();
+
+                                      print(_formKey.currentState?.value);
+
+                                      try {
+                                        if (widget.car == null) {
+                                          await _carProvider.insert(
+                                              _formKey.currentState?.value);
+                                        } else {
+                                          await _carProvider.update(
+                                              widget.car!.automobilId!,
+                                              _formKey.currentState?.value);
+                                        }
+                                      } on Exception catch (e) {
+                                        showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) =>
+                                                AlertDialog(
+                                                    title: Text("Error"),
+                                                    content: Text(e.toString()),
+                                                    actions: [
+                                                      TextButton(
+                                                          onPressed: () =>
+                                                              Navigator.pop(
+                                                                  context),
+                                                          child: Text("Ok"))
+                                                    ]));
+                                      }
+                                    },
+                                    child: Text('Sačuvaj'),
+                                  ),
+                                ],
+                              ),
                             ],
                           ),
                         ),
                       ],
                     ),
-                  ),
-                  SizedBox(height: 30), // Adjust the height as needed
-                  ElevatedButton(
-                    onPressed: _saveForm,
-                    child: Text('Save'),
                   ),
                 ],
               ),
@@ -154,9 +217,5 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
         ),
       ),
     );
-  }
-
-  void _saveForm() {
-    // Implement your save logic here
   }
 }

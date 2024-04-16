@@ -15,6 +15,7 @@
         public string Username { get; set; } = null!;
 
         public bool Stanje { get; set; }
+        public byte[]? Slika { get; set; } = null!;
 
         public virtual ICollection<KorisnikUloga> KorisnikUlogas { get; } = new List<KorisnikUloga>();
     }

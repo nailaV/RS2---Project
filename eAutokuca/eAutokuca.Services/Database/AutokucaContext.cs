@@ -91,6 +91,7 @@ public partial class AutokucaContext : DbContext
             entity.ToTable("Korisnik");
 
             entity.Property(e => e.KorisnikId).HasColumnName("KorisnikID");
+            entity.Property(e => e.DatumRegistracije).HasColumnType("datetime");
             entity.Property(e => e.Email)
                 .HasMaxLength(50)
                 .IsUnicode(false)

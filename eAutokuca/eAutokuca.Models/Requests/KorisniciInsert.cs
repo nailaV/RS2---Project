@@ -9,10 +9,9 @@ namespace eAutokuca.Models.Requests
 {
     public class KorisniciInsert
     {
-        [Required(AllowEmptyStrings =false)]
+       
         public string Ime { get; set; } = null!;
 
-        [Required(AllowEmptyStrings = false)]
         public string Prezime { get; set; } = null!;
 
         public string Email { get; set; } = null!;
@@ -20,6 +19,8 @@ namespace eAutokuca.Models.Requests
         public string? Telefon { get; set; }
 
         public string Username { get; set; } = null!;
+
+        public string? slikaBase64 { get; set; } = null!;
 
         public bool Stanje { get; set; }
         [Compare("PasswordPotvrda", ErrorMessage ="Sifre se ne poklapaju!")]
