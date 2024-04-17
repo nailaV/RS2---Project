@@ -9,17 +9,19 @@ import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 
 abstract class BaseProvider<T> with ChangeNotifier {
-  static String? _baseUrl;
-  String _endpoint = "";
+  late String _baseUrl;
+  late String _endpoint;
+  String get baseUrl => _baseUrl;
+  String get end => _endpoint;
 
   BaseProvider(String endpoint) {
-    _endpoint = endpoint;
     _baseUrl = const String.fromEnvironment("baseUrl",
         defaultValue: "http://localhost:5146/");
+    _endpoint = endpoint;
   }
 
-  Future<SearchResult<T>> get({dynamic filter}) async {
-    var url = "$_baseUrl$_endpoint";
+  Future<SearchResult<T>> getAll({dynamic filter}) async {
+    var url = "$_baseUrl$_endpoint/getAll";
 
     if (filter != null) {
       var queryString = getQueryString(filter);
@@ -51,6 +53,18 @@ abstract class BaseProvider<T> with ChangeNotifier {
     //print("response: ${response.request} code: ${response.statusCode} body: ${response.body}");
   }
 
+  Future<bool> delete(int id) async {
+    var url = "$_baseUrl$_endpoint/$id";
+    var uri = Uri.parse(url);
+    var headers = createdHeaders();
+
+    var response = await http.delete(uri, headers: headers);
+    if (!isValidResponse(response)) {
+      throw Exception("Error...");
+    }
+    return true;
+  }
+
   Future<T> insert(dynamic request) async {
     var url = "$_baseUrl$_endpoint";
     var uri = Uri.parse(url);
@@ -68,7 +82,7 @@ abstract class BaseProvider<T> with ChangeNotifier {
   }
 
   Future<T> update(int ID, [dynamic request]) async {
-    var url = "$_baseUrl$_endpoint/$ID";
+    var url = "$_baseUrl$_endpoint/$ID/update";
     var uri = Uri.parse(url);
     var headers = createdHeaders();
     var jsonRequest = jsonEncode(request);
@@ -79,7 +93,7 @@ abstract class BaseProvider<T> with ChangeNotifier {
       var data = jsonDecode(response.body);
       return fromJson(data);
     } else {
-      throw new Exception("Unknown error.");
+      throw Exception("Unknown error.");
     }
   }
 

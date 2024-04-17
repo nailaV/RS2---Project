@@ -11,6 +11,7 @@ import 'package:eautokuca_desktop/screens/car_details_screen.dart';
 import 'package:eautokuca_desktop/utils/utils.dart';
 //import 'package:eautokuca_desktop/screens/car_details_screen.dart';
 import 'package:eautokuca_desktop/widgets/master_screen.dart';
+import 'package:eautokuca_desktop/widgets/novi_automobil_popup.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -51,13 +52,13 @@ class _ListaAutomobilaState extends State<ListaAutomobila> {
         title: "POČETNA",
         child: Container(
             child: Column(
-          children: [_buildSeacrh(), _buildDataListView()],
+          children: [_buildSeacrh(), _buildDataListView(), _buildButton()],
         )));
   }
 
   Future<void> getData() async {
     try {
-      var data = await _carProvider.get();
+      var data = await _carProvider.getAll();
       setState(() {
         result = data;
         isLoading = false;
@@ -74,6 +75,33 @@ class _ListaAutomobilaState extends State<ListaAutomobila> {
                         child: Text("Ok"))
                   ]));
     }
+  }
+
+  Widget _buildButton() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          MaterialButton(
+            padding: EdgeInsets.all(15),
+            shape: CircleBorder(),
+            color: Colors.yellow[700],
+            onPressed: () async {
+              showDialog(
+                  context: context,
+                  builder: (context) {
+                    return NoviAutomobil();
+                  });
+            },
+            child: Icon(
+              Icons.add,
+              color: Colors.white,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   Widget _buildSeacrh() {
@@ -93,24 +121,41 @@ class _ListaAutomobilaState extends State<ListaAutomobila> {
               controller: _markaModelContorller,
             ),
           ),
-          SizedBox(height: 10),
-          ElevatedButton(
-              onPressed: () async {
-                var data = await _carProvider
-                    .get(filter: {'FTS': _markaModelContorller.text});
+          SizedBox(width: 10),
+          MaterialButton(
+            padding: EdgeInsets.all(15),
+            shape: CircleBorder(),
+            color: Colors.yellow[700],
+            onPressed: () async {
+              var data = await _carProvider
+                  .getAll(filter: {'FTS': _markaModelContorller.text});
 
-                setState(() {
-                  result = data;
-                });
-              },
-              child: Text('Pretraga')),
-          SizedBox(width: 20),
-          ElevatedButton(
-              onPressed: () async {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => CarDetailsScreen(car: null)));
-              },
-              child: Text('Dodaj'))
+              setState(() {
+                result = data;
+              });
+            },
+            child: Icon(
+              Icons.search,
+              color: Colors.white,
+            ),
+          ),
+          MaterialButton(
+            padding: EdgeInsets.all(15),
+            shape: CircleBorder(),
+            color: Colors.yellow[700],
+            onPressed: () async {
+              var data = await _carProvider
+                  .getAll(filter: {'FTS': _markaModelContorller.text});
+
+              setState(() {
+                result = data;
+              });
+            },
+            child: Icon(
+              Icons.tune,
+              color: Colors.white,
+            ),
+          ),
         ],
       ),
     );

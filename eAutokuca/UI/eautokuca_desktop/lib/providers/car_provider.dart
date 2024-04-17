@@ -4,7 +4,7 @@ import 'package:eautokuca_desktop/models/car.dart';
 import 'package:eautokuca_desktop/providers/base_provider.dart';
 
 class CarProvider extends BaseProvider<Car> {
-  CarProvider() : super("Automobil/getAll");
+  CarProvider() : super("Automobil");
 
   @override
   Car fromJson(data) {

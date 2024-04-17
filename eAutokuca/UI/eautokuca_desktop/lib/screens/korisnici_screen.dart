@@ -38,7 +38,7 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
 
   Future<void> getData() async {
     try {
-      var data = await _korisniciProvider.get();
+      var data = await _korisniciProvider.getAll();
       setState(() {
         korisniciResult = data;
         isLoading = false;

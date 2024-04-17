@@ -181,7 +181,7 @@ class LoginPage extends StatelessWidget {
                       Authorization.password = password;
 
                       try {
-                        await _carProvider.get();
+                        await _carProvider.getAll();
 
                         Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => const ListaAutomobila(),
