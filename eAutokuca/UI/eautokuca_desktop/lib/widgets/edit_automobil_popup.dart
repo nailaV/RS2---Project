@@ -29,19 +29,9 @@ class _EditAutomobilState extends State<EditAutomobil> {
     super.initState();
     _carProvider = context.read<CarProvider>();
     _initialValue = {
-      "motor": widget.car.motor,
-      "mjenjac": widget.car.mjenjac,
-      "boja": widget.car.boja,
       "cijena": widget.car.cijena.toString(),
-      "godinaProizvodnje": widget.car.godinaProizvodnje.toString(),
       "predjeniKilometri": widget.car.predjeniKilometri.toString(),
-      "brojSasije": widget.car.brojSasije,
-      "snagaMotora": widget.car.snagaMotora,
-      "brojVrata": widget.car.brojVrata.toString(),
-      "model": widget.car.model,
-      "marka": widget.car.marka,
-      "status": widget.car.status,
-      "slike": widget.car.slike
+      "status": widget.car.status
     };
   }
 
@@ -101,16 +91,19 @@ class _EditAutomobilState extends State<EditAutomobil> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       color: Colors.yellow[700],
       onPressed: () async {
-        _formKey.currentState?.saveAndValidate();
-        try {
-          await _carProvider.update(
-              widget.car.automobilId!, _formKey.currentState?.value);
-          MyDialogs.showSuccess(context, "Uspješno sačuvane promjene.", () {
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (builder) => const ListaAutomobila()));
-          });
-        } catch (e) {
-          MyDialogs.showError(context, e.toString());
+        if (_formKey.currentState != null) {
+          if (_formKey.currentState!.saveAndValidate()) {
+            try {
+              await _carProvider.update(
+                  widget.car.automobilId!, _formKey.currentState!.value);
+              MyDialogs.showSuccess(context, "Uspješno sačuvane promjene.", () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (builder) => const ListaAutomobila()));
+              });
+            } catch (e) {
+              MyDialogs.showError(context, e.toString());
+            }
+          }
         }
       },
       child: const Text(
@@ -129,7 +122,7 @@ class _EditAutomobilState extends State<EditAutomobil> {
           width: 230,
           child: FormBuilderTextField(
             cursorColor: Colors.grey,
-            //autovalidateMode: AutovalidateMode.onUserInteraction,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
             name: 'cijena',
             decoration: const InputDecoration(
                 border: OutlineInputBorder(
@@ -143,7 +136,7 @@ class _EditAutomobilState extends State<EditAutomobil> {
           width: 230,
           child: FormBuilderTextField(
             cursorColor: Colors.grey,
-            //autovalidateMode: AutovalidateMode.onUserInteraction,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
             name: 'predjeniKilometri',
             decoration: const InputDecoration(
                 border: OutlineInputBorder(
@@ -157,7 +150,7 @@ class _EditAutomobilState extends State<EditAutomobil> {
           width: 230,
           child: FormBuilderTextField(
             cursorColor: Colors.grey,
-            // autovalidateMode: AutovalidateMode.onUserInteraction,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
             name: 'status',
             decoration: const InputDecoration(
                 border: OutlineInputBorder(

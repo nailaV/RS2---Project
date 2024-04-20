@@ -4,9 +4,12 @@ using eAutokuca.Models.Requests;
 using eAutokuca.Models.SearchObjects;
 using eAutokuca.Services.AutomobiliStateMachine;
 using eAutokuca.Services.Database;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
@@ -81,6 +84,105 @@ namespace eAutokuca.Services
             
         }
 
-      
+        public async Task<List<string>> GetSveMarke()
+        {
+            var lista = new List<string>
+            {
+                "Sve marke"
+            };
+
+            var marke = await _context.Automobils.Select(x => x.Marka).Distinct().ToListAsync();
+            foreach (var item in marke)
+            {
+                lista.Add(item);
+            }
+
+            return lista;
+        }
+
+        public async Task<List<string>> GetSveModele()
+        {
+            var lista = new List<string>
+            {
+                "Svi modeli"
+            };
+
+            var modeli=await _context.Automobils.Select(x=>x.Model).Distinct().ToListAsync();
+            foreach (var item in modeli)
+            {
+                lista.Add(item);
+            }
+
+            return lista;
+        }
+
+        public async Task<PagedResult<Models.Automobil>> Filtriraj(AutomobilSearchObject? searchObject = null)
+        {
+            var query= _context.Automobils.OrderByDescending(x=>x.AutomobilId).AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(searchObject?.Marka))
+            {
+                if(searchObject.Marka!="Sve marke")
+                {
+                    query = query.Where(x => x.Marka == searchObject.Marka);
+                }
+            }
+            if (!string.IsNullOrWhiteSpace(searchObject?.Model))
+            {
+                if (searchObject.Model != "Svi modeli")
+                {
+                    query = query.Where(x => x.Model == searchObject.Model);
+                }
+            }
+            if (!string.IsNullOrWhiteSpace(searchObject?.Mjenjac))
+            {
+                if (searchObject.Mjenjac != "Svi")
+                {
+                    query = query.Where(x => x.Mjenjac == searchObject.Mjenjac);
+                }
+            }
+            if (!string.IsNullOrWhiteSpace(searchObject?.Motor))
+            {
+                if (searchObject.Motor != "Svi motori")
+                {
+                    query = query.Where(x => x.Motor == searchObject.Motor);
+                }
+            }
+            if (searchObject?.PredjeniKilometri.HasValue == true)
+            {
+                query = query.Where(x => x.PredjeniKilometri > searchObject.PredjeniKilometri);
+            }
+            if (searchObject?.GodinaProizvodnje.HasValue == true)
+            {
+                query = query.Where(x => x.GodinaProizvodnje >= searchObject.GodinaProizvodnje);
+            }
+
+            var lista = new PagedResult<Models.Automobil>()
+            {
+                Count = await query.CountAsync(),
+            };
+
+            if(searchObject?.PageSize != null)
+            {
+                double? count = lista.Count;
+                double? pageSize = searchObject.PageSize;
+                if(count.HasValue && pageSize.HasValue)
+                {
+                    lista.TotalPages = (int)Math.Ceiling(count.Value / pageSize.Value);
+                }
+            }
+
+            if(searchObject?.Page.HasValue==true && searchObject?.PageSize.HasValue==true)
+            {
+                query = query.Skip(searchObject.PageSize.Value * (searchObject.Page.Value - 1)).Take(searchObject.PageSize
+                    .Value);
+                lista.HasNext = searchObject.Page.Value < lista.TotalPages;
+            }    
+
+            var lista1=await query.ToListAsync();
+            lista.Result = _mapper.Map<List<Models.Automobil>>(lista1);
+
+            return lista;
+        }
     }
 }

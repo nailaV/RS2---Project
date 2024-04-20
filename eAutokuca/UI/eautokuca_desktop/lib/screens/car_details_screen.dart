@@ -45,7 +45,7 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
       "model": widget.car?.model,
       "marka": widget.car?.marka,
       "status": widget.car?.status,
-      "slike": widget.car?.slike
+      "slikaBase64": widget.car?.slike
     };
 
     _carProvider = context.read<CarProvider>();
@@ -80,9 +80,8 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
             Center(
               child: Container(
                 constraints: BoxConstraints(maxWidth: 700),
-                //color: Colors.blueGrey[50],
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(30),
                     color: Colors.blueGrey[50]),
                 child: Padding(
                   padding: const EdgeInsets.all(12.0),
@@ -104,51 +103,56 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
                             Expanded(
                               child: Column(
                                 children: [
-                                  FormBuilderTextField(
-                                    name: "model",
-                                    enabled: false,
-                                    decoration:
-                                        InputDecoration(labelText: "Model"),
-                                  ),
-                                  SizedBox(height: 20),
-                                  FormBuilderTextField(
-                                    name: "marka",
-                                    enabled: false,
+                                  TextFormField(
+                                    readOnly: true,
+                                    initialValue: _initialValue["marka"] ?? "",
                                     decoration:
                                         InputDecoration(labelText: "Marka"),
                                   ),
                                   SizedBox(height: 20),
-                                  FormBuilderTextField(
-                                    name: "mjenjac",
-                                    enabled: false,
+                                  TextFormField(
+                                    readOnly: true,
+                                    initialValue: _initialValue["model"] ?? "",
+                                    decoration:
+                                        InputDecoration(labelText: "Model"),
+                                  ),
+                                  SizedBox(height: 20),
+                                  TextFormField(
+                                    readOnly: true,
+                                    initialValue:
+                                        _initialValue["mjenjac"] ?? "",
                                     decoration: InputDecoration(
                                         labelText: "Transmisija"),
                                   ),
                                   SizedBox(height: 20),
-                                  FormBuilderTextField(
-                                    name: "motor",
-                                    enabled: false,
+                                  TextFormField(
+                                    readOnly: true,
+                                    initialValue: _initialValue["motor"] ?? "",
                                     decoration:
                                         InputDecoration(labelText: "Motor"),
                                   ),
                                   SizedBox(height: 20),
-                                  FormBuilderTextField(
-                                    name: "godinaProizvodnje",
-                                    enabled: false,
+                                  TextFormField(
+                                    readOnly: true,
+                                    initialValue:
+                                        _initialValue["godinaProizvodnje"] ??
+                                            "",
                                     decoration: InputDecoration(
                                         labelText: "Godina proizvodnje"),
                                   ),
                                   SizedBox(height: 20),
-                                  FormBuilderTextField(
-                                    name: "predjeniKilometri",
-                                    enabled: false,
+                                  TextFormField(
+                                    readOnly: true,
+                                    initialValue:
+                                        _initialValue["predjeniKilometri"] ??
+                                            "",
                                     decoration: InputDecoration(
                                         labelText: "Pređeni kilometri"),
                                   ),
                                   SizedBox(height: 20),
-                                  FormBuilderTextField(
-                                    name: "status",
-                                    enabled: false,
+                                  TextFormField(
+                                    readOnly: true,
+                                    initialValue: _initialValue["status"] ?? "",
                                     decoration:
                                         InputDecoration(labelText: "Status"),
                                   ),
@@ -159,37 +163,40 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
                             Expanded(
                               child: Column(
                                 children: [
-                                  FormBuilderTextField(
-                                    name: "brojSasije",
-                                    enabled: false,
+                                  TextFormField(
+                                    readOnly: true,
+                                    initialValue:
+                                        _initialValue["brojSasije"] ?? "",
                                     decoration: InputDecoration(
-                                        labelText: "Broj šasije"),
+                                        labelText: "BrojSasije"),
                                   ),
                                   SizedBox(height: 20),
-                                  FormBuilderTextField(
-                                    name: "snagaMotora",
-                                    enabled: false,
+                                  TextFormField(
+                                    readOnly: true,
+                                    initialValue:
+                                        _initialValue["snagaMotora"] ?? "",
                                     decoration: InputDecoration(
                                         labelText: "Snaga motora"),
                                   ),
                                   SizedBox(height: 20),
-                                  FormBuilderTextField(
-                                    name: "brojVrata",
-                                    enabled: false,
+                                  TextFormField(
+                                    readOnly: true,
+                                    initialValue:
+                                        _initialValue["brojVrata"] ?? "",
                                     decoration: InputDecoration(
                                         labelText: "Broj vrata"),
                                   ),
                                   SizedBox(height: 20),
-                                  FormBuilderTextField(
-                                    name: "boja",
-                                    enabled: false,
+                                  TextFormField(
+                                    readOnly: true,
+                                    initialValue: _initialValue["boja"] ?? "",
                                     decoration:
                                         InputDecoration(labelText: "Boja"),
                                   ),
                                   SizedBox(height: 30),
-                                  FormBuilderTextField(
-                                    name: "cijena",
-                                    enabled: false,
+                                  TextFormField(
+                                    readOnly: true,
+                                    initialValue: _initialValue["cijena"] ?? "",
                                     decoration:
                                         InputDecoration(labelText: "Cijena"),
                                   ),
@@ -198,6 +205,9 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
                                       MaterialButton(
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(20)),
                                         padding: EdgeInsets.all(15),
                                         hoverColor: Colors.blue,
                                         color: Colors.yellow[700],
@@ -218,6 +228,9 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
                                       ),
                                       SizedBox(width: 20),
                                       MaterialButton(
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(20)),
                                         padding: EdgeInsets.all(15),
                                         hoverColor: Colors.red,
                                         color: Colors.yellow[700],

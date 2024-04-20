@@ -16,6 +16,24 @@ namespace eAutokuca.Controllers
             _service = service;
         }
 
+        [HttpGet("GetSveMarke")]
+        public async Task<List<string>> GetSveMarke()
+        {
+            return await _service.GetSveMarke();
+        }
+
+        [HttpGet("GetSveModele")]
+        public async Task<List<string>> GetSveModele()
+        {
+            return await _service.GetSveModele();
+        }
+
+        [HttpGet("Filtriraj")]
+        public async Task<PagedResult<Models.Automobil>> Filtriraj([FromQuery]AutomobilSearchObject? searchObject = null)
+        {
+            return await _service.Filtriraj(searchObject);
+        }
+
         public override async Task<Models.Automobil> Update(int id, [FromBody] AutomobilUpdate update)
         {
             return await base.Update(id, update);
@@ -25,6 +43,8 @@ namespace eAutokuca.Controllers
         {
              await base.Delete(ID);
         }
+
+        
 
 
         //[HttpPut("{id}/activate")]

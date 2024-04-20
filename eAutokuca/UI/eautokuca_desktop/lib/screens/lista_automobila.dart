@@ -1,4 +1,4 @@
-// ignore_for_file: unused_import
+// ignore_for_file: unused_import, use_super_parameters, prefer_const_literals_to_create_immutables
 
 //ignore_for_file: avoid_unnecessary_containers, unused_field, prefer_const_constructors, sized_box_for_whitespace
 
@@ -9,27 +9,35 @@ import 'package:eautokuca_desktop/models/search_result.dart';
 import 'package:eautokuca_desktop/providers/car_provider.dart';
 import 'package:eautokuca_desktop/screens/car_details_screen.dart';
 import 'package:eautokuca_desktop/utils/utils.dart';
+import 'package:eautokuca_desktop/widgets/filter_popup.dart';
 //import 'package:eautokuca_desktop/screens/car_details_screen.dart';
 import 'package:eautokuca_desktop/widgets/master_screen.dart';
 import 'package:eautokuca_desktop/widgets/novi_automobil_popup.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:provider/provider.dart';
 
 class ListaAutomobila extends StatefulWidget {
-  const ListaAutomobila({super.key});
+  final Car? car;
+  const ListaAutomobila({Key? key, this.car}) : super(key: key);
 
   @override
   State<ListaAutomobila> createState() => _ListaAutomobilaState();
 }
 
-class _ListaAutomobilaState extends State<ListaAutomobila> {
+class _ListaAutomobilaState extends State<ListaAutomobila>
+    with TickerProviderStateMixin {
   late CarProvider _carProvider;
+  final _formKey = GlobalKey<FormBuilderState>();
+  Map<String, dynamic> _initialValue = {};
   SearchResult<Car>? result;
   bool isLoading = true;
-  TextEditingController _markaModelContorller = new TextEditingController();
+  List<String> _listaMarki = [];
+  TextEditingController _markaModelContorller = TextEditingController();
 
   @override
   void didChangeDependencies() {
@@ -42,6 +50,21 @@ class _ListaAutomobilaState extends State<ListaAutomobila> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    _initialValue = {
+      "motor": widget.car?.motor,
+      "mjenjac": widget.car?.mjenjac,
+      "boja": widget.car?.boja,
+      "cijena": widget.car?.cijena.toString(),
+      "godinaProizvodnje": widget.car?.godinaProizvodnje.toString(),
+      "predjeniKilometri": widget.car?.predjeniKilometri.toString(),
+      "brojSasije": widget.car?.brojSasije,
+      "snagaMotora": widget.car?.snagaMotora,
+      "brojVrata": widget.car?.brojVrata.toString(),
+      "model": widget.car?.model,
+      "marka": widget.car?.marka,
+      "status": widget.car?.status,
+      "slike": widget.car?.slike
+    };
     _carProvider = context.read<CarProvider>();
     getData();
   }
@@ -144,12 +167,11 @@ class _ListaAutomobilaState extends State<ListaAutomobila> {
             shape: CircleBorder(),
             color: Colors.yellow[700],
             onPressed: () async {
-              var data = await _carProvider
-                  .getAll(filter: {'FTS': _markaModelContorller.text});
+              //   await showDialog(
+              //       context: context, builder: (context) => const FilterData());
+              //
 
-              setState(() {
-                result = data;
-              });
+              _showFilterDialog(context);
             },
             child: Icon(
               Icons.tune,
@@ -221,6 +243,44 @@ class _ListaAutomobilaState extends State<ListaAutomobila> {
           },
         ),
       ),
+    );
+  }
+
+  void _showFilterDialog1(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Stack(
+          children: [
+            Positioned(
+              bottom: 0,
+              right: 0,
+              child: FilterData(), // Your filter dialog widget
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showFilterDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return SlideTransition(
+          position: Tween<Offset>(
+            begin: const Offset(0, 1),
+            end: const Offset(0, 0),
+          ).animate(CurvedAnimation(
+            parent: ModalRoute.of(context)!.animation!,
+            curve: Curves.easeIn,
+          )),
+          child: Container(
+            alignment: Alignment.bottomCenter,
+            child: FilterData(),
+          ),
+        );
+      },
     );
   }
 }

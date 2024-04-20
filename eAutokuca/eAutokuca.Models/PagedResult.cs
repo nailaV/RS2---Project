@@ -10,5 +10,7 @@ namespace eAutokuca.Models
     {
         public List<T> Result { get; set; }
         public int? Count { get; set; }
+        public int? TotalPages { get; set; }
+        public bool? HasNext { get; set; }
     }
 }

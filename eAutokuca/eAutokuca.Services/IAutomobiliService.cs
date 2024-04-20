@@ -16,6 +16,9 @@ namespace eAutokuca.Services
         Task<Models.Automobil> Activate(int id);
         Task<Models.Automobil> Hide(int id);
         Task<List<string>> AllowedActions(int id);
-        
+        Task<List<string>> GetSveMarke();
+        Task<List<string>> GetSveModele();
+        Task<PagedResult<Models.Automobil>> Filtriraj(AutomobilSearchObject? searchObject=null);
+
     }
 }

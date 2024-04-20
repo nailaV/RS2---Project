@@ -1,11 +1,16 @@
-// ignore_for_file: must_be_immutable, prefer_const_constructors, use_build_context_synchronously
+// ignore_for_file: must_be_immutable, prefer_const_constructors, use_build_context_synchronously, unused_field
+
+import 'dart:convert';
+import 'dart:io';
 
 import 'package:eautokuca_desktop/providers/car_provider.dart';
 import 'package:eautokuca_desktop/screens/lista_automobila.dart';
 import 'package:eautokuca_desktop/utils/popup_dialogs.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:provider/provider.dart';
 
 class NoviAutomobil extends StatefulWidget {
@@ -21,6 +26,9 @@ class _NoviAutomobilState extends State<NoviAutomobil> {
   Map<String, dynamic> _initialValue = {};
   late CarProvider _carProvider;
   String? _selectedMjenjac;
+  File? _slika;
+  String? _slikaBase64;
+  String? message = "Klikni da dodaš sliku";
 
   @override
   void initState() {
@@ -85,15 +93,19 @@ class _NoviAutomobilState extends State<NoviAutomobil> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       color: Colors.yellow[700],
       onPressed: () async {
-        _formKey.currentState?.saveAndValidate();
-        try {
-          await _carProvider.insert(_formKey.currentState?.value);
-          MyDialogs.showSuccess(context, "Uspješno dodan novi automobil.", () {
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (builder) => const ListaAutomobila()));
-          });
-        } catch (e) {
-          MyDialogs.showError(context, e.toString());
+        if (_formKey.currentState != null) {
+          if (_formKey.currentState!.saveAndValidate()) {
+            try {
+              await _carProvider.insert(_formKey.currentState?.value);
+              MyDialogs.showSuccess(context, "Uspješno dodan novi automobil.",
+                  () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (builder) => const ListaAutomobila()));
+              });
+            } on Exception catch (e) {
+              MyDialogs.showError(context, e.toString());
+            }
+          }
         }
       },
       child: const Text(
@@ -112,7 +124,7 @@ class _NoviAutomobilState extends State<NoviAutomobil> {
           width: 230,
           child: FormBuilderTextField(
             cursorColor: Colors.grey,
-            //autovalidateMode: AutovalidateMode.onUserInteraction,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
             name: 'model',
             decoration: const InputDecoration(
                 border: OutlineInputBorder(
@@ -120,13 +132,23 @@ class _NoviAutomobilState extends State<NoviAutomobil> {
                 ),
                 labelText: 'Model',
                 labelStyle: TextStyle(fontSize: 14)),
+            validator: FormBuilderValidators.compose([
+              FormBuilderValidators.required(errorText: "Polje je obavezno."),
+              (value) {
+                if (value != null && value.startsWith(" ")) {
+                  return "Počnite sa slovima";
+                } else {
+                  return null;
+                }
+              }
+            ]),
           ),
         ),
         SizedBox(
           width: 230,
           child: FormBuilderTextField(
             cursorColor: Colors.grey,
-            //autovalidateMode: AutovalidateMode.onUserInteraction,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
             name: 'marka',
             decoration: const InputDecoration(
                 border: OutlineInputBorder(
@@ -144,7 +166,7 @@ class _NoviAutomobilState extends State<NoviAutomobil> {
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(30)),
               ),
-              labelText: 'Mjenjac',
+              labelText: 'Transmisija',
               labelStyle: TextStyle(fontSize: 14),
             ),
             initialValue: _selectedMjenjac,
@@ -165,7 +187,7 @@ class _NoviAutomobilState extends State<NoviAutomobil> {
           width: 230,
           child: FormBuilderTextField(
             cursorColor: Colors.grey,
-            //autovalidateMode: AutovalidateMode.onUserInteraction,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
             name: 'motor',
             decoration: const InputDecoration(
                 border: OutlineInputBorder(
@@ -179,7 +201,7 @@ class _NoviAutomobilState extends State<NoviAutomobil> {
           width: 230,
           child: FormBuilderTextField(
             cursorColor: Colors.grey,
-            //autovalidateMode: AutovalidateMode.onUserInteraction,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
             name: 'godinaProizvodnje',
             decoration: const InputDecoration(
                 border: OutlineInputBorder(
@@ -193,7 +215,7 @@ class _NoviAutomobilState extends State<NoviAutomobil> {
           width: 230,
           child: FormBuilderTextField(
             cursorColor: Colors.grey,
-            //autovalidateMode: AutovalidateMode.onUserInteraction,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
             name: 'predjeniKilometri',
             decoration: const InputDecoration(
                 border: OutlineInputBorder(
@@ -207,7 +229,7 @@ class _NoviAutomobilState extends State<NoviAutomobil> {
           width: 230,
           child: FormBuilderTextField(
             cursorColor: Colors.grey,
-            // autovalidateMode: AutovalidateMode.onUserInteraction,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
             name: 'status',
             decoration: const InputDecoration(
                 border: OutlineInputBorder(
@@ -221,7 +243,7 @@ class _NoviAutomobilState extends State<NoviAutomobil> {
           width: 230,
           child: FormBuilderTextField(
             cursorColor: Colors.grey,
-            //autovalidateMode: AutovalidateMode.onUserInteraction,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
             name: 'brojSasije',
             decoration: const InputDecoration(
                 border: OutlineInputBorder(
@@ -235,7 +257,7 @@ class _NoviAutomobilState extends State<NoviAutomobil> {
           width: 230,
           child: FormBuilderTextField(
             cursorColor: Colors.grey,
-            //autovalidateMode: AutovalidateMode.onUserInteraction,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
             name: 'snagaMotora',
             decoration: const InputDecoration(
                 border: OutlineInputBorder(
@@ -249,7 +271,7 @@ class _NoviAutomobilState extends State<NoviAutomobil> {
           width: 230,
           child: FormBuilderTextField(
             cursorColor: Colors.grey,
-            //autovalidateMode: AutovalidateMode.onUserInteraction,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
             name: 'brojVrata',
             decoration: const InputDecoration(
                 border: OutlineInputBorder(
@@ -263,7 +285,7 @@ class _NoviAutomobilState extends State<NoviAutomobil> {
           width: 230,
           child: FormBuilderTextField(
             cursorColor: Colors.grey,
-            //autovalidateMode: AutovalidateMode.onUserInteraction,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
             name: 'boja',
             decoration: const InputDecoration(
                 border: OutlineInputBorder(
@@ -277,7 +299,7 @@ class _NoviAutomobilState extends State<NoviAutomobil> {
           width: 230,
           child: FormBuilderTextField(
             cursorColor: Colors.grey,
-            //autovalidateMode: AutovalidateMode.onUserInteraction,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
             name: 'cijena',
             decoration: const InputDecoration(
                 border: OutlineInputBorder(
@@ -287,7 +309,36 @@ class _NoviAutomobilState extends State<NoviAutomobil> {
                 labelStyle: TextStyle(fontSize: 14)),
           ),
         ),
+        FormBuilderField(
+          name: 'slikaBase64',
+          builder: (field) {
+            return SizedBox(
+              width: 250,
+              child: TextField(
+                readOnly: true,
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30)),
+                    hintText: message,
+                    suffixIcon: const Icon(Icons.add),
+                    errorText: field.errorText),
+                onTap: uploadujSliku,
+              ),
+            );
+          },
+        ),
       ],
     );
+  }
+
+  Future<void> uploadujSliku() async {
+    var result = await FilePicker.platform.pickFiles(type: FileType.image);
+    if (result != null && result.files.single.path != null) {
+      _slika = File(result.files.single.path!);
+      _slikaBase64 = base64UrlEncode(_slika!.readAsBytesSync());
+      setState(() {
+        message = result.files.single.name.toString();
+      });
+    }
   }
 }

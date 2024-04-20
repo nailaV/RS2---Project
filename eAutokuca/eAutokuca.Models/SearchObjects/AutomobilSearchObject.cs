@@ -8,11 +8,15 @@ namespace eAutokuca.Models.SearchObjects
 {
     public class AutomobilSearchObject:BaseSearchObject
     {
-        public string? Model { get; set; }
-        public string? Marka { get; set; }
-        public string? FTS { get; set; } 
+        public string? FTS { get; set; }
         public string? Boja { get; set; } = null!;
-        //public int? GodinaProizvodnje { get; set; }
+        public string? Model { get; set; } = null!;
+        public string? Marka { get; set; } = null!;
+        public int? GodinaProizvodnje { get; set; }
+        public decimal? PredjeniKilometri { get; set; }
+        public string? Mjenjac { get; set; } = null!;
+        public string? Motor { get; set; } = null!;
+
 
     }
 }

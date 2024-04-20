@@ -1,4 +1,6 @@
 class SearchResult<T> {
-  int count = 0;
+  int? count = 0;
   List<T> result = [];
+  int? total;
+  bool? hasNext;
 }
