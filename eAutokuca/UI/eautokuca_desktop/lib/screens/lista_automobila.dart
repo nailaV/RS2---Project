@@ -173,7 +173,7 @@ class _ListaAutomobilaState extends State<ListaAutomobila>
                   context: context, builder: (context) => const FilterData());
               if (rezultat != null) {
                 filters = Map.from(rezultat);
-                print(filters);
+
                 setState(() {
                   isLoading = true;
                 });

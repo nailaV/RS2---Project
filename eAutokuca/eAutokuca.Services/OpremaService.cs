@@ -34,5 +34,14 @@ namespace eAutokuca.Services
             }
             return _mapper.Map<Models.Oprema>(entity);
         }
+
+        public override async Task<Models.Oprema> Update(int id, OpremaUpdate update)
+        {
+            var entity=await _context.Opremas.Where(x=>x.AutomobilId==id).FirstOrDefaultAsync();
+
+            _mapper.Map(update, entity);
+            await _context.SaveChangesAsync();
+            return _mapper.Map<Models.Oprema>(entity);
+        }
     }
 }

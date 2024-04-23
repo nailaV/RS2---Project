@@ -98,10 +98,10 @@ class _NoviAutomobilState extends State<NoviAutomobil> {
             Map<String, dynamic> map = Map.from(_formKey.currentState!.value);
             map['slikaBase64'] = _slikaBase64;
             try {
-              print(map);
               await _carProvider.insert(map);
               MyDialogs.showSuccess(context, "Uspješno dodan novi automobil.",
                   () {
+                Navigator.of(context).pop();
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (builder) => const ListaAutomobila()));
               });

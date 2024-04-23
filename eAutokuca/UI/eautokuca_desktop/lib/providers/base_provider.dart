@@ -87,7 +87,6 @@ abstract class BaseProvider<T> with ChangeNotifier {
     var headers = createdHeaders();
 
     var request = await http.get(uri, headers: headers);
-    print("response ${request.body} ${request.statusCode}");
 
     if (isValidResponse(request)) {
       var data = jsonDecode(request.body);
@@ -123,8 +122,6 @@ abstract class BaseProvider<T> with ChangeNotifier {
     } else if (response.statusCode == 401) {
       throw new Exception("Unauthorized.");
     } else {
-      print(
-          "response: ${response.request} code: ${response.statusCode} body: ${response.body}");
       throw new Exception("Something happened.");
     }
   }
@@ -132,7 +129,6 @@ abstract class BaseProvider<T> with ChangeNotifier {
   Map<String, String> createdHeaders() {
     String username = Authorization.username ?? "";
     String password = Authorization.password ?? "";
-    print("credentials passed: $username, $password");
 
     String basicAuth =
         "Basic ${base64Encode(utf8.encode('$username:$password'))}";

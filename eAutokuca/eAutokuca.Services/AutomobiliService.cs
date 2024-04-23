@@ -127,11 +127,11 @@ namespace eAutokuca.Services
                     query = query.Where(x => x.Marka == searchObject.Marka);
                 }
             }
-            if (!string.IsNullOrWhiteSpace(searchObject?.Model))
+            if (!string.IsNullOrWhiteSpace(searchObject?.Boja))
             {
-                if (searchObject.Model != "Svi modeli")
+                if (searchObject.Model != "Sve boje")
                 {
-                    query = query.Where(x => x.Model == searchObject.Model);
+                    query = query.Where(x => x.Boja == searchObject.Boja);
                 }
             }
             if (!string.IsNullOrWhiteSpace(searchObject?.Mjenjac))

@@ -62,11 +62,10 @@ class CarProvider extends BaseProvider<Car> {
 
   Future<SearchResult<Car>> Filtriraj(dynamic filters) async {
     var query = getQueryString(filters);
-    print("query: $query");
 
     var url = "$baseUrl$end/Filtriraj?$query";
     var uri = Uri.parse(url);
-    print("uri: $uri");
+
     var headers = createdHeaders();
     var response = await http.get(uri, headers: headers);
 

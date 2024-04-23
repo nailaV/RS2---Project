@@ -7,6 +7,7 @@ import 'package:eautokuca_desktop/providers/oprema_provider.dart';
 import 'package:eautokuca_desktop/screens/lista_automobila.dart';
 import 'package:eautokuca_desktop/utils/popup_dialogs.dart';
 import 'package:eautokuca_desktop/utils/utils.dart';
+import 'package:eautokuca_desktop/widgets/dodaj_opremu_popup.dart';
 import 'package:eautokuca_desktop/widgets/edit_automobil_popup.dart';
 import 'package:eautokuca_desktop/widgets/master_screen.dart';
 import 'package:flutter/cupertino.dart';
@@ -54,7 +55,6 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
       "status": widget.car?.status,
       "slika": widget.car?.slike
     };
-
     _carProvider = context.read<CarProvider>();
     _opremaProvider = context.read<OpremaProvider>();
     getData();
@@ -78,32 +78,51 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
               child: Column(
                 children: [
                   _buildForms(),
-                  imaOpremu
-                      ? const Text("Ima opremu")
-                      // : MaterialButton(
-                      //     shape: RoundedRectangleBorder(
-                      //         borderRadius: BorderRadius.circular(20)),
-                      //     padding: EdgeInsets.all(15),
-                      //     hoverColor: Colors.green,
-                      //     color: Colors.yellow[700],
-                      //     onPressed: () async {
-                      //       try {
-                      //         showDialog(
-                      //           context: context,
-                      //           builder: (context) {
-                      //             return DodajOpremu(car: widget.car!);
-                      //           },
-                      //         );
-                      //       } on Exception catch (e) {
-                      //         MyDialogs.showError(context, e.toString());
-                      //       }
-                      //     },
-                      //     child: Text(
-                      //       "Dodaj opremu",
-                      //       style: TextStyle(color: Colors.white),
-                      //     ),
-                      //   )
-                      : const Text("Nema opremu")
+                  MaterialButton(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20)),
+                    padding: EdgeInsets.all(15),
+                    hoverColor: Colors.green,
+                    color: Colors.yellow[700],
+                    onPressed: () async {
+                      try {
+                        var result = await showDialog(
+                          context: context,
+                          builder: (context) {
+                            return DodajOpremu(oprema: opremaAutomobila);
+                          },
+                        );
+                        if (result != null) {
+                          Map<String, dynamic> map = Map.from(result);
+                          map["automobilId"] = widget.car!.automobilId;
+                          if (imaOpremu) {
+                            _opremaProvider.update(
+                                widget.car!.automobilId!, map);
+                          } else {
+                            _opremaProvider.insert(map);
+                          }
+                          setState(() {
+                            isLoading = true;
+                          });
+
+                          await getData();
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => CarDetailsScreen(
+                                      car: widget.car!,
+                                    )),
+                          );
+                        }
+                      } on Exception catch (e) {
+                        MyDialogs.showError(context, e.toString());
+                      }
+                    },
+                    child: Text(
+                      imaOpremu ? "Uredi opremu" : "Dodaj opremu",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  )
                 ],
               ),
             ),
@@ -420,15 +439,15 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
       var data =
           await _opremaProvider.getOpremuZaAutomobil(widget.car!.automobilId!);
       setState(() {
-        isLoading = false;
         opremaAutomobila = data;
+        isLoading = false;
       });
-      print(opremaAutomobila);
+      print(opremaAutomobila!.autoPilot);
     } catch (e) {
       setState(() {
+        opremaAutomobila = null;
         isLoading = false;
         imaOpremu = false;
-        opremaAutomobila = null;
       });
     }
   }

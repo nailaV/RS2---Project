@@ -173,33 +173,50 @@ class _FilterDataState extends State<FilterData> {
                                   color: Colors.white60),
                               child: Column(
                                 children: [
-                                  const Text("Model",
+                                  const Text("Boja",
                                       style: TextStyle(
-                                          fontSize: 14,
                                           fontWeight: FontWeight.bold,
                                           color: Colors.black)),
                                   const SizedBox(height: 5),
                                   FormBuilderDropdown(
-                                    decoration: InputDecoration(
-                                        border: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(30)),
-                                        contentPadding:
-                                            const EdgeInsets.all(15)),
-                                    focusColor: Colors.grey[300],
-                                    style: const TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold),
-                                    name: 'model',
-                                    initialValue: "Svi modeli",
-                                    items: List.generate(
-                                        _listaModela.length,
-                                        (index) => DropdownMenuItem(
-                                              value: _listaModela[index],
-                                              child: Text(_listaModela[index]),
-                                            )),
-                                  )
+                                      decoration: InputDecoration(
+                                          border: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(30)),
+                                          contentPadding:
+                                              const EdgeInsets.all(15)),
+                                      focusColor: Colors.grey[300],
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 15,
+                                          color: Colors.black),
+                                      name: 'boja',
+                                      items: const [
+                                        DropdownMenuItem(
+                                          value: "Sve",
+                                          child: Text("Sve boje"),
+                                        ),
+                                        DropdownMenuItem(
+                                          value: "Crna",
+                                          child: Text("Crna"),
+                                        ),
+                                        DropdownMenuItem(
+                                          value: "Bijela",
+                                          child: Text("Bijela"),
+                                        ),
+                                        DropdownMenuItem(
+                                          value: "Crvena",
+                                          child: Text("Crvena"),
+                                        ),
+                                        DropdownMenuItem(
+                                          value: "Zelena",
+                                          child: Text("Zelena"),
+                                        ),
+                                        DropdownMenuItem(
+                                          value: "Plava",
+                                          child: Text("Plava"),
+                                        ),
+                                      ])
                                 ],
                               ),
                             ),

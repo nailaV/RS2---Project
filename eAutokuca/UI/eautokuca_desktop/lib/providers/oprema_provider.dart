@@ -19,7 +19,6 @@ class OpremaProvider extends BaseProvider<Oprema> {
     var headers = createdHeaders();
 
     var request = await http.get(uri, headers: headers);
-    print("response ${request.body} ${request.statusCode}");
 
     if (isValidResponse(request)) {
       var data = jsonDecode(request.body);
