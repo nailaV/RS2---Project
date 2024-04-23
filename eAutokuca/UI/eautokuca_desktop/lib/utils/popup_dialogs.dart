@@ -70,10 +70,7 @@ class MyDialogs {
                   ),
                   padding: const EdgeInsets.all(15),
                 ),
-                onPressed: () {
-                  onYes();
-                  Navigator.of(context).pop();
-                },
+                onPressed: onYes,
                 child: const Text(
                   "OK",
                   style: TextStyle(

@@ -143,7 +143,7 @@ namespace eAutokuca.Services
             }
             if (!string.IsNullOrWhiteSpace(searchObject?.Motor))
             {
-                if (searchObject.Motor != "Svi motori")
+                if (searchObject.Motor != "Svi")
                 {
                     query = query.Where(x => x.Motor == searchObject.Motor);
                 }

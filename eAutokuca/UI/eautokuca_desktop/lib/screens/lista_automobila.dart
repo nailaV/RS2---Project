@@ -8,6 +8,7 @@ import 'package:eautokuca_desktop/models/car.dart';
 import 'package:eautokuca_desktop/models/search_result.dart';
 import 'package:eautokuca_desktop/providers/car_provider.dart';
 import 'package:eautokuca_desktop/screens/car_details_screen.dart';
+import 'package:eautokuca_desktop/utils/popup_dialogs.dart';
 import 'package:eautokuca_desktop/utils/utils.dart';
 import 'package:eautokuca_desktop/widgets/filter_popup.dart';
 //import 'package:eautokuca_desktop/screens/car_details_screen.dart';
@@ -34,6 +35,7 @@ class _ListaAutomobilaState extends State<ListaAutomobila>
   late CarProvider _carProvider;
   final _formKey = GlobalKey<FormBuilderState>();
   Map<String, dynamic> _initialValue = {};
+  Map<String, dynamic>? filters;
   SearchResult<Car>? result;
   bool isLoading = true;
   List<String> _listaMarki = [];
@@ -167,11 +169,16 @@ class _ListaAutomobilaState extends State<ListaAutomobila>
             shape: CircleBorder(),
             color: Colors.yellow[700],
             onPressed: () async {
-              //   await showDialog(
-              //       context: context, builder: (context) => const FilterData());
-              //
-
-              _showFilterDialog(context);
+              var rezultat = await showDialog(
+                  context: context, builder: (context) => const FilterData());
+              if (rezultat != null) {
+                filters = Map.from(rezultat);
+                print(filters);
+                setState(() {
+                  isLoading = true;
+                });
+                fetchPaged(filters);
+              }
             },
             child: Icon(
               Icons.tune,
@@ -246,23 +253,6 @@ class _ListaAutomobilaState extends State<ListaAutomobila>
     );
   }
 
-  void _showFilterDialog1(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return Stack(
-          children: [
-            Positioned(
-              bottom: 0,
-              right: 0,
-              child: FilterData(), // Your filter dialog widget
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   void _showFilterDialog(BuildContext context) {
     showDialog(
       context: context,
@@ -282,5 +272,19 @@ class _ListaAutomobilaState extends State<ListaAutomobila>
         );
       },
     );
+  }
+
+  Future<void> fetchPaged(dynamic request) async {
+    try {
+      //filters!['Page'] = _currentPage;
+      var data = await _carProvider.Filtriraj(request);
+      setState(() {
+        result = data;
+        isLoading = false;
+        //clearFilters=true;
+      });
+    } catch (e) {
+      MyDialogs.showError(context, e.toString());
+    }
   }
 }

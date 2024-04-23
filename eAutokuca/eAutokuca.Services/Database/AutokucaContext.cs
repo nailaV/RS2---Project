@@ -158,8 +158,6 @@ public partial class AutokucaContext : DbContext
 
             entity.Property(e => e.OpremaId).HasColumnName("OpremaID");
             entity.Property(e => e.AutomobilId).HasColumnName("AutomobilID");
-            entity.Property(e => e.Naziv).HasMaxLength(50);
-            entity.Property(e => e.Opis).HasMaxLength(255);
 
             entity.HasOne(d => d.Automobil).WithMany(p => p.Opremas)
                 .HasForeignKey(d => d.AutomobilId)

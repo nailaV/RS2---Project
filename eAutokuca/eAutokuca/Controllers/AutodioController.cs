@@ -11,7 +11,7 @@ namespace eAutokuca.Controllers
     public class AutodioController : BaseController<Models.Autodio, AutodioSearchObject>
     {
         public AutodioController(ILogger<BaseController<Models.Autodio, AutodioSearchObject>> logger, IAutodioService service) : base(logger, service)
-        {
+        { 
         }
     }
 }

@@ -5,6 +5,7 @@
 import 'package:eautokuca_desktop/screens/korisnici_screen.dart';
 import 'package:eautokuca_desktop/screens/lista_automobila.dart';
 import 'package:eautokuca_desktop/screens/rezervacije_screen.dart';
+import 'package:eautokuca_desktop/widgets/novi_automobil_popup.dart';
 import 'package:flutter/material.dart';
 
 class MasterScreenWidget extends StatefulWidget {
@@ -107,11 +108,9 @@ class _drawerItems extends StatelessWidget {
               color: Colors.yellow[700],
             ),
           ),
-          // onTap: () {
-          //   Navigator.of(context).push(MaterialPageRoute(
-          //     builder: (context) => const MyApp(),
-          //   ));
-          // },
+          onTap: () {
+            showDialog(context: context, builder: (context) => NoviAutomobil());
+          },
         ),
         SizedBox(
           height: 12,

@@ -81,6 +81,22 @@ abstract class BaseProvider<T> with ChangeNotifier {
     }
   }
 
+  Future<T> getById(int id) async {
+    var url = "$_baseUrl$_endpoint/$id/getByID";
+    var uri = Uri.parse(url);
+    var headers = createdHeaders();
+
+    var request = await http.get(uri, headers: headers);
+    print("response ${request.body} ${request.statusCode}");
+
+    if (isValidResponse(request)) {
+      var data = jsonDecode(request.body);
+      return fromJson(data);
+    } else {
+      throw Exception("Greška...");
+    }
+  }
+
   Future<T> update(int ID, [dynamic request]) async {
     var url = "$_baseUrl$_endpoint/$ID/update";
     var uri = Uri.parse(url);

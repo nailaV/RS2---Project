@@ -22,6 +22,10 @@ namespace eAutokuca.Services
             CreateMap<Database.Autodio, Models.Autodio>();
             CreateMap<Database.KorisnikUloga, Models.KorisnikUloga>();
             CreateMap<Database.Uloga, Models.Uloga>();
+
+            CreateMap<Database.Oprema, Models.Oprema>();
+            CreateMap<Models.Requests.OpremaInsert, Database.Oprema>();
+            CreateMap<Models.Requests.OpremaUpdate, Database.Oprema>();
         }
     }
 }

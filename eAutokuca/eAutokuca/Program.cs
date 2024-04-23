@@ -14,6 +14,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddTransient<IAutomobiliService, AutomobiliService>();
 builder.Services.AddTransient<IKorisniciService, KorisniciService>();
 builder.Services.AddTransient<IAutodioService, AutodioService>();
+builder.Services.AddTransient<IOpremaService, OpremaService>();
 
 builder.Services.AddTransient<BaseState>();
 builder.Services.AddTransient<InitialState>();

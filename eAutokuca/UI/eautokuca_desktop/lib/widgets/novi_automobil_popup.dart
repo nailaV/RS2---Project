@@ -95,8 +95,11 @@ class _NoviAutomobilState extends State<NoviAutomobil> {
       onPressed: () async {
         if (_formKey.currentState != null) {
           if (_formKey.currentState!.saveAndValidate()) {
+            Map<String, dynamic> map = Map.from(_formKey.currentState!.value);
+            map['slikaBase64'] = _slikaBase64;
             try {
-              await _carProvider.insert(_formKey.currentState?.value);
+              print(map);
+              await _carProvider.insert(map);
               MyDialogs.showSuccess(context, "Uspješno dodan novi automobil.",
                   () {
                 Navigator.of(context).push(MaterialPageRoute(
@@ -335,7 +338,7 @@ class _NoviAutomobilState extends State<NoviAutomobil> {
     var result = await FilePicker.platform.pickFiles(type: FileType.image);
     if (result != null && result.files.single.path != null) {
       _slika = File(result.files.single.path!);
-      _slikaBase64 = base64UrlEncode(_slika!.readAsBytesSync());
+      _slikaBase64 = base64Encode(_slika!.readAsBytesSync());
       setState(() {
         message = result.files.single.name.toString();
       });
