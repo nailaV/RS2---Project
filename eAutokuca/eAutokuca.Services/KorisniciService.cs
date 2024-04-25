@@ -109,5 +109,11 @@ namespace eAutokuca.Services
             return _mapper.Map<Models.Korisnik>(entity);
         }
 
+        public async Task<Models.Korisnik> getByUsername(string username)
+        {
+            var result=await _context.Korisniks.Where(x=>x.Username == username).FirstOrDefaultAsync();
+
+            return _mapper.Map<Models.Korisnik>(result);
+        }
     }
 }

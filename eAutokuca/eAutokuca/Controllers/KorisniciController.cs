@@ -25,6 +25,10 @@ namespace eAutokuca.Controllers
         {
             return base.Delete(ID);
         }
-
+        [HttpGet("{username}/getByUsername")]
+        public async Task<Models.Korisnik> getByUsername(string username)
+        {
+            return await _service.getByUsername(username);
+        }
     }
 }

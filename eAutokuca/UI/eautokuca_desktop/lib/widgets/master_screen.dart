@@ -1,10 +1,16 @@
-// ignore_for_file: must_be_immutable, prefer_const_constructors, camel_case_types
+// ignore_for_file: must_be_immutable, prefer_const_constructors, camel_case_types, unused_element, unused_import, prefer_const_literals_to_create_immutables
 
 //import 'dart:ffi';
 
+import 'dart:math';
+
+import 'package:eautokuca_desktop/models/korisnici.dart';
+import 'package:eautokuca_desktop/providers/korisnici_provider.dart';
 import 'package:eautokuca_desktop/screens/korisnici_screen.dart';
 import 'package:eautokuca_desktop/screens/lista_automobila.dart';
 import 'package:eautokuca_desktop/screens/rezervacije_screen.dart';
+import 'package:eautokuca_desktop/utils/popup_dialogs.dart';
+import 'package:eautokuca_desktop/utils/utils.dart';
 import 'package:eautokuca_desktop/widgets/novi_automobil_popup.dart';
 import 'package:flutter/material.dart';
 
@@ -38,28 +44,63 @@ class _MasterScreenWidgetState extends State<MasterScreenWidget> {
 
 class _drawerItems extends StatelessWidget {
   const _drawerItems({
-    super.key,
-  });
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Column(
       //mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        UserAccountsDrawerHeader(
-          accountName: Text("User Name",
-              style: TextStyle(
-                color: Colors.black,
-              )),
-          accountEmail: Text("user@example.com",
-              style: TextStyle(
-                color: Colors.black,
-              )),
-          currentAccountPicture: CircleAvatar(
-            backgroundImage: AssetImage('assets/images/profile.png'),
-          ),
-          decoration: BoxDecoration(
-            color: Colors.yellow[700],
+        DrawerHeader(
+          decoration: BoxDecoration(color: Colors.yellow[700]),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Icon(Icons.car_rental_rounded),
+                  Text(
+                    "Autokuća LENA",
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+              SizedBox(height: 4),
+              Text(
+                "Sarajevo",
+                style: TextStyle(color: Colors.black, fontSize: 16),
+              ),
+              SizedBox(height: 8),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  IconButton(
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => const ListaAutomobila()));
+                      },
+                      icon: Icon(
+                        Icons.home,
+                        color: Colors.black,
+                      )),
+                  IconButton(
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => const ListaAutomobila()));
+                      },
+                      icon: Icon(
+                        Icons.person,
+                        color: Colors.black,
+                      )),
+                  Icon(Icons.settings, color: Colors.black),
+                ],
+              ),
+            ],
           ),
         ),
         ListTile(

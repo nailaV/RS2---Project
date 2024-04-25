@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, use_super_parameters, must_be_immutable, use_build_context_synchronously, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, use_super_parameters, must_be_immutable, use_build_context_synchronously, prefer_const_literals_to_create_immutables, unused_field, unused_import
 
 import 'package:eautokuca_desktop/models/car.dart';
 import 'package:eautokuca_desktop/models/oprema.dart';
@@ -12,6 +12,7 @@ import 'package:eautokuca_desktop/widgets/edit_automobil_popup.dart';
 import 'package:eautokuca_desktop/widgets/master_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:provider/provider.dart';
@@ -76,54 +77,7 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
             )
           : SingleChildScrollView(
               child: Column(
-                children: [
-                  _buildForms(),
-                  MaterialButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20)),
-                    padding: EdgeInsets.all(15),
-                    hoverColor: Colors.green,
-                    color: Colors.yellow[700],
-                    onPressed: () async {
-                      try {
-                        var result = await showDialog(
-                          context: context,
-                          builder: (context) {
-                            return DodajOpremu(oprema: opremaAutomobila);
-                          },
-                        );
-                        if (result != null) {
-                          Map<String, dynamic> map = Map.from(result);
-                          map["automobilId"] = widget.car!.automobilId;
-                          if (imaOpremu) {
-                            _opremaProvider.update(
-                                widget.car!.automobilId!, map);
-                          } else {
-                            _opremaProvider.insert(map);
-                          }
-                          setState(() {
-                            isLoading = true;
-                          });
-
-                          await getData();
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => CarDetailsScreen(
-                                      car: widget.car!,
-                                    )),
-                          );
-                        }
-                      } on Exception catch (e) {
-                        MyDialogs.showError(context, e.toString());
-                      }
-                    },
-                    child: Text(
-                      imaOpremu ? "Uredi opremu" : "Dodaj opremu",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  )
-                ],
+                children: [_buildForms()],
               ),
             ),
     );
@@ -175,6 +129,10 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
                       children: [
                         _buildImage(),
                         _buildInputs(),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        _buildButtons()
                       ],
                     ),
                   ),
@@ -203,7 +161,62 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
                         child: Padding(
                           padding: const EdgeInsets.all(12.0),
                           child: Column(
-                            children: [_buildInputsOprema()],
+                            children: [
+                              _buildInputsOprema(),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              MaterialButton(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20)),
+                                padding: EdgeInsets.all(15),
+                                hoverColor:
+                                    imaOpremu ? Colors.blue : Colors.green,
+                                color: Colors.yellow[700],
+                                onPressed: () async {
+                                  try {
+                                    var result = await showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return DodajOpremu(
+                                            oprema: opremaAutomobila);
+                                      },
+                                    );
+                                    if (result != null) {
+                                      Map<String, dynamic> map =
+                                          Map.from(result);
+                                      map["automobilId"] =
+                                          widget.car!.automobilId;
+                                      if (imaOpremu) {
+                                        _opremaProvider.update(
+                                            widget.car!.automobilId!, map);
+                                      } else {
+                                        _opremaProvider.insert(map);
+                                      }
+                                      setState(() {
+                                        isLoading = true;
+                                      });
+
+                                      await getData();
+                                      Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                CarDetailsScreen(
+                                                  car: widget.car!,
+                                                )),
+                                      );
+                                    }
+                                  } on Exception catch (e) {
+                                    MyDialogs.showError(context, e.toString());
+                                  }
+                                },
+                                child: Text(
+                                  imaOpremu ? "Uredi opremu" : "Dodaj opremu",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              )
+                            ],
                           ),
                         )))
               ],
@@ -211,15 +224,41 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
   }
 
   Widget _buildImage() {
-    return Column(children: [
-      widget.car?.slike != null && widget.car?.slike != ""
-          ? Container(
-              width: double.infinity,
-              height: 200,
-              child: imageFromBase64String(widget.car!.slike!),
-            )
-          : Text("no imgg")
-    ]);
+    return Column(
+      children: [
+        widget.car?.slike != null && widget.car?.slike != ""
+            ? Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(30))),
+                height: 300,
+                child: imageFromBase64String(widget.car!.slike!),
+              )
+            : Text("no imgg")
+      ],
+    );
+  }
+
+  Widget _buildRoundedTextFormField(
+      {required String label, required String initialValue}) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(30.0),
+        border: Border.all(
+          color: Colors.grey,
+          width: 1.0,
+        ),
+      ),
+      child: TextFormField(
+        readOnly: true,
+        initialValue: initialValue,
+        decoration: InputDecoration(
+          labelText: label,
+          border: InputBorder.none,
+          contentPadding: EdgeInsets.symmetric(horizontal: 20.0),
+        ),
+      ),
+    );
   }
 
   Widget _buildInputs() {
@@ -229,47 +268,29 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
         Expanded(
           child: Column(
             children: [
-              TextFormField(
-                readOnly: true,
-                initialValue: _initialValue["marka"] ?? "",
-                decoration: InputDecoration(labelText: "Marka"),
+              SizedBox(
+                height: 10,
               ),
+              _buildRoundedTextFormField(
+                  label: "Marka", initialValue: _initialValue["marka"] ?? " "),
               SizedBox(height: 10),
-              TextFormField(
-                readOnly: true,
-                initialValue: _initialValue["model"] ?? "",
-                decoration: InputDecoration(labelText: "Model"),
-              ),
+              _buildRoundedTextFormField(
+                  label: "Model", initialValue: _initialValue["model"] ?? " "),
               SizedBox(height: 10),
-              TextFormField(
-                readOnly: true,
-                initialValue: _initialValue["mjenjac"] ?? "",
-                decoration: InputDecoration(labelText: "Transmisija"),
-              ),
+              _buildRoundedTextFormField(
+                  label: "Transmisija",
+                  initialValue: _initialValue["mjenjac"] ?? " "),
               SizedBox(height: 10),
-              TextFormField(
-                readOnly: true,
-                initialValue: _initialValue["motor"] ?? "",
-                decoration: InputDecoration(labelText: "Motor"),
-              ),
+              _buildRoundedTextFormField(
+                  label: "Motor", initialValue: _initialValue["motor"] ?? " "),
               SizedBox(height: 10),
-              TextFormField(
-                readOnly: true,
-                initialValue: _initialValue["godinaProizvodnje"] ?? "",
-                decoration: InputDecoration(labelText: "Godina proizvodnje"),
-              ),
+              _buildRoundedTextFormField(
+                  label: "Godina proizvodnje",
+                  initialValue: _initialValue["godinaProizvodnje"] ?? " "),
               SizedBox(height: 10),
-              TextFormField(
-                readOnly: true,
-                initialValue: _initialValue["predjeniKilometri"] ?? "",
-                decoration: InputDecoration(labelText: "Pređeni kilometri"),
-              ),
-              SizedBox(height: 10),
-              TextFormField(
-                readOnly: true,
-                initialValue: _initialValue["status"] ?? "",
-                decoration: InputDecoration(labelText: "Status"),
-              ),
+              _buildRoundedTextFormField(
+                  label: "Pređeni kilometri",
+                  initialValue: _initialValue["predjeniKilometri"] ?? " "),
             ],
           ),
         ),
@@ -277,37 +298,31 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
         Expanded(
           child: Column(
             children: [
-              TextFormField(
-                readOnly: true,
-                initialValue: _initialValue["brojSasije"] ?? "",
-                decoration: InputDecoration(labelText: "BrojSasije"),
+              SizedBox(
+                height: 10,
               ),
+              _buildRoundedTextFormField(
+                  label: "Status",
+                  initialValue: _initialValue["status"] ?? " "),
               SizedBox(height: 10),
-              TextFormField(
-                readOnly: true,
-                initialValue: _initialValue["snagaMotora"] ?? "",
-                decoration: InputDecoration(labelText: "Snaga motora"),
-              ),
+              _buildRoundedTextFormField(
+                  label: "Broj šasije",
+                  initialValue: _initialValue["brojSasije"] ?? " "),
               SizedBox(height: 10),
-              TextFormField(
-                readOnly: true,
-                initialValue: _initialValue["brojVrata"] ?? "",
-                decoration: InputDecoration(labelText: "Broj vrata"),
-              ),
+              _buildRoundedTextFormField(
+                  label: "Snaga motora",
+                  initialValue: _initialValue["snagaMotora"] ?? " "),
               SizedBox(height: 10),
-              TextFormField(
-                readOnly: true,
-                initialValue: _initialValue["boja"] ?? "",
-                decoration: InputDecoration(labelText: "Boja"),
-              ),
+              _buildRoundedTextFormField(
+                  label: "Broj vrata",
+                  initialValue: _initialValue["brojVrata"] ?? " "),
               SizedBox(height: 10),
-              TextFormField(
-                readOnly: true,
-                initialValue: _initialValue["cijena"] ?? "",
-                decoration: InputDecoration(labelText: "Cijena"),
-              ),
-              SizedBox(height: 20),
-              _buildButtons()
+              _buildRoundedTextFormField(
+                  label: "Boja", initialValue: _initialValue["boja"] ?? " "),
+              SizedBox(height: 10),
+              _buildRoundedTextFormField(
+                  label: "Cijena",
+                  initialValue: _initialValue["cijena"] ?? " "),
             ],
           ),
         ),
@@ -318,44 +333,53 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
   Widget _buildInputsOprema() {
     return Row(mainAxisAlignment: MainAxisAlignment.start, children: [
       Expanded(
-        child: Column(children: [
-          _buildOpremaTile(
-              "Zračni jastuci", opremaAutomobila?.zracniJastuci ?? false),
-          SizedBox(height: 20),
-          _buildOpremaTile("Bluetooth", opremaAutomobila?.bluetooth ?? false),
-          SizedBox(height: 20),
-          _buildOpremaTile("Xenon", opremaAutomobila?.xenon ?? false),
-          SizedBox(height: 20),
-          _buildOpremaTile("Alarm", opremaAutomobila?.alarm ?? false),
-          SizedBox(height: 20),
-          _buildOpremaTile("Daljinsko ključanje",
-              opremaAutomobila?.daljinskoKljucanje ?? false),
-          SizedBox(height: 20),
-          _buildOpremaTile("Navigacija", opremaAutomobila?.navigacija ?? false)
-        ]),
-      ),
-      SizedBox(
-        width: 10,
-      ),
-      Expanded(
-        child: Column(
+        child: Row(
           children: [
-            _buildOpremaTile(
-                "Servo volan", opremaAutomobila?.servoVolan ?? false),
-            SizedBox(height: 20),
-            _buildOpremaTile(
-                "Auto pilot", opremaAutomobila?.autoPilot ?? false),
-            SizedBox(height: 20),
-            _buildOpremaTile("Tempomat", opremaAutomobila?.tempomat ?? false),
-            SizedBox(height: 20),
-            _buildOpremaTile(
-                "Parking senzori", opremaAutomobila?.parkingSenzori ?? false),
-            SizedBox(height: 20),
-            _buildOpremaTile("Grijanje sjedišta",
-                opremaAutomobila?.grijanjeSjedista ?? false),
-            SizedBox(height: 20),
-            _buildOpremaTile(
-                "Grijanje volana", opremaAutomobila?.grijanjeVolana ?? false),
+            Expanded(
+              child: Column(children: [
+                _buildOpremaTile(
+                    "Zračni jastuci", opremaAutomobila?.zracniJastuci ?? false),
+                SizedBox(height: 10),
+                _buildOpremaTile(
+                    "Bluetooth", opremaAutomobila?.bluetooth ?? false),
+                SizedBox(height: 10),
+                _buildOpremaTile("Xenon", opremaAutomobila?.xenon ?? false),
+                SizedBox(height: 10),
+                _buildOpremaTile("Alarm", opremaAutomobila?.alarm ?? false),
+                SizedBox(height: 10),
+                _buildOpremaTile("Daljinsko ključanje",
+                    opremaAutomobila?.daljinskoKljucanje ?? false),
+                SizedBox(height: 10),
+                _buildOpremaTile(
+                    "Navigacija", opremaAutomobila?.navigacija ?? false),
+              ]),
+            ),
+            SizedBox(
+              width: 20,
+            ),
+            Expanded(
+              child: Column(
+                children: [
+                  _buildOpremaTile(
+                      "Servo volan", opremaAutomobila?.servoVolan ?? false),
+                  SizedBox(height: 10),
+                  _buildOpremaTile(
+                      "Auto pilot", opremaAutomobila?.autoPilot ?? false),
+                  SizedBox(height: 10),
+                  _buildOpremaTile(
+                      "Tempomat", opremaAutomobila?.tempomat ?? false),
+                  SizedBox(height: 10),
+                  _buildOpremaTile("Parking senzori",
+                      opremaAutomobila?.parkingSenzori ?? false),
+                  SizedBox(height: 10),
+                  _buildOpremaTile("Grijanje sjedišta",
+                      opremaAutomobila?.grijanjeSjedista ?? false),
+                  SizedBox(height: 10),
+                  _buildOpremaTile("Grijanje volana",
+                      opremaAutomobila?.grijanjeVolana ?? false),
+                ],
+              ),
+            ),
           ],
         ),
       ),
@@ -373,12 +397,8 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
 
   Widget _buildButtons() {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Icon(
-          Icons.edit,
-          size: 25,
-          color: Colors.black,
-        ),
         MaterialButton(
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
@@ -403,11 +423,6 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
         SizedBox(
           width: 100,
         ),
-        Icon(
-          Icons.delete,
-          size: 25,
-          color: Colors.black,
-        ),
         MaterialButton(
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
@@ -415,15 +430,17 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
           hoverColor: Colors.red,
           color: Colors.yellow[700],
           onPressed: () async {
-            try {
-              await _carProvider.delete(widget.car!.automobilId!);
-              MyDialogs.showSuccess(context, "Uspješno obrisan automobil.", () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (builder) => const ListaAutomobila()));
-              });
-            } on Exception catch (e) {
-              MyDialogs.showError(context, e.toString());
-            }
+            // try {
+            //   print("usao u try");
+            //   await _carProvider.delete(widget.car!.automobilId!);
+            //   print(widget.car!.automobilId);
+            //   MyDialogs.showSuccess(context, "Uspješno obrisan automobil.", () {
+            //     Navigator.of(context).push(MaterialPageRoute(
+            //         builder: (builder) => const ListaAutomobila()));
+            //   });
+            // } on Exception catch (e) {
+            //   MyDialogs.showError(context, e.toString());
+            // }
           },
           child: Text(
             "Obriši",
@@ -442,7 +459,6 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
         opremaAutomobila = data;
         isLoading = false;
       });
-      print(opremaAutomobila!.autoPilot);
     } catch (e) {
       setState(() {
         opremaAutomobila = null;

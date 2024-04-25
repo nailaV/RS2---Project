@@ -70,45 +70,6 @@ class _CounterState extends State<Counter> {
   }
 }
 
-class LayoutExamples extends StatelessWidget {
-  const LayoutExamples({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          height: 150,
-          color: Colors.pink,
-          child: Center(
-            child: Container(
-              height: 100,
-              color: Colors.blue,
-              child: Text('Flutter Demo'),
-              alignment: Alignment.center,
-            ),
-          ),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            Text('Demo1'),
-            Text('Demo2'),
-            Text('Demo3'),
-            Text('Demo4'),
-          ],
-        ),
-        Container(
-          height: 270,
-          color: Colors.green,
-          child: Text('Flutter Demo1'),
-          alignment: Alignment.center,
-        )
-      ],
-    );
-  }
-}
-
 class MyMaterialApp extends StatelessWidget {
   const MyMaterialApp({Key? key}) : super(key: key);
 

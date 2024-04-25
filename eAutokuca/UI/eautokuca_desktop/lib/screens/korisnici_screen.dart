@@ -3,6 +3,7 @@
 import 'package:eautokuca_desktop/models/korisnici.dart';
 import 'package:eautokuca_desktop/models/search_result.dart';
 import 'package:eautokuca_desktop/providers/korisnici_provider.dart';
+import 'package:eautokuca_desktop/utils/popup_dialogs.dart';
 import 'package:eautokuca_desktop/utils/utils.dart';
 import 'package:eautokuca_desktop/widgets/master_screen.dart';
 import 'package:flutter/cupertino.dart';
@@ -125,6 +126,18 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
               ),
               DataColumn(
                 label: Text(
+                  "Poruka",
+                  style: TextStyle(fontStyle: FontStyle.italic),
+                ),
+              ),
+              DataColumn(
+                label: Text(
+                  "Akcija",
+                  style: TextStyle(fontStyle: FontStyle.italic),
+                ),
+              ),
+              DataColumn(
+                label: Text(
                   "Stanje",
                   style: TextStyle(fontStyle: FontStyle.italic),
                 ),
@@ -146,6 +159,41 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
                         DataCell(Text(e.email ?? "")),
                         DataCell(Text(e.telefon ?? "")),
                         DataCell(Text(e.username ?? "")),
+                        DataCell(MaterialButton(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)),
+                          padding: EdgeInsets.all(15),
+                          hoverColor: Colors.blue,
+                          color: Colors.yellow[700],
+                          onPressed: () {},
+                          child: Text(
+                            "Poruka",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        )),
+                        DataCell(MaterialButton(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)),
+                          padding: EdgeInsets.all(15),
+                          hoverColor: Colors.red,
+                          color: Colors.yellow[700],
+                          onPressed: () async {
+                            try {
+                              await _korisniciProvider.delete(e.korisnikId!);
+                              MyDialogs.showSuccess(
+                                  context, "Uspješno obrisan korisnik", () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: ((context) => KorisniciScreen())));
+                              });
+                            } catch (e) {
+                              MyDialogs.showError(context, e.toString());
+                            }
+                          },
+                          child: Text(
+                            "Obriši",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        )),
                         DataCell(Text(
                           e.stanje.toString() == "true"
                               ? "Aktivan"

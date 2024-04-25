@@ -67,36 +67,54 @@ class _DodajOpremuState extends State<DodajOpremu> {
                     //_buildForm(),
                     FormBuilder(
                         key: _formKey,
-                        child: Column(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            _buildCheckBox("zracniJastuci", "Zračni jastuci",
-                                _oprema?.zracniJastuci ?? false),
-                            _buildCheckBox("bluetooth", "Bluetooth",
-                                _oprema?.bluetooth ?? false),
-                            _buildCheckBox(
-                                "xenon", "Xenon", _oprema?.xenon ?? false),
-                            _buildCheckBox(
-                                "alarm", "Alarm", _oprema?.alarm ?? false),
-                            _buildCheckBox(
-                                "daljinskoKljucanje",
-                                "Daljinsko ključanje",
-                                _oprema?.daljinskoKljucanje ?? false),
-                            _buildCheckBox("navigacija", "Navigacija",
-                                _oprema?.navigacija ?? false),
-                            _buildCheckBox("servoVolan", "Servo volan",
-                                _oprema?.servoVolan ?? false),
-                            _buildCheckBox("autoPilot", "Auto pilot",
-                                _oprema?.autoPilot ?? false),
-                            _buildCheckBox("tempomat", "Tempomat",
-                                _oprema?.tempomat ?? false),
-                            _buildCheckBox("parkingSenzori", "Parking senzori",
-                                _oprema?.parkingSenzori ?? false),
-                            _buildCheckBox(
-                                "grijanjeSjedista",
-                                "Grijanje sjedišta",
-                                _oprema?.grijanjeSjedista ?? false),
-                            _buildCheckBox("grijanjeVolana", "Grijanje volana",
-                                _oprema?.grijanjeVolana ?? false),
+                            Column(
+                              children: [
+                                _buildCheckBox(
+                                    "zracniJastuci",
+                                    "Zračni jastuci",
+                                    _oprema?.zracniJastuci ?? false),
+                                _buildCheckBox("bluetooth", "Bluetooth",
+                                    _oprema?.bluetooth ?? false),
+                                _buildCheckBox(
+                                    "xenon", "Xenon", _oprema?.xenon ?? false),
+                                _buildCheckBox(
+                                    "alarm", "Alarm", _oprema?.alarm ?? false),
+                                _buildCheckBox(
+                                    "daljinskoKljucanje",
+                                    "Daljinsko ključanje",
+                                    _oprema?.daljinskoKljucanje ?? false),
+                                _buildCheckBox("navigacija", "Navigacija",
+                                    _oprema?.navigacija ?? false),
+                              ],
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Column(
+                              children: [
+                                _buildCheckBox("servoVolan", "Servo volan",
+                                    _oprema?.servoVolan ?? false),
+                                _buildCheckBox("autoPilot", "Auto pilot",
+                                    _oprema?.autoPilot ?? false),
+                                _buildCheckBox("tempomat", "Tempomat",
+                                    _oprema?.tempomat ?? false),
+                                _buildCheckBox(
+                                    "parkingSenzori",
+                                    "Parking senzori",
+                                    _oprema?.parkingSenzori ?? false),
+                                _buildCheckBox(
+                                    "grijanjeSjedista",
+                                    "Grijanje sjedišta",
+                                    _oprema?.grijanjeSjedista ?? false),
+                                _buildCheckBox(
+                                    "grijanjeVolana",
+                                    "Grijanje volana",
+                                    _oprema?.grijanjeVolana ?? false),
+                              ],
+                            )
                           ],
                         )),
                     const SizedBox(height: 20),
@@ -116,30 +134,6 @@ class _DodajOpremuState extends State<DodajOpremu> {
       ),
     );
   }
-
-  // Widget _buildForm() {
-  //   return FormBuilder(
-  //     key: _formKey,
-  //     child: Center(
-  //       child: Wrap(
-  //         children: [
-  //           _buildCheckBox("zracniJastuci", "Zračni jastuci"),
-  //           _buildCheckBox("bluetooth", "Bluetooth"),
-  //           _buildCheckBox("xenon", "Xenon"),
-  //           _buildCheckBox("alarm", "Alarm"),
-  //           _buildCheckBox("daljinskoKljucanje", "Daljinsko ključanje"),
-  //           _buildCheckBox("navigacija", "Navigacija"),
-  //           _buildCheckBox("servoVolan", "Servo volan"),
-  //           _buildCheckBox("autoPilot", "Auto pilot"),
-  //           _buildCheckBox("tempomat", "Tempomat"),
-  //           _buildCheckBox("parkingSenzori", "Parking senzori"),
-  //           _buildCheckBox("grijanjeSjedista", "Grijanje sjedišta"),
-  //           _buildCheckBox("grijanjeVolana", "Grijanje volana"),
-  //         ],
-  //       ),
-  //     ),
-  //   );
-  // }
 
   MaterialButton buildButtons(BuildContext context) {
     return MaterialButton(
@@ -168,6 +162,8 @@ class _DodajOpremuState extends State<DodajOpremu> {
         width: 230,
         child: FormBuilderCheckbox(
           initialValue: initialValuee,
+          activeColor: Colors.yellow[700],
+          checkColor: Colors.white,
           name: name,
           title: Text(title,
               style: const TextStyle(
