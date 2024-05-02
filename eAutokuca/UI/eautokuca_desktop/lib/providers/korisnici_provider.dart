@@ -15,6 +15,17 @@ class KorisniciProvider extends BaseProvider<Korisnici> {
     return Korisnici.fromJson(data);
   }
 
+  Future<void> promjenaPassworda(int id, dynamic object) async {
+    var url = "$baseUrl$end/PromjenaPassworda/$id";
+    var uri = Uri.parse(url);
+    var headers = createdHeaders();
+    var obj = jsonEncode(object);
+    var req = await http.post(uri, headers: headers, body: obj);
+    if (!isValidResponse(req)) {
+      throw Exception("Greška");
+    }
+  }
+
   Future<Korisnici> getByUseranme(String username) async {
     var url = "$baseUrl$end/$username/getByUsername";
     var uri = Uri.parse(url);

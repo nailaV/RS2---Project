@@ -7,10 +7,12 @@ import 'dart:math';
 import 'package:eautokuca_desktop/models/korisnici.dart';
 import 'package:eautokuca_desktop/providers/korisnici_provider.dart';
 import 'package:eautokuca_desktop/screens/korisnici_screen.dart';
+import 'package:eautokuca_desktop/screens/korisnicki_profil_screen.dart';
 import 'package:eautokuca_desktop/screens/lista_automobila.dart';
 import 'package:eautokuca_desktop/screens/rezervacije_screen.dart';
 import 'package:eautokuca_desktop/utils/popup_dialogs.dart';
 import 'package:eautokuca_desktop/utils/utils.dart';
+import 'package:eautokuca_desktop/widgets/promjena_passworda_popup.dart';
 import 'package:eautokuca_desktop/widgets/novi_automobil_popup.dart';
 import 'package:flutter/material.dart';
 
@@ -62,7 +64,7 @@ class _drawerItems extends StatelessWidget {
                 children: [
                   Icon(Icons.car_rental_rounded),
                   Text(
-                    "Autokuća LENA",
+                    "LenaAuto",
                     style: TextStyle(
                         color: Colors.black,
                         fontSize: 20,
@@ -91,7 +93,7 @@ class _drawerItems extends StatelessWidget {
                   IconButton(
                       onPressed: () {
                         Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => const ListaAutomobila()));
+                            builder: (context) => const KorisnickiProfil()));
                       },
                       icon: Icon(
                         Icons.person,

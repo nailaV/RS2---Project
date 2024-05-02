@@ -115,5 +115,20 @@ namespace eAutokuca.Services
 
             return _mapper.Map<Models.Korisnik>(result);
         }
+
+        public async Task<Models.Korisnik> promjenaPassworda(int id, KorisnikPasswordPromjena request)
+        {
+            var entity = await _context.Korisniks.FindAsync(id) ?? throw new Exception("Korisnik nije pronađen.");
+            var hash = GenerateHash(entity.LozinkaSalt, request.StariPassword);
+
+            if(hash != entity.LozinkaHash)
+            {
+                throw new Exception("Password se ne poklapa.");
+            }
+            entity.LozinkaHash = GenerateHash(entity.LozinkaSalt, request.NoviPassword);
+            await _context.SaveChangesAsync();
+            return _mapper.Map<Models.Korisnik>(entity);
+
+        }
     }
 }

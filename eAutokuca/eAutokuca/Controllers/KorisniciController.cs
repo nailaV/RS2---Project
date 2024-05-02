@@ -25,10 +25,17 @@ namespace eAutokuca.Controllers
         {
             return base.Delete(ID);
         }
+
         [HttpGet("{username}/getByUsername")]
         public async Task<Models.Korisnik> getByUsername(string username)
         {
             return await _service.getByUsername(username);
+        }
+
+        [HttpPost("PromjenaPassworda/{id}")]
+        public async Task<Models.Korisnik> promjenaPassworda(int id,[FromBody] KorisnikPasswordPromjena request)
+        {
+            return await _service.promjenaPassworda(id, request);
         }
     }
 }
