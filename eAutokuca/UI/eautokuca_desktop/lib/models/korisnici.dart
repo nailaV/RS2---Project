@@ -10,11 +10,12 @@ class Korisnici {
   String? email;
   String? telefon;
   String? username;
+  DateTime? datumRegistracije;
   bool? stanje;
   String? slika;
 
   Korisnici(this.korisnikId, this.ime, this.prezime, this.email, this.telefon,
-      this.username, this.stanje, this.slika);
+      this.username, this.datumRegistracije, this.stanje, this.slika);
 
   factory Korisnici.fromJson(Map<String, dynamic> json) =>
       _$KorisniciFromJson(json);

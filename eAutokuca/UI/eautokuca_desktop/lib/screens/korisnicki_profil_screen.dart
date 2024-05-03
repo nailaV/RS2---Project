@@ -4,10 +4,12 @@ import 'dart:convert';
 
 import 'package:eautokuca_desktop/models/korisnici.dart';
 import 'package:eautokuca_desktop/providers/korisnici_provider.dart';
+import 'package:eautokuca_desktop/screens/lista_automobila.dart';
 import 'package:eautokuca_desktop/utils/popup_dialogs.dart';
 import 'package:eautokuca_desktop/utils/utils.dart';
 import 'package:eautokuca_desktop/widgets/promjena_passworda_popup.dart';
 import 'package:eautokuca_desktop/widgets/master_screen.dart';
+import 'package:eautokuca_desktop/widgets/promjena_slike_popup.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -66,7 +68,8 @@ class _KorisnickiProfilState extends State<KorisnickiProfil> {
               alignment: Alignment.topLeft,
               child: IconButton(
                 onPressed: () {
-                  Navigator.of(context).pop();
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (builder) => const ListaAutomobila()));
                 },
                 icon: Icon(Icons.arrow_back),
               ),
@@ -194,7 +197,15 @@ class _KorisnickiProfilState extends State<KorisnickiProfil> {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         ElevatedButton.icon(
-          onPressed: () {},
+          onPressed: () async {
+            await showDialog(
+                context: context,
+                builder: (context) {
+                  return PromjenaSlike(
+                    korisnikId: korisnikInfo!.korisnikId!,
+                  );
+                });
+          },
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.yellow[700],
             foregroundColor: Colors.white,
@@ -205,8 +216,8 @@ class _KorisnickiProfilState extends State<KorisnickiProfil> {
               : Text("Dodaj sliku"),
         ),
         ElevatedButton.icon(
-          onPressed: () {
-            showDialog(
+          onPressed: () async {
+            await showDialog(
                 context: context,
                 builder: (context) {
                   return PromjenaPassworda(

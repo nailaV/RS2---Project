@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using eAutokuca.Models;
+using eAutokuca.Models.Requests;
 using eAutokuca.Models.SearchObjects;
 using eAutokuca.Services.Database;
 using Microsoft.EntityFrameworkCore;
@@ -11,12 +12,30 @@ using System.Threading.Tasks;
 
 namespace eAutokuca.Services
 {
-    public class AutodioService :BaseService<Models.Autodio, Database.Autodio, AutodioSearchObject>, IAutodioService
+    public class AutodioService :BaseCrudService<Models.Autodio, Database.Autodio, AutodioSearchObject, AutodioInsert, AutodioUpdate>, IAutodioService
     {
         public AutodioService(AutokucaContext context, IMapper mapper):base(context,mapper) 
         {
 
         }
+
+
+        public async override Task<Models.Autodio> Insert(AutodioInsert insert)
+        {
+            var autodio=new Database.Autodio();
+            _mapper.Map(insert, autodio);
+            autodio.Status = "Dostupno";
+            //if (insert?.slikaBase64 != null)
+            //{
+            //    autodio.Slika = Convert.FromBase64String(insert.slikaBase64!);
+            //}
+            await _context.Autodios.AddAsync(autodio);
+            await _context.SaveChangesAsync();
+            return _mapper.Map<Models.Autodio>(autodio);
+
+        }
+
+
 
         public override IQueryable<Database.Autodio> AddFilter(IQueryable<Database.Autodio> query, AutodioSearchObject? search = null)
         {

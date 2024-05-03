@@ -23,6 +23,19 @@ namespace eAutokuca.Services
 
         public async override Task<Models.Korisnik> Insert(KorisniciInsert insert)
         {
+            if(await _context.Korisniks.AnyAsync(x=>x.Username == insert.Username))
+            {
+                throw new Exception("Username se već koristi, molimo unesite drugi.");
+            }
+            if (await _context.Korisniks.AnyAsync(x => x.Email == insert.Email))
+            {
+                throw new Exception("Email se već koristi, molimo unesite drugi.");
+            }
+            if (await _context.Korisniks.AnyAsync(x => x.Telefon == insert.Telefon))
+            {
+                throw new Exception("Broj telefona se već koristi, molimo unesite drugi.");
+            }
+
             var user = new Korisnik();
             _mapper.Map(insert, user);
 
@@ -129,6 +142,17 @@ namespace eAutokuca.Services
             await _context.SaveChangesAsync();
             return _mapper.Map<Models.Korisnik>(entity);
 
+        }
+
+        public async Task promjenaSlike(int id, PromjenaSlike request)
+        {
+            var entity = await _context.Korisniks.FindAsync(id);
+            if(entity == null)
+            {
+                throw new Exception("Korisnik ne postoji.");
+            }
+            entity.Slika = Convert.FromBase64String(request.slika);
+            await _context.SaveChangesAsync();
         }
     }
 }

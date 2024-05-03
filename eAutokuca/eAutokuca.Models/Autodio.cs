@@ -15,6 +15,8 @@ namespace eAutokuca.Models
         public decimal Cijena { get; set; }
 
         public int KolicinaNaStanju { get; set; }
+        public string? Opis { get; set; }
+        public byte[]? Slika { get; set; } = null!;
 
         public string Status { get; set; } = null!;
     }

@@ -20,6 +20,9 @@ namespace eAutokuca.Services
             CreateMap<Models.Requests.AutomobilUpdate, Database.Automobil>();
 
             CreateMap<Database.Autodio, Models.Autodio>();
+            CreateMap<Models.Requests.AutodioInsert, Database.Autodio>();
+            CreateMap<Models.Requests.AutodioUpdate, Database.Autodio>();
+
             CreateMap<Database.KorisnikUloga, Models.KorisnikUloga>();
             CreateMap<Database.Uloga, Models.Uloga>();
 

@@ -8,10 +8,14 @@ using Microsoft.AspNetCore.Mvc;
 namespace eAutokuca.Controllers
 {
     [ApiController]
-    public class AutodioController : BaseController<Models.Autodio, AutodioSearchObject>
+    public class AutodioController : BaseCrudController<Models.Autodio, AutodioSearchObject, AutodioInsert, AutodioUpdate>
     {
+        IAutodioService _service;
         public AutodioController(ILogger<BaseController<Models.Autodio, AutodioSearchObject>> logger, IAutodioService service) : base(logger, service)
         { 
+            _service = service;
         }
+      
+
     }
 }

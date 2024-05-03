@@ -13,6 +13,7 @@
         public string? Telefon { get; set; }
 
         public string Username { get; set; } = null!;
+        public DateTime DatumRegistracije { get; set; }
 
         public bool Stanje { get; set; }
         public byte[]? Slika { get; set; } = null!;

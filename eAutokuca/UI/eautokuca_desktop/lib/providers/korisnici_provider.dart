@@ -22,7 +22,18 @@ class KorisniciProvider extends BaseProvider<Korisnici> {
     var obj = jsonEncode(object);
     var req = await http.post(uri, headers: headers, body: obj);
     if (!isValidResponse(req)) {
-      throw Exception("Greška");
+      throw Exception("Greška.");
+    }
+  }
+
+  Future<void> promjenaSlike(int id, dynamic object) async {
+    var url = "$baseUrl$end/PromjenaSlike/$id";
+    var uri = Uri.parse(url);
+    var headers = createdHeaders();
+    var obj = jsonEncode(object);
+    var req = await http.post(uri, headers: headers, body: obj);
+    if (!isValidResponse(req)) {
+      throw Exception("Greška.");
     }
   }
 

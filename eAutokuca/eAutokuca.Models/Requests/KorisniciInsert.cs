@@ -21,6 +21,7 @@ namespace eAutokuca.Models.Requests
         public string Username { get; set; } = null!;
 
         public string? slikaBase64 { get; set; } = null!;
+        public DateTime? DatumRegistracije { get; set; }
 
         public bool Stanje { get; set; }
         [Compare("PasswordPotvrda", ErrorMessage ="Sifre se ne poklapaju!")]

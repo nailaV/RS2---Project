@@ -6,6 +6,8 @@ import 'dart:math';
 
 import 'package:eautokuca_desktop/models/korisnici.dart';
 import 'package:eautokuca_desktop/providers/korisnici_provider.dart';
+import 'package:eautokuca_desktop/screens/autodijelovi_main_screen.dart';
+import 'package:eautokuca_desktop/screens/finansije_screen.dart';
 import 'package:eautokuca_desktop/screens/korisnici_screen.dart';
 import 'package:eautokuca_desktop/screens/korisnicki_profil_screen.dart';
 import 'package:eautokuca_desktop/screens/lista_automobila.dart';
@@ -99,7 +101,15 @@ class _drawerItems extends StatelessWidget {
                         Icons.person,
                         color: Colors.black,
                       )),
-                  Icon(Icons.settings, color: Colors.black),
+                  IconButton(
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => AutodijeloviScreen()));
+                      },
+                      icon: Icon(
+                        Icons.shopping_cart,
+                        color: Colors.black,
+                      )),
                 ],
               ),
             ],
@@ -190,6 +200,24 @@ class _drawerItems extends StatelessWidget {
           //     builder: (context) => const MyApp(),
           //   ));
           // },
+        ),
+        SizedBox(
+          height: 12,
+        ),
+        ListTile(
+          title: Text(
+            "FINANSIJE",
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Colors.yellow[700],
+            ),
+          ),
+          onTap: () {
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => const FinansijeScreen(),
+            ));
+          },
         ),
         SizedBox(
           height: 12,

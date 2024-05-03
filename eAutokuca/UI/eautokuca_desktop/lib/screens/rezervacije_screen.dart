@@ -15,7 +15,7 @@ class _RezervacijeScreenState extends State<RezervacijeScreen> {
         title: "REZERVACIJE",
         child: Container(
             child: Column(
-          children: [Text("data")],
+          children: [Text("rezervacije")],
         )));
   }
 }
