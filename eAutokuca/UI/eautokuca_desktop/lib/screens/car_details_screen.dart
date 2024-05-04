@@ -423,30 +423,55 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
         SizedBox(
           width: 100,
         ),
-        MaterialButton(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          padding: EdgeInsets.all(15),
-          hoverColor: Colors.red,
-          color: Colors.yellow[700],
-          onPressed: () async {
-            // try {
-            //   print("usao u try");
-            //   await _carProvider.delete(widget.car!.automobilId!);
-            //   print(widget.car!.automobilId);
-            //   MyDialogs.showSuccess(context, "Uspješno obrisan automobil.", () {
-            //     Navigator.of(context).push(MaterialPageRoute(
-            //         builder: (builder) => const ListaAutomobila()));
-            //   });
-            // } on Exception catch (e) {
-            //   MyDialogs.showError(context, e.toString());
-            // }
-          },
-          child: Text(
-            "Obriši",
-            style: TextStyle(color: Colors.white),
-          ),
-        )
+        widget.car!.status == "Aktivan"
+            ? MaterialButton(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20)),
+                padding: EdgeInsets.all(15),
+                hoverColor: Colors.red,
+                color: Colors.yellow[700],
+                onPressed: () async {
+                  try {
+                    await _carProvider
+                        .promijeniStanje(widget.car!.automobilId!);
+                    setState(() {
+                      isLoading = true;
+                    });
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (builder) => ListaAutomobila()));
+                  } catch (e) {
+                    MyDialogs.showError(context, e.toString());
+                  }
+                },
+                child: Text(
+                  "Deaktiviraj",
+                  style: TextStyle(color: Colors.white),
+                ),
+              )
+            : MaterialButton(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20)),
+                padding: EdgeInsets.all(15),
+                hoverColor: Colors.red,
+                color: Colors.yellow[700],
+                onPressed: () async {
+                  try {
+                    await _carProvider
+                        .promijeniStanje(widget.car!.automobilId!);
+                    setState(() {
+                      isLoading = true;
+                    });
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (builder) => ListaAutomobila()));
+                  } catch (e) {
+                    MyDialogs.showError(context, e.toString());
+                  }
+                },
+                child: Text(
+                  "Aktiviraj",
+                  style: TextStyle(color: Colors.white),
+                ),
+              )
       ],
     );
   }

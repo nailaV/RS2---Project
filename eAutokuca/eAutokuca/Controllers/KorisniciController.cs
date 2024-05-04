@@ -43,5 +43,10 @@ namespace eAutokuca.Controllers
         {
             await _service.promjenaSlike(id, request);
         }
+        [HttpPost("promijeniStanje/{id}")]
+        public async Task promijeniStanje(int id)
+        {
+            await _service.promijeniStanje(id);
+        }
     }
 }

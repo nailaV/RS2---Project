@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Azure.Core;
 using eAutokuca.Models;
 using eAutokuca.Models.Requests;
 using eAutokuca.Models.SearchObjects;
@@ -19,16 +20,45 @@ namespace eAutokuca.Services
 
         }
 
+        public override async Task<Models.Autodio> Update(int id, AutodioUpdate update)
+        {
+            var entity = await _context.Autodios.FindAsync(id);
+            if (entity == null)
+            {
+                throw new Exception("Korisnik ne postoji.");
+            }
+            if (!string.IsNullOrEmpty(update.Slika))
+            {
+                entity.Slika = Convert.FromBase64String(update.Slika);
+            }
+            entity.Opis=update.Opis;
+            if (!string.IsNullOrEmpty(update.Naziv))
+            {
+                entity.Naziv = update.Naziv;
+            }
+            if (update.Cijena!=null)
+            {
+                entity.Cijena = update.Cijena.Value;
+            }
+            if (update.KolicinaNaStanju != null)
+            {
+                entity.KolicinaNaStanju = update.KolicinaNaStanju.Value;
+            }
+
+
+            await _context.SaveChangesAsync();
+            return _mapper.Map<Models.Autodio>(entity);
+        }
 
         public async override Task<Models.Autodio> Insert(AutodioInsert insert)
         {
             var autodio=new Database.Autodio();
             _mapper.Map(insert, autodio);
             autodio.Status = "Dostupno";
-            //if (insert?.slikaBase64 != null)
-            //{
-            //    autodio.Slika = Convert.FromBase64String(insert.slikaBase64!);
-            //}
+            if (insert?.slikaBase64 != null)
+            {
+                autodio.Slika = Convert.FromBase64String(insert.slikaBase64!);
+            }
             await _context.Autodios.AddAsync(autodio);
             await _context.SaveChangesAsync();
             return _mapper.Map<Models.Autodio>(autodio);

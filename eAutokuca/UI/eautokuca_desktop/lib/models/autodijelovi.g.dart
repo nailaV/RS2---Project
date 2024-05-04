@@ -12,6 +12,8 @@ Autodijelovi _$AutodijeloviFromJson(Map<String, dynamic> json) => Autodijelovi(
       (json['cijena'] as num?)?.toDouble(),
       json['kolicinaNaStanju'] as int?,
       json['status'] as String?,
+      json['slika'] as String?,
+      json['opis'] as String?,
     );
 
 Map<String, dynamic> _$AutodijeloviToJson(Autodijelovi instance) =>
@@ -21,4 +23,6 @@ Map<String, dynamic> _$AutodijeloviToJson(Autodijelovi instance) =>
       'cijena': instance.cijena,
       'kolicinaNaStanju': instance.kolicinaNaStanju,
       'status': instance.status,
+      'slika': instance.slika,
+      'opis': instance.opis,
     };

@@ -9,9 +9,11 @@ class Autodijelovi {
   double? cijena;
   int? kolicinaNaStanju;
   String? status;
+  String? slika;
+  String? opis;
 
   Autodijelovi(this.autodioId, this.naziv, this.cijena, this.kolicinaNaStanju,
-      this.status);
+      this.status, this.slika, this.opis);
 
   factory Autodijelovi.fromJson(Map<String, dynamic> json) =>
       _$AutodijeloviFromJson(json);

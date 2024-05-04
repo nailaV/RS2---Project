@@ -19,6 +19,7 @@ namespace eAutokuca.Services
         Task<List<string>> GetSveMarke();
         Task<List<string>> GetSveModele();
         Task<PagedResult<Models.Automobil>> Filtriraj(AutomobilSearchObject? searchObject=null);
+        public Task promijeniStanje(int id);
 
     }
 }

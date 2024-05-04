@@ -50,6 +50,7 @@ public partial class AutokucaContext : DbContext
             entity.Property(e => e.AutodioId).HasColumnName("AutodioID");
             entity.Property(e => e.Cijena).HasColumnType("decimal(8, 2)");
             entity.Property(e => e.Naziv).HasMaxLength(255);
+            entity.Property(e => e.Opis).HasMaxLength(255);
             entity.Property(e => e.Status)
                 .HasMaxLength(50)
                 .IsUnicode(false);

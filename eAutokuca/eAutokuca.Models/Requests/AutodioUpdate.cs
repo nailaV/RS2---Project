@@ -12,5 +12,7 @@ namespace eAutokuca.Models.Requests
         public decimal? Cijena { get; set; }
         public int? KolicinaNaStanju { get; set; }
         public string? Status { get; set; }
+        public string? Slika { get; set; }
+        public string? Opis { get; set; }
     }
 }

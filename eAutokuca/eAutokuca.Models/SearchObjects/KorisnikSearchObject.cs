@@ -9,5 +9,6 @@ namespace eAutokuca.Models.SearchObjects
     public class KorisnikSearchObject:BaseSearchObject
     {
         public bool? UlogeIncluded { get; set; }
+        public bool AktivniNeaktivni { get; set; }
     }
 }

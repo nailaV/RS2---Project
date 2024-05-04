@@ -38,6 +38,7 @@ class _ListaAutomobilaState extends State<ListaAutomobila>
   Map<String, dynamic>? filters;
   SearchResult<Car>? result;
   bool isLoading = true;
+  String UcitajAktivne = "Aktivan";
   List<String> _listaMarki = [];
   TextEditingController _markaModelContorller = TextEditingController();
 
@@ -77,13 +78,54 @@ class _ListaAutomobilaState extends State<ListaAutomobila>
         title: "POČETNA",
         child: Container(
             child: Column(
-          children: [_buildSeacrh(), _buildDataListView(), _buildButton()],
+          children: [
+            _buildSeacrh(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      UcitajAktivne = "Aktivan";
+                      isLoading = true;
+                    });
+                    getData();
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    foregroundColor: Colors.green,
+                  ),
+                  child: Text("Aktivni"),
+                ),
+                SizedBox(
+                  width: 50,
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      UcitajAktivne = "Neaktivan";
+                      isLoading = true;
+                    });
+                    getData();
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    foregroundColor: Colors.red,
+                  ),
+                  child: Text("Neaktivni"),
+                ),
+              ],
+            ),
+            _buildDataListView(),
+            _buildButton()
+          ],
         )));
   }
 
   Future<void> getData() async {
     try {
-      var data = await _carProvider.getAll();
+      var data = await _carProvider
+          .getAll(filter: {"AktivniNeaktivni": UcitajAktivne});
       setState(() {
         result = data;
         isLoading = false;

@@ -30,15 +30,11 @@ namespace eAutokuca.Services
 
         public override IQueryable<Database.Automobil> AddFilter(IQueryable<Database.Automobil> query, AutomobilSearchObject? search = null)
         {
-
-            if (!string.IsNullOrWhiteSpace(search?.FTS))
-            {
-                query = query.Where(x => x.Model.Contains(search.FTS) || x.Marka.Contains(search.FTS) || x.Boja.Contains(search.FTS));
-            }
+            query = query.Where(x => x.Status == search.AktivniNeaktivni);
             return query;
         }
 
-        
+
         public override async Task<Models.Automobil> Insert(AutomobilInsert insert)
         {   
             Database.Automobil entity=new ();
@@ -120,6 +116,10 @@ namespace eAutokuca.Services
         {
             var query= _context.Automobils.OrderByDescending(x=>x.AutomobilId).AsQueryable();
 
+            if (!string.IsNullOrWhiteSpace(searchObject?.FTS))
+            {
+                query = query.Where(x => x.Model.Contains(searchObject.FTS) || x.Marka.Contains(searchObject.FTS) || x.Boja.Contains(searchObject.FTS));
+            }
             if (!string.IsNullOrWhiteSpace(searchObject?.Marka))
             {
                 if(searchObject.Marka!="Sve marke")
@@ -183,6 +183,17 @@ namespace eAutokuca.Services
             lista.Result = _mapper.Map<List<Models.Automobil>>(lista1);
 
             return lista;
+        }
+
+        public async Task promijeniStanje(int id)
+        {
+            var entity=await _context.Automobils.FindAsync(id);
+            if(entity==null)
+            {
+                throw new Exception("Automobil ne postoji");
+            }
+            entity.Status = "Neaktivan";
+            await _context.SaveChangesAsync();
         }
     }
 }

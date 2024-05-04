@@ -15,5 +15,9 @@ public partial class Autodio
 
     public string Status { get; set; } = null!;
 
+    public byte[]? Slika { get; set; }
+
+    public string? Opis { get; set; }
+
     public virtual ICollection<StavkeNarudzbe> StavkeNarudzbes { get; set; } = new List<StavkeNarudzbe>();
 }

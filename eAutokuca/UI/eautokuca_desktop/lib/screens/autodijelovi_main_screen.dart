@@ -3,7 +3,9 @@
 import 'package:eautokuca_desktop/models/autodijelovi.dart';
 import 'package:eautokuca_desktop/models/search_result.dart';
 import 'package:eautokuca_desktop/providers/autodijelovi_provider.dart';
+import 'package:eautokuca_desktop/screens/autodijelovi_detalji_screen.dart';
 import 'package:eautokuca_desktop/utils/popup_dialogs.dart';
+import 'package:eautokuca_desktop/utils/utils.dart';
 import 'package:eautokuca_desktop/widgets/dodaj_autodio_popup.dart';
 import 'package:eautokuca_desktop/widgets/master_screen.dart';
 import 'package:eautokuca_desktop/widgets/uredi_autodio_popup.dart';
@@ -12,8 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class AutodijeloviScreen extends StatefulWidget {
-  Autodijelovi? autodijelovi;
-  AutodijeloviScreen({super.key, this.autodijelovi});
+  const AutodijeloviScreen({super.key});
 
   @override
   State<AutodijeloviScreen> createState() => _AutodijeloviScreenState();
@@ -35,33 +36,136 @@ class _AutodijeloviScreenState extends State<AutodijeloviScreen> {
   @override
   Widget build(BuildContext context) {
     return MasterScreenWidget(
-        title: "AUTODIJELOVI SHOP",
-        child: isLoading
-            ? const Center(child: CircularProgressIndicator())
-            : Container(
-                child: Padding(
+      title: "AUTODIJELOVI SHOP",
+      child: isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : Container(
+              child: Padding(
                 padding: const EdgeInsets.all(10.0),
-                child: Column(
-                  children: [
-                    ElevatedButton.icon(
-                      onPressed: () async {
-                        await showDialog(
-                            context: context,
-                            builder: (context) {
-                              return DodajAutodio();
-                            });
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.yellow[700],
-                        foregroundColor: Colors.white,
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          ElevatedButton.icon(
+                            onPressed: () async {
+                              await showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return DodajAutodio();
+                                },
+                              );
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.yellow[700],
+                              foregroundColor: Colors.white,
+                            ),
+                            icon: Icon(Icons.add_shopping_cart),
+                            label: Text("Dodaj novi proizvod"),
+                          ),
+                        ],
                       ),
-                      icon: Icon(Icons.add_shopping_cart),
-                      label: Text("Dodaj novi proizvod"),
-                    ),
-                    _buildTable()
-                  ],
+                      SizedBox(
+                        height: 20,
+                      ),
+                      _buildGrid(),
+                    ],
+                  ),
                 ),
-              )));
+              ),
+            ),
+    );
+  }
+
+  GridView _buildGrid() {
+    return GridView.count(
+      crossAxisCount: 3,
+      crossAxisSpacing: 20.0,
+      mainAxisSpacing: 20.0,
+      shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
+      children: autodijeloviResult?.result
+              .map(
+                (Autodijelovi e) => _buildCard(e),
+              )
+              .toList() ??
+          [],
+    );
+  }
+
+  Widget _buildCard(Autodijelovi autodijelovi) {
+    return Card(
+      elevation: 3,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            autodijelovi.slika != null && autodijelovi.slika != ""
+                ? Container(
+                    height: 200,
+                    width: double.infinity,
+                    child: imageFromBase64String(autodijelovi.slika!),
+                  )
+                : Text("No image available."),
+            SizedBox(height: 5),
+            Row(
+              children: [
+                Icon(Icons.car_repair),
+                SizedBox(width: 5),
+                Text(
+                  "${autodijelovi.naziv}",
+                  style: TextStyle(fontSize: 20),
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Icon(Icons.attach_money),
+                SizedBox(width: 5),
+                Text(
+                  "${autodijelovi.cijena}KM",
+                  style: TextStyle(fontSize: 14),
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Icon(Icons.warehouse),
+                SizedBox(width: 5),
+                Text("Na stanju: ${autodijelovi.kolicinaNaStanju}",
+                    style: TextStyle(fontSize: 14)),
+              ],
+            ),
+            SizedBox(height: 30),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: MaterialButton(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                padding:
+                    EdgeInsets.only(left: 50, right: 50, top: 15, bottom: 15),
+                color: Colors.yellow[700],
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (builder) => AutodijeloviDetalji(
+                          autodioId: autodijelovi.autodioId!)));
+                },
+                child: Text(
+                  "Vidi detalje",
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   Future<void> getData() async {
@@ -74,112 +178,5 @@ class _AutodijeloviScreenState extends State<AutodijeloviScreen> {
     } on Exception catch (e) {
       MyDialogs.showError(context, e.toString());
     }
-  }
-
-  Expanded _buildTable() {
-    return Expanded(
-      child: SingleChildScrollView(
-        child: Container(
-          alignment: Alignment.center,
-          padding: const EdgeInsets.all(20.0),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-          child: DataTable(
-            headingRowColor:
-                MaterialStateColor.resolveWith((states) => Colors.yellow[700]!),
-            columns: const [
-              DataColumn(
-                label: Text(
-                  "ID",
-                  style: TextStyle(fontStyle: FontStyle.italic),
-                ),
-              ),
-              DataColumn(
-                label: Text(
-                  "Naziv",
-                  style: TextStyle(fontStyle: FontStyle.italic),
-                ),
-              ),
-              DataColumn(
-                label: Text(
-                  "Cijena",
-                  style: TextStyle(fontStyle: FontStyle.italic),
-                ),
-              ),
-              DataColumn(
-                label: Text(
-                  "Količina",
-                  style: TextStyle(fontStyle: FontStyle.italic),
-                ),
-              ),
-              DataColumn(
-                label: Text(
-                  "Status",
-                  style: TextStyle(fontStyle: FontStyle.italic),
-                ),
-              ),
-              DataColumn(
-                label: Text(
-                  "Akcija",
-                  style: TextStyle(fontStyle: FontStyle.italic),
-                ),
-              ),
-            ],
-            rows: autodijeloviResult?.result
-                    .map(
-                      (Autodijelovi e) => DataRow(cells: [
-                        DataCell(Text(e.autodioId?.toString() ?? "")),
-                        // DataCell(
-                        //   e.slika != null && e.slika != ""
-                        //       ? Container(
-                        //           child: imageFromBase64String(e.slika!),
-                        //         )
-                        //       : Text("No image available."),
-                        // ),
-                        DataCell(Text(e.naziv ?? "")),
-                        DataCell(Text(e.cijena.toString())),
-                        DataCell(Text(e.kolicinaNaStanju.toString())),
-                        DataCell(Text(e.status ?? "")),
-                        DataCell(MaterialButton(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)),
-                          padding: EdgeInsets.all(15),
-                          hoverColor: Colors.blue,
-                          color: Colors.yellow[700],
-                          onPressed: () {
-                            print(widget.autodijelovi!.autodioId!);
-                            // showDialog(
-                            //     context: context,
-                            //     builder: (context) {
-                            //       return UrediAutodio(
-                            //         autodijelovi: widget.autodijelovi!,
-                            //       );
-                            //     });
-                          },
-                          child: Text(
-                            "Uredi",
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        )),
-                        // DataCell(Text(
-                        //   e.stanje.toString() == "true"
-                        //       ? "Aktivan"
-                        //       : "Neaktivan",
-                        //   style: TextStyle(
-                        //     fontWeight: FontWeight.bold,
-                        //     color: e.stanje.toString() == "true"
-                        //         ? Colors.green
-                        //         : Colors.red,
-                        //   ),
-                        // )),
-                      ]),
-                    )
-                    .toList() ??
-                [],
-          ),
-        ),
-      ),
-    );
   }
 }

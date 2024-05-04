@@ -24,8 +24,8 @@ class _DodajAutodioState extends State<DodajAutodio> {
   late AutodijeloviProvider _autodijeloviProvider;
   final _formKey = GlobalKey<FormBuilderState>();
   Map<String, dynamic> _initialValue = {};
-  // File? _slika;
-  // String? _slikaBase64;
+  File? _slika;
+  String? _slikaBase64;
   String? message = "Klikni da dodaš sliku";
 
   @override
@@ -93,10 +93,10 @@ class _DodajAutodioState extends State<DodajAutodio> {
       onPressed: () async {
         if (_formKey.currentState != null) {
           if (_formKey.currentState!.saveAndValidate()) {
-            // Map<String, dynamic> map = Map.from(_formKey.currentState!.value);
-            // map['slikaBase64'] = _slikaBase64;
+            Map<String, dynamic> map = Map.from(_formKey.currentState!.value);
+            map['slikaBase64'] = _slikaBase64;
             try {
-              await _autodijeloviProvider.insert(_formKey.currentState!.value);
+              await _autodijeloviProvider.insert(map);
               MyDialogs.showSuccess(
                   context, "Uspješno objavljen novi proizvod.", () {
                 Navigator.of(context).push(MaterialPageRoute(
@@ -177,46 +177,45 @@ class _DodajAutodioState extends State<DodajAutodio> {
           child: FormBuilderTextField(
             cursorColor: Colors.grey,
             autovalidateMode: AutovalidateMode.onUserInteraction,
-            name: 'status',
+            name: 'opis',
             decoration: const InputDecoration(
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(30)),
                 ),
-                labelText: 'Status',
+                labelText: 'Opis',
                 labelStyle: TextStyle(fontSize: 14)),
           ),
         ),
-
-        // FormBuilderField(
-        //   name: 'slikaBase64',
-        //   builder: (field) {
-        //     return SizedBox(
-        //       width: 250,
-        //       child: TextField(
-        //         readOnly: true,
-        //         decoration: InputDecoration(
-        //             border: OutlineInputBorder(
-        //                 borderRadius: BorderRadius.circular(30)),
-        //             hintText: message,
-        //             suffixIcon: const Icon(Icons.add),
-        //             errorText: field.errorText),
-        //         onTap: uploadujSliku,
-        //       ),
-        //     );
-        //   },
-        // ),
+        FormBuilderField(
+          name: 'slikaBase64',
+          builder: (field) {
+            return SizedBox(
+              width: 250,
+              child: TextField(
+                readOnly: true,
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30)),
+                    hintText: message,
+                    suffixIcon: const Icon(Icons.add),
+                    errorText: field.errorText),
+                onTap: uploadujSliku,
+              ),
+            );
+          },
+        ),
       ],
     );
   }
 
-  // Future<void> uploadujSliku() async {
-  //   var result = await FilePicker.platform.pickFiles(type: FileType.image);
-  //   if (result != null && result.files.single.path != null) {
-  //     _slika = File(result.files.single.path!);
-  //     _slikaBase64 = base64Encode(_slika!.readAsBytesSync());
-  //     setState(() {
-  //       message = result.files.single.name.toString();
-  //     });
-  //   }
-  // }
+  Future<void> uploadujSliku() async {
+    var result = await FilePicker.platform.pickFiles(type: FileType.image);
+    if (result != null && result.files.single.path != null) {
+      _slika = File(result.files.single.path!);
+      _slikaBase64 = base64Encode(_slika!.readAsBytesSync());
+      setState(() {
+        message = result.files.single.name.toString();
+      });
+    }
+  }
 }

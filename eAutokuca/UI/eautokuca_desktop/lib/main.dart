@@ -27,9 +27,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(primarySwatch: Colors.yellow),
-      home: MyMaterialApp(),
+      home: LoginPage(),
     );
   }
 }
@@ -69,19 +70,6 @@ class _CounterState extends State<Counter> {
         child: Text('Click here'),
       )
     ]);
-  }
-}
-
-class MyMaterialApp extends StatelessWidget {
-  const MyMaterialApp({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'eAutokuca Desktop App',
-      theme: ThemeData(primarySwatch: Colors.yellow),
-      home: LoginPage(),
-    );
   }
 }
 

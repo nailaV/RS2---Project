@@ -43,8 +43,12 @@ namespace eAutokuca.Controllers
         {
              await base.Delete(ID);
         }
+        [HttpPost("promijeniStanje/{id}")]
+        public async Task promijeniStanje(int id)
+        {
+            await _service.promijeniStanje(id);
+        }
 
-        
 
 
         //[HttpPut("{id}/activate")]

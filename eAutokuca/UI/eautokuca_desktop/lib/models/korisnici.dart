@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'korisnici.g.dart';
@@ -16,6 +17,12 @@ class Korisnici {
 
   Korisnici(this.korisnikId, this.ime, this.prezime, this.email, this.telefon,
       this.username, this.datumRegistracije, this.stanje, this.slika);
+
+  String? get registrationDate {
+    return datumRegistracije != null
+        ? DateFormat.yMMMd().format(datumRegistracije!)
+        : "date null";
+  }
 
   factory Korisnici.fromJson(Map<String, dynamic> json) =>
       _$KorisniciFromJson(json);

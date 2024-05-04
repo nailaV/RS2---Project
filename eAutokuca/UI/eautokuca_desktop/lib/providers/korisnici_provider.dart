@@ -51,4 +51,16 @@ class KorisniciProvider extends BaseProvider<Korisnici> {
       throw Exception("Greška...");
     }
   }
+
+  Future<void> promijeniStanje(int id) async {
+    var url = "$baseUrl$end/promijeniStanje/$id";
+    var uri = Uri.parse(url);
+    var headers = createdHeaders();
+
+    var request = await http.post(uri, headers: headers);
+
+    if (!isValidResponse(request)) {
+      throw Exception("Greška...");
+    }
+  }
 }

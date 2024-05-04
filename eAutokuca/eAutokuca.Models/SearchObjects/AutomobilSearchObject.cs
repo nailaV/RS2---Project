@@ -16,6 +16,7 @@ namespace eAutokuca.Models.SearchObjects
         public decimal? PredjeniKilometri { get; set; }
         public string? Mjenjac { get; set; } = null!;
         public string? Motor { get; set; } = null!;
+        public string? AktivniNeaktivni { get; set; }
 
 
     }

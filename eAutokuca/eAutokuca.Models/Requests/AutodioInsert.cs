@@ -13,6 +13,6 @@ namespace eAutokuca.Models.Requests
         public int? KolicinaNaStanju { get; set; }
         public string? slikaBase64 { get; set; } = null!;
         public string? Opis { get; set; }
-        public string? Status { get; set; }
+
     }
 }

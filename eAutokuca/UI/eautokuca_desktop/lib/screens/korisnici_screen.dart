@@ -22,7 +22,7 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
   late KorisniciProvider _korisniciProvider;
   SearchResult<Korisnici>? korisniciResult;
   bool isLoading = true;
-
+  bool ucitajAktivne = true;
   @override
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
@@ -40,7 +40,8 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
 
   Future<void> getData() async {
     try {
-      var data = await _korisniciProvider.getAll();
+      var data = await _korisniciProvider
+          .getAll(filter: {"AktivniNeaktivni": ucitajAktivne});
       setState(() {
         korisniciResult = data;
         isLoading = false;
@@ -63,30 +64,57 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
   Widget build(BuildContext context) {
     return MasterScreenWidget(
         title: "KORISNICI",
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Container(
-              child: Column(
-            children: [
-              ElevatedButton.icon(
-                onPressed: () async {
-                  await showDialog(
-                      context: context,
-                      builder: (context) {
-                        return DodajKorisnika();
-                      });
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.yellow[700],
-                  foregroundColor: Colors.white,
-                ),
-                icon: Icon(Icons.person_add),
-                label: Text("Registruj novog korisnika"),
-              ),
-              _buildUserTable()
-            ],
-          )),
-        ));
+        child: isLoading
+            ? const Center(
+                child: CircularProgressIndicator(),
+              )
+            : Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Container(
+                    child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        ElevatedButton.icon(
+                          onPressed: () async {
+                            await showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return DodajKorisnika();
+                                });
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.yellow[700],
+                            foregroundColor: Colors.white,
+                          ),
+                          icon: Icon(Icons.person_add),
+                          label: Text("Registruj novog korisnika"),
+                        ),
+                        ElevatedButton.icon(
+                          onPressed: () {
+                            setState(() {
+                              ucitajAktivne = !ucitajAktivne;
+                              isLoading = true;
+                            });
+                            getData();
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.yellow[700],
+                            foregroundColor:
+                                ucitajAktivne ? Colors.red : Colors.green,
+                          ),
+                          label: ucitajAktivne
+                              ? Text("Učitaj neaktivne")
+                              : Text("Učitaj aktivne"),
+                          icon: Icon(Icons.replay_outlined),
+                        ),
+                      ],
+                    ),
+                    _buildUserTable()
+                  ],
+                )),
+              ));
   }
 
   Expanded _buildUserTable() {
@@ -110,19 +138,7 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
               ),
               DataColumn(
                 label: Text(
-                  "Slika",
-                  style: TextStyle(fontStyle: FontStyle.italic),
-                ),
-              ),
-              DataColumn(
-                label: Text(
-                  "Ime",
-                  style: TextStyle(fontStyle: FontStyle.italic),
-                ),
-              ),
-              DataColumn(
-                label: Text(
-                  "Prezime",
+                  "Ime i prezime",
                   style: TextStyle(fontStyle: FontStyle.italic),
                 ),
               ),
@@ -134,13 +150,7 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
               ),
               DataColumn(
                 label: Text(
-                  "Email",
-                  style: TextStyle(fontStyle: FontStyle.italic),
-                ),
-              ),
-              DataColumn(
-                label: Text(
-                  "Telefon",
+                  "Poruka",
                   style: TextStyle(fontStyle: FontStyle.italic),
                 ),
               ),
@@ -152,16 +162,10 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
               ),
               DataColumn(
                 label: Text(
-                  "Poruka",
+                  "Akcija",
                   style: TextStyle(fontStyle: FontStyle.italic),
                 ),
               ),
-              // DataColumn(
-              //   label: Text(
-              //     "Akcija",
-              //     style: TextStyle(fontStyle: FontStyle.italic),
-              //   ),
-              // ),
               DataColumn(
                 label: Text(
                   "Stanje",
@@ -173,54 +177,60 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
                     .map(
                       (Korisnici e) => DataRow(cells: [
                         DataCell(Text(e.korisnikId?.toString() ?? "")),
-                        DataCell(
-                          e.slika != null && e.slika != ""
-                              ? Container(
-                                  child: imageFromBase64String(e.slika!),
-                                )
-                              : Text("No image available."),
-                        ),
-                        DataCell(Text(e.ime ?? "")),
-                        DataCell(Text(e.prezime ?? "")),
+                        DataCell(Text("${e.ime ?? ""} ${e.prezime ?? ""}")),
                         DataCell(Text(e.username ?? "")),
-                        DataCell(Text(e.email ?? "")),
-                        DataCell(Text(e.telefon ?? "")),
-                        DataCell(Text(e.datumRegistracije.toString())),
                         DataCell(MaterialButton(
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10)),
                           padding: EdgeInsets.all(15),
                           hoverColor: Colors.blue,
                           color: Colors.yellow[700],
-                          onPressed: () {},
+                          onPressed: () async {
+                            // try {
+                            //   await _korisniciProvider
+                            //       .promijeniStanje(e.korisnikId!);
+                            //   setState(() {
+                            //     isLoading = true;
+                            //   });
+                            //   getData();
+                            // } catch (e) {
+                            //   MyDialogs.showError(context, e.toString());
+                            // }
+                          },
                           child: Text(
-                            "Poruka",
+                            "Pošalji",
                             style: TextStyle(color: Colors.white),
                           ),
                         )),
-                        // DataCell(MaterialButton(
-                        //   shape: RoundedRectangleBorder(
-                        //       borderRadius: BorderRadius.circular(10)),
-                        //   padding: EdgeInsets.all(15),
-                        //   hoverColor: Colors.red,
-                        //   color: Colors.yellow[700],
-                        //   onPressed: () async {
-                        //     try {
-                        //       await _korisniciProvider.delete(e.korisnikId!);
-                        //       MyDialogs.showSuccess(
-                        //           context, "Uspješno obrisan korisnik", () {
-                        //         Navigator.of(context).push(MaterialPageRoute(
-                        //             builder: ((context) => KorisniciScreen())));
-                        //       });
-                        //     } catch (e) {
-                        //       MyDialogs.showError(context, e.toString());
-                        //     }
-                        //   },
-                        //   child: Text(
-                        //     "Obriši",
-                        //     style: TextStyle(color: Colors.white),
-                        //   ),
-                        // )),
+                        DataCell(Text(e.registrationDate.toString())),
+                        DataCell(MaterialButton(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)),
+                          padding: EdgeInsets.all(15),
+                          hoverColor: ucitajAktivne ? Colors.red : Colors.green,
+                          color: Colors.yellow[700],
+                          onPressed: () async {
+                            try {
+                              await _korisniciProvider
+                                  .promijeniStanje(e.korisnikId!);
+                              setState(() {
+                                isLoading = true;
+                              });
+                              getData();
+                            } catch (e) {
+                              MyDialogs.showError(context, e.toString());
+                            }
+                          },
+                          child: ucitajAktivne
+                              ? Text(
+                                  "Deaktiviraj",
+                                  style: TextStyle(color: Colors.white),
+                                )
+                              : Text(
+                                  "Aktiviraj",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                        )),
                         DataCell(Text(
                           e.stanje.toString() == "true"
                               ? "Aktivan"

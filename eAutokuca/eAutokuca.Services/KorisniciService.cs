@@ -49,6 +49,11 @@ namespace eAutokuca.Services
             }
             await _context.Korisniks.AddAsync(user);
             await _context.SaveChangesAsync();
+            var korisnikUloga = new KorisnikUloga() { KorisnikId = user.KorisnikId, UlogaId = 2 };
+            await _context.KorisnikUlogas.AddAsync(korisnikUloga);
+            await _context.SaveChangesAsync();
+
+
             return _mapper.Map<Models.Korisnik>(user);
 
         }
@@ -153,6 +158,24 @@ namespace eAutokuca.Services
             }
             entity.Slika = Convert.FromBase64String(request.slika);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task promijeniStanje(int id)
+        {
+            var entity = await _context.Korisniks.FindAsync(id);
+            if( entity == null )
+            {
+                throw new Exception("Korisnik ne postoji");
+            }
+            entity.Stanje = !entity.Stanje;
+            await _context.SaveChangesAsync();
+           
+        }
+
+        public override IQueryable<Korisnik> AddFilter(IQueryable<Korisnik> query, KorisnikSearchObject? search = null)
+        {
+            query = query.Where(x => x.Stanje == search.AktivniNeaktivni);
+            return query;
         }
     }
 }

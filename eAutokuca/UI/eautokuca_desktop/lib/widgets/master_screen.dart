@@ -4,6 +4,7 @@
 
 import 'dart:math';
 
+import 'package:eautokuca_desktop/main.dart';
 import 'package:eautokuca_desktop/models/korisnici.dart';
 import 'package:eautokuca_desktop/providers/korisnici_provider.dart';
 import 'package:eautokuca_desktop/screens/autodijelovi_main_screen.dart';
@@ -32,6 +33,16 @@ class _MasterScreenWidgetState extends State<MasterScreenWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+          actions: [
+            IconButton(
+                onPressed: () {
+                  Authorization.username = "";
+                  Authorization.password = "";
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (builder) => LoginPage()));
+                },
+                icon: Icon(Icons.logout))
+          ],
           title: Text(
             widget.title ?? "",
             style: TextStyle(fontWeight: FontWeight.bold),
@@ -54,7 +65,6 @@ class _drawerItems extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      //mainAxisAlignment: MainAxisAlignment.center,
       children: [
         DrawerHeader(
           decoration: BoxDecoration(color: Colors.yellow[700]),
@@ -117,25 +127,6 @@ class _drawerItems extends StatelessWidget {
         ),
         ListTile(
           title: Text(
-            "POČETNA",
-            style: TextStyle(
-              fontSize: 20,
-              fontFamily: "Roboto",
-              fontWeight: FontWeight.bold,
-              color: Colors.yellow[700],
-            ),
-          ),
-          onTap: () {
-            Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => const ListaAutomobila(),
-            ));
-          },
-        ),
-        SizedBox(
-          height: 12,
-        ),
-        ListTile(
-          title: Text(
             "REZERVACIJE",
             style: TextStyle(
               fontSize: 20,
@@ -188,6 +179,24 @@ class _drawerItems extends StatelessWidget {
         ),
         ListTile(
           title: Text(
+            "SHOP",
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Colors.yellow[700],
+            ),
+          ),
+          onTap: () {
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => const AutodijeloviScreen(),
+            ));
+          },
+        ),
+        SizedBox(
+          height: 12,
+        ),
+        ListTile(
+          title: Text(
             "REPORTS",
             style: TextStyle(
               fontSize: 20,
@@ -216,6 +225,24 @@ class _drawerItems extends StatelessWidget {
           onTap: () {
             Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => const FinansijeScreen(),
+            ));
+          },
+        ),
+        SizedBox(
+          height: 12,
+        ),
+        ListTile(
+          title: Text(
+            "KORISNIČKI PROFIL",
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Colors.yellow[700],
+            ),
+          ),
+          onTap: () {
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => const KorisnickiProfil(),
             ));
           },
         ),
