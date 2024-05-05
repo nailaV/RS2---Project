@@ -29,6 +29,10 @@ namespace eAutokuca.Services
             CreateMap<Database.Oprema, Models.Oprema>();
             CreateMap<Models.Requests.OpremaInsert, Database.Oprema>();
             CreateMap<Models.Requests.OpremaUpdate, Database.Oprema>();
+
+            CreateMap<Database.Rezervacija, Models.Rezervacija>();
+            CreateMap<Models.Requests.RezervacijaInsert, Database.Rezervacija>();
+            CreateMap<Models.Requests.RezervacijaUpdate, Database.Rezervacija>();
         }
     }
 }

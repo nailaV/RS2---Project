@@ -53,7 +53,7 @@ class _AutodijeloviDetaljiState extends State<AutodijeloviDetalji> {
   Widget _buildForm() {
     return Padding(
       padding: const EdgeInsets.only(
-          left: 300.0, right: 300.0, top: 50.0, bottom: 50.0),
+          left: 200.0, right: 200.0, top: 50.0, bottom: 50.0),
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(30)),
@@ -86,7 +86,6 @@ class _AutodijeloviDetaljiState extends State<AutodijeloviDetalji> {
                 height: 10,
                 width: 10,
               ),
-              Center(child: _buildDescription()),
               SizedBox(height: 50),
               _buildButtons(),
               SizedBox(
@@ -101,11 +100,11 @@ class _AutodijeloviDetaljiState extends State<AutodijeloviDetalji> {
 
   Container _buildDescription() {
     return Container(
-      padding: EdgeInsets.all(8.0),
+      padding: EdgeInsets.only(left: 7, right: 5, top: 10, bottom: 10),
       decoration: BoxDecoration(
-        color: Colors.blueGrey[50],
-        borderRadius: BorderRadius.circular(10.0),
-      ),
+          color: Colors.blueGrey[50],
+          borderRadius: BorderRadius.circular(30.0),
+          border: Border.all(color: Color.fromARGB(255, 92, 89, 89))),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -130,84 +129,101 @@ class _AutodijeloviDetaljiState extends State<AutodijeloviDetalji> {
   }
 
   Row _buildFields() {
-    return Row(children: [
-      SizedBox(width: 20),
-      autodioInfo?.slika != null && autodioInfo?.slika != ""
-          ? Container(
-              width: 230,
-              height: 230,
-              decoration: BoxDecoration(
-                shape: BoxShape.rectangle,
-                image: DecorationImage(
-                  fit: BoxFit.cover,
-                  image: MemoryImage(
-                    base64Decode(autodioInfo!.slika!),
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(width: 20),
+        autodioInfo?.slika != null && autodioInfo?.slika != ""
+            ? Container(
+                width: 230,
+                height: 230,
+                decoration: BoxDecoration(
+                  shape: BoxShape.rectangle,
+                  image: DecorationImage(
+                    fit: BoxFit.cover,
+                    image: MemoryImage(
+                      base64Decode(autodioInfo!.slika!),
+                    ),
                   ),
                 ),
-              ),
-            )
-          : Container(
-              width: 200,
-              height: 200,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.grey,
-              ),
-              child: Icon(
-                Icons.no_photography_outlined,
-                size: 80,
-                color: Colors.white,
-              ),
-            ),
-      SizedBox(width: 20),
-      Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Column(
-            children: [
-              Text("Naziv"),
-              Text(
-                autodioInfo?.naziv ?? '',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
+              )
+            : Container(
+                width: 200,
+                height: 200,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.grey,
+                ),
+                child: Icon(
+                  Icons.no_photography_outlined,
+                  size: 80,
+                  color: Colors.white,
                 ),
               ),
-            ],
-          ),
-          SizedBox(
-            width: 80,
-          ),
-          Column(
+        SizedBox(width: 20),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("Cijena"),
-              Text(
-                "${autodioInfo?.cijena.toString() ?? " "}KM",
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
+              Container(
+                padding:
+                    EdgeInsets.only(left: 7, right: 5, top: 10, bottom: 10),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30),
+                    border: Border.all(color: Color.fromARGB(255, 92, 89, 89))),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("Naziv"),
+                        Text(
+                          autodioInfo?.naziv ?? '',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("Cijena"),
+                        Text(
+                          "${autodioInfo?.cijena.toString() ?? " "}KM",
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("Na stanju"),
+                        Text(
+                          autodioInfo?.kolicinaNaStanju.toString() ?? '',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
+              SizedBox(height: 20),
+              _buildDescription()
             ],
           ),
-          SizedBox(
-            width: 80,
-          ),
-          Column(
-            children: [
-              Text("Na stanju"),
-              Text(
-                autodioInfo?.kolicinaNaStanju.toString() ?? '',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    ]);
+        ),
+      ],
+    );
   }
 
   Row _buildButtons() {

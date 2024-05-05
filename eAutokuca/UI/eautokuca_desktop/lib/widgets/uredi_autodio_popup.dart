@@ -27,7 +27,7 @@ class _UrediAutodioState extends State<UrediAutodio> {
   late AutodijeloviProvider _autodijeloviProvider;
   File? _slika;
   String? _slikaBase64;
-  String? message = "Klikni da dodaš sliku";
+  String? message = "Klikni da promijeniš sliku";
 
   @override
   void initState() {

@@ -15,6 +15,7 @@ builder.Services.AddTransient<IAutomobiliService, AutomobiliService>();
 builder.Services.AddTransient<IKorisniciService, KorisniciService>();
 builder.Services.AddTransient<IAutodioService, AutodioService>();
 builder.Services.AddTransient<IOpremaService, OpremaService>();
+builder.Services.AddTransient<IRezervacijeService, RezervacijeService>();
 
 builder.Services.AddTransient<BaseState>();
 builder.Services.AddTransient<InitialState>();
