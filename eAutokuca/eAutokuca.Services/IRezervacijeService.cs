@@ -8,7 +8,9 @@ using System.Threading.Tasks;
 
 namespace eAutokuca.Services
 {
-    public interface IRezervacijeService : ICrudService<Models.Rezervacija, RezervacijaSearchObject, RezervacijaInsert, RezervacijaUpdate >
+    public interface IRezervacijeService : ICrudService<Models.Rezervacija, RezervacijaSearchObject, RezervacijaInsert, RezervacijaUpdate>
     {
+      
+
     }
 }

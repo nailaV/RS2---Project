@@ -38,8 +38,11 @@ class _MasterScreenWidgetState extends State<MasterScreenWidget> {
                 onPressed: () {
                   Authorization.username = "";
                   Authorization.password = "";
-                  Navigator.of(context).push(
-                      MaterialPageRoute(builder: (builder) => LoginPage()));
+                  MyDialogs.showQuestion(
+                      context, "Da li ste sigurni da se želite odjaviti?", () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (builder) => LoginPage()));
+                  });
                 },
                 icon: Icon(Icons.logout))
           ],
@@ -85,9 +88,14 @@ class _drawerItems extends StatelessWidget {
                 ],
               ),
               SizedBox(height: 4),
-              Text(
-                "Sarajevo",
-                style: TextStyle(color: Colors.black, fontSize: 16),
+              Row(
+                children: [
+                  Icon(Icons.location_on_outlined),
+                  Text(
+                    "Sarajevo",
+                    style: TextStyle(color: Colors.black, fontSize: 16),
+                  ),
+                ],
               ),
               SizedBox(height: 8),
               Row(

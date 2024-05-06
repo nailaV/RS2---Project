@@ -117,14 +117,14 @@ class MyDialogs {
                 child: Center(
                   child: Column(
                     children: const [
-                      Icon(Icons.error_outline, size: 40, color: Colors.yellow),
+                      Icon(Icons.error_outline, size: 40, color: Colors.red),
                       SizedBox(height: 10),
                       Text(
                         "ERROR",
                         style: TextStyle(
                           fontSize: 19,
                           fontWeight: FontWeight.bold,
-                          color: Colors.yellow,
+                          color: Colors.red,
                           letterSpacing: 3,
                         ),
                       )
@@ -141,7 +141,7 @@ class MyDialogs {
                   style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
-                    color: Colors.grey,
+                    color: Colors.black,
                   ),
                 ),
               ),
@@ -164,7 +164,7 @@ class MyDialogs {
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 17,
-                      color: Colors.grey,
+                      color: Colors.black87,
                     ),
                   ),
                 ),
@@ -195,7 +195,7 @@ class MyDialogs {
                 width: double.infinity,
                 padding: const EdgeInsets.all(25),
                 decoration: BoxDecoration(
-                  color: Colors.blue[300],
+                  color: Colors.yellow[700],
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(20.0),
                     topRight: Radius.circular(20.0),
@@ -219,7 +219,7 @@ class MyDialogs {
                   style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
-                    color: Colors.blueGrey,
+                    color: Colors.black87,
                   ),
                 ),
               ),
@@ -231,7 +231,7 @@ class MyDialogs {
                     width: 130,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blueGrey,
+                        backgroundColor: Colors.black87,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12)),
                         padding: const EdgeInsets.all(15),
@@ -250,7 +250,7 @@ class MyDialogs {
                     width: 130,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blueGrey,
+                        backgroundColor: Colors.black87,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12)),
                         padding: const EdgeInsets.all(15),

@@ -21,5 +21,17 @@ namespace eAutokuca.Services
         {
             return query.Include("Automobil").Include("Korisnik");
         }
+
+        public override IQueryable<Rezervacija> AddFilter(IQueryable<Rezervacija> query, RezervacijaSearchObject? search = null)
+        {
+            if (search != null && search.datum != null)
+            {
+                query = query.Where(x => x.DatumVrijemeRezervacije.Date == search.datum);
+            }
+
+            return query;
+        }
+
+
     }
 }

@@ -16,7 +16,7 @@ class Rezervacija {
   Rezervacija(this.rezervacijaId, this.datumVrijemeRezervacije, this.status,
       this.automobil, this.korisnik);
   String get datum {
-    return DateFormat('dd-MM-yyyy').format(datumVrijemeRezervacije!);
+    return DateFormat('yyyy-MM-dd').format(datumVrijemeRezervacije!);
   }
 
   String get vrijeme {

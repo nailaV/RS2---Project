@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:eautokuca_desktop/widgets/master_screen.dart';
 import 'package:flutter/cupertino.dart';
 
