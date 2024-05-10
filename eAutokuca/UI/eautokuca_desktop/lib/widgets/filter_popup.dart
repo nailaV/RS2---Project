@@ -322,17 +322,6 @@ class _FilterDataState extends State<FilterData> {
             child: FormBuilderTextField(
               cursorColor: Colors.grey,
               autovalidateMode: AutovalidateMode.onUserInteraction,
-              // validator: FormBuilderValidators.compose([
-              //   FormBuilderValidators.integer(context,
-              //       errorText: 'Samo cijeli brojevi su dozvoljeni'),
-              //   (value) {
-              //     if (value != null && value.contains(" ")) {
-              //       return 'Prazno polje nije dozvoljeno';
-              //     } else {
-              //       return null;
-              //     }
-              //   }
-              // ]),
               name: name,
               textAlign: TextAlign.center,
               decoration: InputDecoration(

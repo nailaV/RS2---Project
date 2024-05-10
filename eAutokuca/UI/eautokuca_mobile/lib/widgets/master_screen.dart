@@ -5,7 +5,10 @@
 import 'dart:math';
 
 import 'package:eautokuca_mobile/main.dart';
+import 'package:eautokuca_mobile/screens/car_details_screen.dart';
+import 'package:eautokuca_mobile/screens/korisnicki_profil_screen.dart';
 import 'package:eautokuca_mobile/screens/lista_automobila.dart';
+import 'package:eautokuca_mobile/screens/shop_main_screen.dart';
 import 'package:eautokuca_mobile/utils/popup_dialogs.dart';
 import 'package:eautokuca_mobile/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +23,23 @@ class MasterScreenWidget extends StatefulWidget {
 }
 
 class _MasterScreenWidgetState extends State<MasterScreenWidget> {
+  int currentIndex = 0;
+
+  void _onItemTapped(int index) {
+    setState(() {
+      currentIndex = index;
+    });
+    if (currentIndex == 0) {
+      Navigator.of(context).pop();
+    } else if (currentIndex == 1) {
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (builder) => ListaAutomobila()));
+    } else if (currentIndex == 2) {
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (builder) => ShopMainScreen()));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,6 +67,23 @@ class _MasterScreenWidgetState extends State<MasterScreenWidget> {
         child: _drawerItems(),
       ),
       body: widget.child!,
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.arrow_back),
+            label: 'Nazad',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Početna',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.shopping_bag),
+            label: 'Shop',
+          ),
+        ],
+        onTap: _onItemTapped,
+      ),
     );
   }
 }
@@ -63,7 +100,7 @@ class _drawerItems extends StatelessWidget {
         _buildDrawerHeader(context),
         ListTile(
           title: Text(
-            "REZERVACIJE",
+            "TERMINI",
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
@@ -79,9 +116,6 @@ class _drawerItems extends StatelessWidget {
         SizedBox(
           height: 12,
         ),
-        SizedBox(
-          height: 12,
-        ),
         ListTile(
           title: Text(
             "SHOP",
@@ -92,9 +126,9 @@ class _drawerItems extends StatelessWidget {
             ),
           ),
           onTap: () {
-            // Navigator.of(context).push(MaterialPageRoute(
-            //   builder: (context) => const AutodijeloviScreen(),
-            // ));
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => const ShopMainScreen(),
+            ));
           },
         ),
         SizedBox(
@@ -110,9 +144,9 @@ class _drawerItems extends StatelessWidget {
             ),
           ),
           onTap: () {
-            // Navigator.of(context).push(MaterialPageRoute(
-            //   builder: (context) => const KorisnickiProfil(),
-            // ));
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => const KorisnickiProfil(),
+            ));
           },
         ),
         SizedBox(
@@ -158,7 +192,7 @@ class _drawerItems extends StatelessWidget {
               IconButton(
                   onPressed: () {
                     Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const ListaAutomobila()));
+                        builder: (context) => ListaAutomobila()));
                   },
                   icon: Icon(
                     Icons.home,
@@ -166,8 +200,8 @@ class _drawerItems extends StatelessWidget {
                   )),
               IconButton(
                   onPressed: () {
-                    // Navigator.of(context).push(MaterialPageRoute(
-                    //     builder: (context) => const KorisnickiProfil()));
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const KorisnickiProfil()));
                   },
                   icon: Icon(
                     Icons.person,
@@ -175,8 +209,8 @@ class _drawerItems extends StatelessWidget {
                   )),
               IconButton(
                   onPressed: () {
-                    // Navigator.of(context).push(MaterialPageRoute(
-                    //     builder: (context) => AutodijeloviScreen()));
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => ShopMainScreen()));
                   },
                   icon: Icon(
                     Icons.shopping_cart,

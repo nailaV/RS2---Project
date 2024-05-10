@@ -8,5 +8,8 @@ namespace eAutokuca.Models.Requests
 {
     public class RezervacijaInsert
     {
+        public int AutomobilId { get; set; }
+        public int KorisnikId { get; set; }
+        
     }
 }

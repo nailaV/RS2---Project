@@ -2,6 +2,8 @@
 
 import 'package:eautokuca_mobile/providers/car_provider.dart';
 import 'package:eautokuca_mobile/providers/korisnici_provider.dart';
+import 'package:eautokuca_mobile/providers/oprema_provider.dart';
+import 'package:eautokuca_mobile/providers/rezervacija_provider.dart';
 import 'package:eautokuca_mobile/screens/lista_automobila.dart';
 import 'package:eautokuca_mobile/utils/popup_dialogs.dart';
 import 'package:eautokuca_mobile/utils/utils.dart';
@@ -14,6 +16,8 @@ void main() {
     providers: [
       ChangeNotifierProvider(create: (_) => CarProvider()),
       ChangeNotifierProvider(create: (_) => KorisniciProvider()),
+      ChangeNotifierProvider(create: (_) => OpremaProvider()),
+      ChangeNotifierProvider(create: (_) => RezervacijaProvider()),
     ],
     child: const MyApp(),
   ));
@@ -148,7 +152,7 @@ class LoginPage extends StatelessWidget {
                       await _carProvider.getAll();
 
                       Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const ListaAutomobila(),
+                        builder: (context) => ListaAutomobila(),
                       ));
                     } on Exception catch (e) {
                       MyDialogs.showError(context, e.toString());
