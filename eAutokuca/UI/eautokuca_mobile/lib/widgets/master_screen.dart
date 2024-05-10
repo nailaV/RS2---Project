@@ -5,6 +5,7 @@
 import 'dart:math';
 
 import 'package:eautokuca_mobile/main.dart';
+import 'package:eautokuca_mobile/screens/lista_automobila.dart';
 import 'package:eautokuca_mobile/utils/popup_dialogs.dart';
 import 'package:eautokuca_mobile/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -59,7 +60,7 @@ class _drawerItems extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        _buildDrawerHeader(),
+        _buildDrawerHeader(context),
         ListTile(
           title: Text(
             "REZERVACIJE",
@@ -78,37 +79,6 @@ class _drawerItems extends StatelessWidget {
         SizedBox(
           height: 12,
         ),
-        ListTile(
-          title: Text(
-            "NOVI OGLAS",
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: Colors.yellow[700],
-            ),
-          ),
-          onTap: () {
-            // showDialog(context: context, builder: (context) => NoviAutomobil());
-          },
-        ),
-        SizedBox(
-          height: 12,
-        ),
-        ListTile(
-          title: Text(
-            "KORISNICI",
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: Colors.yellow[700],
-            ),
-          ),
-          onTap: () {
-            // Navigator.of(context).push(MaterialPageRoute(
-            //   builder: (context) => const KorisniciScreen(),
-            // ));
-          },
-        ),
         SizedBox(
           height: 12,
         ),
@@ -124,42 +94,6 @@ class _drawerItems extends StatelessWidget {
           onTap: () {
             // Navigator.of(context).push(MaterialPageRoute(
             //   builder: (context) => const AutodijeloviScreen(),
-            // ));
-          },
-        ),
-        SizedBox(
-          height: 12,
-        ),
-        ListTile(
-          title: Text(
-            "REPORTS",
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: Colors.yellow[700],
-            ),
-          ),
-          // onTap: () {
-          //   Navigator.of(context).push(MaterialPageRoute(
-          //     builder: (context) => const MyApp(),
-          //   ));
-          // },
-        ),
-        SizedBox(
-          height: 12,
-        ),
-        ListTile(
-          title: Text(
-            "FINANSIJE",
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: Colors.yellow[700],
-            ),
-          ),
-          onTap: () {
-            // Navigator.of(context).push(MaterialPageRoute(
-            //   builder: (context) => const FinansijeScreen(),
             // ));
           },
         ),
@@ -188,7 +122,7 @@ class _drawerItems extends StatelessWidget {
     );
   }
 
-  DrawerHeader _buildDrawerHeader() {
+  DrawerHeader _buildDrawerHeader(BuildContext context) {
     return DrawerHeader(
       decoration: BoxDecoration(color: Colors.yellow[700]),
       child: Column(
@@ -223,8 +157,8 @@ class _drawerItems extends StatelessWidget {
             children: [
               IconButton(
                   onPressed: () {
-                    // Navigator.of(context).push(MaterialPageRoute(
-                    //     builder: (context) => const ListaAutomobila()));
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const ListaAutomobila()));
                   },
                   icon: Icon(
                     Icons.home,

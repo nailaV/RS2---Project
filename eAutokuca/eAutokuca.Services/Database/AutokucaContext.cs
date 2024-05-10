@@ -29,6 +29,8 @@ public partial class AutokucaContext : DbContext
 
     public virtual DbSet<Recenzije> Recenzijes { get; set; }
 
+    public virtual DbSet<Report> Reports { get; set; }
+
     public virtual DbSet<Rezervacija> Rezervacijas { get; set; }
 
     public virtual DbSet<StavkeNarudzbe> StavkeNarudzbes { get; set; }
@@ -178,6 +180,23 @@ public partial class AutokucaContext : DbContext
             entity.HasOne(d => d.Korisnik).WithMany(p => p.Recenzijes)
                 .HasForeignKey(d => d.KorisnikId)
                 .HasConstraintName("FK__Recenzije__Koris__5441852A");
+        });
+
+        modelBuilder.Entity<Report>(entity =>
+        {
+            entity.HasKey(e => e.ReportId).HasName("PK__Report__D5BD48E5372F2D7B");
+
+            entity.ToTable("Report");
+
+            entity.Property(e => e.ReportId).HasColumnName("ReportID");
+            entity.Property(e => e.AutomobilId).HasColumnName("AutomobilID");
+            entity.Property(e => e.DatumProdaje).HasColumnType("datetime");
+            entity.Property(e => e.Prihodi).HasColumnType("decimal(18, 2)");
+
+            entity.HasOne(d => d.Automobil).WithMany(p => p.Reports)
+                .HasForeignKey(d => d.AutomobilId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__Report__Automobi__72C60C4A");
         });
 
         modelBuilder.Entity<Rezervacija>(entity =>

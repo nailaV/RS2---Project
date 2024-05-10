@@ -4,6 +4,7 @@ import 'package:eautokuca_desktop/models/car.dart';
 import 'package:eautokuca_desktop/models/oprema.dart';
 import 'package:eautokuca_desktop/providers/car_provider.dart';
 import 'package:eautokuca_desktop/providers/oprema_provider.dart';
+import 'package:eautokuca_desktop/providers/report_provider.dart';
 import 'package:eautokuca_desktop/screens/lista_automobila.dart';
 import 'package:eautokuca_desktop/utils/popup_dialogs.dart';
 import 'package:eautokuca_desktop/utils/utils.dart';
@@ -30,6 +31,7 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
   final _formKey1 = GlobalKey<FormBuilderState>();
   late Oprema? opremaAutomobila;
   late CarProvider _carProvider;
+  late ReportProvider _reportProvider;
   late OpremaProvider _opremaProvider;
   bool imaOpremu = true;
 
@@ -58,6 +60,7 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
     };
     _carProvider = context.read<CarProvider>();
     _opremaProvider = context.read<OpremaProvider>();
+    _reportProvider = context.read<ReportProvider>();
     getData();
   }
 
@@ -471,7 +474,32 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
                   "Aktiviraj",
                   style: TextStyle(color: Colors.white),
                 ),
-              )
+              ),
+        MaterialButton(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          padding: EdgeInsets.all(15),
+          hoverColor: Colors.blue,
+          color: Colors.yellow[700],
+          onPressed: () async {
+            try {
+              await _reportProvider.insert({
+                "automobilId": widget.car?.automobilId!,
+                "prihodi": widget.car?.cijena
+              });
+              MyDialogs.showSuccess(context, "Uspješno prodan automobil", () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (builder) => ListaAutomobila()));
+              });
+            } catch (e) {
+              MyDialogs.showError(context, e.toString());
+            }
+          },
+          child: Text(
+            "Prodaj",
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
       ],
     );
   }

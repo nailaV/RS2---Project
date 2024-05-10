@@ -1,6 +1,7 @@
 // ignore_for_file: must_be_immutable, unnecessary_new, prefer_final_fields, prefer_const_constructors
 
 import 'package:eautokuca_mobile/providers/car_provider.dart';
+import 'package:eautokuca_mobile/providers/korisnici_provider.dart';
 import 'package:eautokuca_mobile/screens/lista_automobila.dart';
 import 'package:eautokuca_mobile/utils/popup_dialogs.dart';
 import 'package:eautokuca_mobile/utils/utils.dart';
@@ -12,6 +13,7 @@ void main() {
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (_) => CarProvider()),
+      ChangeNotifierProvider(create: (_) => KorisniciProvider()),
     ],
     child: const MyApp(),
   ));

@@ -116,6 +116,10 @@ namespace eAutokuca.Services
         {
             var query= _context.Automobils.OrderByDescending(x=>x.AutomobilId).AsQueryable();
 
+            if(!string.IsNullOrWhiteSpace(searchObject?.AktivniNeaktivni))
+            {
+                query = query.Where(x => x.Status == searchObject.AktivniNeaktivni);
+            }    
             if (!string.IsNullOrWhiteSpace(searchObject?.FTS))
             {
                 query = query.Where(x => x.Model.Contains(searchObject.FTS) || x.Marka.Contains(searchObject.FTS) || x.Boja.Contains(searchObject.FTS));

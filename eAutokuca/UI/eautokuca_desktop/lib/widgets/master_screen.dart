@@ -12,6 +12,7 @@ import 'package:eautokuca_desktop/screens/finansije_screen.dart';
 import 'package:eautokuca_desktop/screens/korisnici_screen.dart';
 import 'package:eautokuca_desktop/screens/korisnicki_profil_screen.dart';
 import 'package:eautokuca_desktop/screens/lista_automobila.dart';
+import 'package:eautokuca_desktop/screens/report_screen.dart';
 import 'package:eautokuca_desktop/screens/rezervacije_screen.dart';
 import 'package:eautokuca_desktop/utils/popup_dialogs.dart';
 import 'package:eautokuca_desktop/utils/utils.dart';
@@ -205,25 +206,7 @@ class _drawerItems extends StatelessWidget {
         ),
         ListTile(
           title: Text(
-            "REPORTS",
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: Colors.yellow[700],
-            ),
-          ),
-          // onTap: () {
-          //   Navigator.of(context).push(MaterialPageRoute(
-          //     builder: (context) => const MyApp(),
-          //   ));
-          // },
-        ),
-        SizedBox(
-          height: 12,
-        ),
-        ListTile(
-          title: Text(
-            "FINANSIJE",
+            "IZVJEŠTAJ",
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
@@ -232,10 +215,28 @@ class _drawerItems extends StatelessWidget {
           ),
           onTap: () {
             Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => const FinansijeScreen(),
+              builder: (context) => const ReportScreen(),
             ));
           },
         ),
+        SizedBox(
+          height: 12,
+        ),
+        // ListTile(
+        //   title: Text(
+        //     "FINANSIJE",
+        //     style: TextStyle(
+        //       fontSize: 20,
+        //       fontWeight: FontWeight.bold,
+        //       color: Colors.yellow[700],
+        //     ),
+        //   ),
+        //   onTap: () {
+        //     Navigator.of(context).push(MaterialPageRoute(
+        //       builder: (context) => const FinansijeScreen(),
+        //     ));
+        //   },
+        // ),
         SizedBox(
           height: 12,
         ),

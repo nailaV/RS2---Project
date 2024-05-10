@@ -124,8 +124,8 @@ class _ListaAutomobilaState extends State<ListaAutomobila>
 
   Future<void> getData() async {
     try {
-      var data = await _carProvider
-          .getAll(filter: {"AktivniNeaktivni": UcitajAktivne});
+      var data =
+          await _carProvider.Filtriraj({"AktivniNeaktivni": UcitajAktivne});
       setState(() {
         result = data;
         isLoading = false;
@@ -194,8 +194,10 @@ class _ListaAutomobilaState extends State<ListaAutomobila>
             shape: CircleBorder(),
             color: Colors.yellow[700],
             onPressed: () async {
-              var data = await _carProvider
-                  .getAll(filter: {'FTS': _markaModelContorller.text});
+              var data = await _carProvider.Filtriraj({
+                'FTS': _markaModelContorller.text,
+                "AktivniNeaktivni": UcitajAktivne
+              });
 
               setState(() {
                 result = data;
@@ -215,7 +217,7 @@ class _ListaAutomobilaState extends State<ListaAutomobila>
                   context: context, builder: (context) => const FilterData());
               if (rezultat != null) {
                 filters = Map.from(rezultat);
-
+                filters?["AktivniNeaktivni"] = UcitajAktivne;
                 setState(() {
                   isLoading = true;
                 });

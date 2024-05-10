@@ -89,7 +89,7 @@ class CarProvider extends BaseProvider<Car> {
       res.hasNext = data['hasNext'];
       res.total = data['totalPages'];
       for (var item in data['result']) {
-        res.result.add(fromJson(item));
+        res.list.add(fromJson(item));
       }
       return res;
     } else {

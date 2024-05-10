@@ -41,7 +41,7 @@ abstract class BaseProvider<T> with ChangeNotifier {
       result.count = data['count'];
 
       for (var item in data['result']) {
-        result.result.add(fromJson(item));
+        result.list.add(fromJson(item));
       }
 
       return result;

@@ -35,5 +35,7 @@ public partial class Automobil
 
     public virtual ICollection<Oprema> Opremas { get; set; } = new List<Oprema>();
 
+    public virtual ICollection<Report> Reports { get; set; } = new List<Report>();
+
     public virtual ICollection<Rezervacija> Rezervacijas { get; set; } = new List<Rezervacija>();
 }

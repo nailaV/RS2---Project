@@ -33,6 +33,10 @@ namespace eAutokuca.Services
             CreateMap<Database.Rezervacija, Models.Rezervacija>();
             CreateMap<Models.Requests.RezervacijaInsert, Database.Rezervacija>();
             CreateMap<Models.Requests.RezervacijaUpdate, Database.Rezervacija>();
+
+            CreateMap<Database.Report, Models.Report>();
+            CreateMap<Models.Requests.ReportInsert, Database.Report>();
+          
         }
     }
 }
