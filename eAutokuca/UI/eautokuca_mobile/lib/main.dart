@@ -1,5 +1,6 @@
 // ignore_for_file: must_be_immutable, unnecessary_new, prefer_final_fields, prefer_const_constructors
 
+import 'package:eautokuca_mobile/providers/autodijelovi_provider.dart';
 import 'package:eautokuca_mobile/providers/car_provider.dart';
 import 'package:eautokuca_mobile/providers/korisnici_provider.dart';
 import 'package:eautokuca_mobile/providers/oprema_provider.dart';
@@ -18,6 +19,7 @@ void main() {
       ChangeNotifierProvider(create: (_) => KorisniciProvider()),
       ChangeNotifierProvider(create: (_) => OpremaProvider()),
       ChangeNotifierProvider(create: (_) => RezervacijaProvider()),
+      ChangeNotifierProvider(create: (_) => AutodijeloviProvider()),
     ],
     child: const MyApp(),
   ));

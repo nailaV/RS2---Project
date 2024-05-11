@@ -16,6 +16,11 @@ namespace eAutokuca.Controllers
             _service = service;
         }
 
+        [HttpGet("{username}/getRezervacijeZaUsera")]
+        public async Task<List<Models.Rezervacija>> getRezervacijeZaUsera(string username)
+        {
+            return await _service.getRezervacijeZaUsera(username);
+        }
 
 
     }

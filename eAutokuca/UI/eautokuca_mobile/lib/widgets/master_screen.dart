@@ -8,6 +8,7 @@ import 'package:eautokuca_mobile/main.dart';
 import 'package:eautokuca_mobile/screens/car_details_screen.dart';
 import 'package:eautokuca_mobile/screens/korisnicki_profil_screen.dart';
 import 'package:eautokuca_mobile/screens/lista_automobila.dart';
+import 'package:eautokuca_mobile/screens/rezervisani_termini_screen.dart';
 import 'package:eautokuca_mobile/screens/shop_main_screen.dart';
 import 'package:eautokuca_mobile/utils/popup_dialogs.dart';
 import 'package:eautokuca_mobile/utils/utils.dart';
@@ -108,9 +109,9 @@ class _drawerItems extends StatelessWidget {
             ),
           ),
           onTap: () {
-            // Navigator.of(context).push(MaterialPageRoute(
-            //   builder: (context) => RezervacijeScreen(),
-            // ));
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => RezervisaniTermini(),
+            ));
           },
         ),
         SizedBox(

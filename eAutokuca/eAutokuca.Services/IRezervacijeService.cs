@@ -10,7 +10,6 @@ namespace eAutokuca.Services
 {
     public interface IRezervacijeService : ICrudService<Models.Rezervacija, RezervacijaSearchObject, RezervacijaInsert, RezervacijaUpdate>
     {
-      
-
+        public Task<List<Models.Rezervacija>> getRezervacijeZaUsera(string username);
     }
 }

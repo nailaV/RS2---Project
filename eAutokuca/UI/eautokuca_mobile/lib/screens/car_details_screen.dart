@@ -8,6 +8,7 @@ import 'package:eautokuca_mobile/providers/rezervacija_provider.dart';
 import 'package:eautokuca_mobile/utils/popup_dialogs.dart';
 import 'package:eautokuca_mobile/utils/utils.dart';
 import 'package:eautokuca_mobile/widgets/master_screen.dart';
+import 'package:eautokuca_mobile/widgets/rezervacija_popup.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -95,7 +96,13 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
         padding: EdgeInsets.all(15),
         hoverColor: Colors.blue,
         color: Colors.yellow[700],
-        onPressed: () async {},
+        onPressed: () async {
+          await showDialog(
+              context: context,
+              builder: (context) {
+                return RezervisiTermin();
+              });
+        },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

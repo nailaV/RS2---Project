@@ -51,5 +51,14 @@ namespace eAutokuca.Services
             return _mapper.Map<Models.Rezervacija>(reservation);
         }
 
+        public async Task<List<Models.Rezervacija>> getRezervacijeZaUsera(string username)
+        {
+           var result = await _context.Rezervacijas.Where(x=> x.Korisnik.Username == username).ToListAsync();
+            if (result.Count <= 0)
+            {
+                throw new Exception("Korisnik nema rezervacija.");
+            }
+           return _mapper.Map<List<Models.Rezervacija>>(result);
+        }
     }
 }
