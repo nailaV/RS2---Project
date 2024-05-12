@@ -1,3 +1,4 @@
+import 'package:eautokuca_desktop/models/car.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'report.g.dart';
@@ -8,8 +9,10 @@ class Report {
   int? automobilId;
   DateTime? datumProdaje;
   double? prihodi;
+  Car? automobil;
 
   Report(
+    this.automobil,
     this.reportId,
     this.automobilId,
     this.datumProdaje,

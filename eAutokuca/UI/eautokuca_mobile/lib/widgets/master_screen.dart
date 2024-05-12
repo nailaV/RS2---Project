@@ -6,6 +6,7 @@ import 'dart:math';
 
 import 'package:eautokuca_mobile/main.dart';
 import 'package:eautokuca_mobile/screens/car_details_screen.dart';
+import 'package:eautokuca_mobile/screens/favoriti_screen.dart';
 import 'package:eautokuca_mobile/screens/korisnicki_profil_screen.dart';
 import 'package:eautokuca_mobile/screens/lista_automobila.dart';
 import 'package:eautokuca_mobile/screens/rezervisani_termini_screen.dart';
@@ -79,7 +80,7 @@ class _MasterScreenWidgetState extends State<MasterScreenWidget> {
             label: 'Početna',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_bag),
+            icon: Icon(Icons.shopping_bag_outlined),
             label: 'Shop',
           ),
         ],
@@ -152,6 +153,21 @@ class _drawerItems extends StatelessWidget {
         ),
         SizedBox(
           height: 12,
+        ),
+        ListTile(
+          title: Text(
+            "FAVORITI",
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Colors.yellow[700],
+            ),
+          ),
+          onTap: () {
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => const FavoritiScreen(),
+            ));
+          },
         ),
       ],
     );

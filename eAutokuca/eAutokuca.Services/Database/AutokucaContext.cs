@@ -19,6 +19,8 @@ public partial class AutokucaContext : DbContext
 
     public virtual DbSet<Automobil> Automobils { get; set; }
 
+    public virtual DbSet<AutomobilFavoriti> AutomobilFavoritis { get; set; }
+
     public virtual DbSet<Korisnik> Korisniks { get; set; }
 
     public virtual DbSet<KorisnikUloga> KorisnikUlogas { get; set; }
@@ -70,6 +72,7 @@ public partial class AutokucaContext : DbContext
                 .HasMaxLength(20)
                 .IsUnicode(false);
             entity.Property(e => e.Cijena).HasColumnType("decimal(8, 2)");
+            entity.Property(e => e.IsFavorite).HasColumnName("isFavorite");
             entity.Property(e => e.Marka).HasMaxLength(30);
             entity.Property(e => e.Mjenjac)
                 .HasMaxLength(20)
@@ -85,6 +88,21 @@ public partial class AutokucaContext : DbContext
             entity.Property(e => e.Status)
                 .HasMaxLength(50)
                 .IsUnicode(false);
+        });
+
+        modelBuilder.Entity<AutomobilFavoriti>(entity =>
+        {
+            entity.HasKey(e => e.FavoritId).HasName("PK__Automobi__C32DB3CCE66E62F2");
+
+            entity.ToTable("AutomobilFavoriti");
+
+            entity.HasOne(d => d.Automobil).WithMany(p => p.AutomobilFavoritis)
+                .HasForeignKey(d => d.AutomobilId)
+                .HasConstraintName("FK__Automobil__Autom__02FC7413");
+
+            entity.HasOne(d => d.Korisnik).WithMany(p => p.AutomobilFavoritis)
+                .HasForeignKey(d => d.KorisnikId)
+                .HasConstraintName("FK__Automobil__Koris__03F0984C");
         });
 
         modelBuilder.Entity<Korisnik>(entity =>

@@ -35,6 +35,8 @@ namespace eAutokuca.Models
         public string Status { get; set; } = null!;
         public byte[]? Slike { get; set; }= null!;
 
+        public bool? isFavorite { get; set; }
+
     }
 
 }

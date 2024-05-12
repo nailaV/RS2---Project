@@ -22,6 +22,12 @@ namespace eAutokuca.Controllers
             return await _service.getRezervacijeZaUsera(username);
         }
 
+        [HttpGet]
+        public List<string> GetDostupne(int id, DateTime datum)
+        {
+            return _service.GetDostupne(id, datum);
+        }
+
 
     }
 }

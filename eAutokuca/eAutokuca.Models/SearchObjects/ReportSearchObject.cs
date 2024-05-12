@@ -9,5 +9,6 @@ namespace eAutokuca.Models.SearchObjects
     public class ReportSearchObject
     {
         public int Mjesec { get; set; }
+        public string? Marka { get; set; }
     }
 }

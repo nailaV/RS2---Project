@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, non_constant_identifier_names, prefer_final_fields
 
 import 'package:eautokuca_mobile/models/autodijelovi.dart';
 import 'package:eautokuca_mobile/models/search_result.dart';
@@ -23,6 +23,7 @@ class _ShopMainScreenState extends State<ShopMainScreen> {
   late AutodijeloviProvider _autodijeloviProvider;
   bool isLoading = true;
   SearchResult<Autodijelovi>? autodijeloviData;
+  TextEditingController _FTSController = TextEditingController();
 
   @override
   void initState() {
@@ -44,11 +45,10 @@ class _ShopMainScreenState extends State<ShopMainScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  //_buildSeacrh(),
+                  _buildSeacrh(),
                   SizedBox(
                     height: 20,
                   ),
-
                   (autodijeloviData != null)
                       ? Column(
                           children: autodijeloviData?.list
@@ -74,80 +74,117 @@ class _ShopMainScreenState extends State<ShopMainScreen> {
     );
   }
 
+  Widget _buildSeacrh() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 8, bottom: 8),
+      child: Row(
+        children: [
+          Expanded(
+            child: TextField(
+              decoration: InputDecoration(
+                labelText: "Pretraži..",
+                labelStyle: TextStyle(color: Colors.yellow),
+                prefixIcon: Icon(Icons.search, color: Colors.yellow),
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.yellow),
+                ),
+              ),
+              controller: _FTSController,
+            ),
+          ),
+          MaterialButton(
+            padding: EdgeInsets.all(10),
+            shape: CircleBorder(),
+            color: Colors.yellow[700],
+            onPressed: () async {
+              var data = await _autodijeloviProvider
+                  .getAll(filter: {'FullTextSearch': _FTSController.text});
+              setState(() {
+                autodijeloviData = data;
+              });
+            },
+            child: Icon(
+              Icons.search,
+              color: Colors.white,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   GestureDetector buildProductContainer(Autodijelovi item) {
     return GestureDetector(
       onTap: () {
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (builder) => DetaljiProizvoda()));
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (builder) => DetaljiProizvoda(
+                  autodio: item,
+                )));
       },
       child: Container(
         width: double.infinity,
-        margin: const EdgeInsets.only(bottom: 10),
-        padding: const EdgeInsets.all(15),
+        margin: const EdgeInsets.only(bottom: 10, left: 15, right: 15),
+        padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15),
           color: Colors.blueGrey[50],
         ),
-        child: Column(
+        child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Column(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Colors.blueGrey[50],
-                  ),
-                  height: 200,
-                  width: 300,
-                  child: item.slika != ""
-                      ? SizedBox(
-                          width: double.infinity,
-                          height: double.infinity,
-                          child: imageFromBase64String(item.slika!),
-                        )
-                      : const Center(
-                          child: Icon(
-                            Icons.no_photography,
-                            size: 35,
-                            color: Colors.black87,
-                          ),
-                        ),
-                ),
-                const SizedBox(height: 10),
-                Text(
-                  item.naziv ?? "",
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontSize: 18,
-                    color: Colors.black,
-                    letterSpacing: 1,
-                  ),
-                ),
-                const SizedBox(height: 5),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "${item.cijena}KM",
-                      style: const TextStyle(
-                        fontSize: 16,
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 1,
+            Container(
+              padding: const EdgeInsets.all(5),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Colors.blueGrey[50],
+              ),
+              height: 150,
+              width: 150,
+              child: item.slika != ""
+                  ? SizedBox(
+                      width: double.infinity,
+                      height: double.infinity,
+                      child: imageFromBase64String(item.slika!),
+                    )
+                  : const Center(
+                      child: Icon(
+                        Icons.no_photography,
+                        size: 35,
+                        color: Colors.black87,
                       ),
                     ),
-                  ],
-                ),
-                Icon(Icons.arrow_forward_ios)
-              ],
             ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    item.naziv ?? "",
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      color: Colors.black,
+                      letterSpacing: 1,
+                    ),
+                  ),
+                  const SizedBox(height: 5),
+                  Text(
+                    "${item.cijena}KM",
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 1,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Icon(Icons.arrow_forward_ios)
           ],
         ),
       ),

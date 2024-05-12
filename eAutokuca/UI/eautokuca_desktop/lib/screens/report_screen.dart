@@ -80,42 +80,30 @@ class _ReportScreenState extends State<ReportScreen> {
       pdf.addPage(pw.Page(
         pageFormat: PdfPageFormat.a4,
         build: (context) => pw.Column(children: [
-          pw.Text('eAutoSalon  |  Izvještaj',
+          pw.Text('eAutokuca',
               style: pw.TextStyle(fontSize: 15, wordSpacing: 2)),
           pw.SizedBox(height: 15),
-          // pw.Table.fromTextArray(
-          //     cellStyle: pw.TextStyle(fontSize: 14),
-          //     headerStyle:
-          //         pw.TextStyle(fontSize: 10, color: PdfColors.yellow700),
-          //     border: null,
-          //     headerDecoration: pw.BoxDecoration(color: PdfColors.yellow700),
-          //     cellAlignments: {
-          //       0: pw.Alignment.centerLeft,
-          //       1: pw.Alignment.center,
-          //       2: pw.Alignment.center,
-          //       3: pw.Alignment.centerRight
-          //     },
-          //     cellHeight: 20,
-          //     headers: ['DATUM', 'AUTOMOBIL', 'MARKA', 'PRIHODI'],
-          //     data: report?.list
-          //             .map((e) => [
-          //                   e.datum,
-          //                   e.proizvod,
-          //                   e.kupac,
-          //                   "\$${e.formattedPrice}"
-          //                 ])
-          //             .toList() ??
-          //         []),
+          pw.Table.fromTextArray(
+              cellStyle: pw.TextStyle(fontSize: 14),
+              headerStyle: pw.TextStyle(fontSize: 10, color: PdfColors.white),
+              border: null,
+              headerDecoration: pw.BoxDecoration(color: PdfColors.yellow700),
+              cellAlignments: {
+                0: pw.Alignment.centerLeft,
+                1: pw.Alignment.center,
+                2: pw.Alignment.center,
+                3: pw.Alignment.centerRight
+              },
+              cellHeight: 20,
+              headers: ['DATUM', 'BOJA'],
+              data: reportData != null && reportData!.isNotEmpty
+                  ? reportData!
+                      .map((e) => [e.datumProdaje, e.automobil!.boja])
+                      .toList()
+                  : []),
           pw.SizedBox(height: 10),
           pw.Divider(thickness: 0.5),
           pw.SizedBox(height: 15),
-          pw.Row(mainAxisAlignment: pw.MainAxisAlignment.end, children: [
-            pw.Text("UKUPNO: ",
-                style: pw.TextStyle(fontSize: 13, letterSpacing: 0.5)),
-            pw.SizedBox(width: 3),
-            pw.Text("\$${report?.prihodi ?? "null"}",
-                style: pw.TextStyle(fontSize: 14))
-          ])
         ]),
       ));
 

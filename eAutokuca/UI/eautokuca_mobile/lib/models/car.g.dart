@@ -21,7 +21,7 @@ Car _$CarFromJson(Map<String, dynamic> json) => Car(
       json['model'] as String?,
       json['marka'] as String?,
       json['status'] as String?,
-    );
+    )..isFavorit = json['isFavorit'] as bool?;
 
 Map<String, dynamic> _$CarToJson(Car instance) => <String, dynamic>{
       'automobilId': instance.automobilId,
@@ -38,4 +38,5 @@ Map<String, dynamic> _$CarToJson(Car instance) => <String, dynamic>{
       'model': instance.model,
       'marka': instance.marka,
       'status': instance.status,
+      'isFavorit': instance.isFavorit,
     };

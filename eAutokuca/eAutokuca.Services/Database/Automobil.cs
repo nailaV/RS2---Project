@@ -33,6 +33,10 @@ public partial class Automobil
 
     public byte[]? Slike { get; set; }
 
+    public bool IsFavorite { get; set; }
+
+    public virtual ICollection<AutomobilFavoriti> AutomobilFavoritis { get; set; } = new List<AutomobilFavoriti>();
+
     public virtual ICollection<Oprema> Opremas { get; set; } = new List<Oprema>();
 
     public virtual ICollection<Report> Reports { get; set; } = new List<Report>();

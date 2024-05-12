@@ -26,5 +26,11 @@ namespace eAutokuca.Controllers
             return await _service.Insert(insert);
         }
 
+        [HttpGet("getProdane")]
+        public async Task<List<string>> GetSveMarke()
+        {
+            return await _service.GetSveMarke();
+        }
+
     }
 }

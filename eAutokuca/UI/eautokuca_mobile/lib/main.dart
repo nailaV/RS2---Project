@@ -1,6 +1,7 @@
-// ignore_for_file: must_be_immutable, unnecessary_new, prefer_final_fields, prefer_const_constructors
+// ignore_for_file: must_be_immutable, unnecessary_new, prefer_final_fields, prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:eautokuca_mobile/providers/autodijelovi_provider.dart';
+import 'package:eautokuca_mobile/providers/automobilFavorit_provider.dart';
 import 'package:eautokuca_mobile/providers/car_provider.dart';
 import 'package:eautokuca_mobile/providers/korisnici_provider.dart';
 import 'package:eautokuca_mobile/providers/oprema_provider.dart';
@@ -8,6 +9,7 @@ import 'package:eautokuca_mobile/providers/rezervacija_provider.dart';
 import 'package:eautokuca_mobile/screens/lista_automobila.dart';
 import 'package:eautokuca_mobile/utils/popup_dialogs.dart';
 import 'package:eautokuca_mobile/utils/utils.dart';
+import 'package:eautokuca_mobile/widgets/registracija_popup.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -20,6 +22,7 @@ void main() {
       ChangeNotifierProvider(create: (_) => OpremaProvider()),
       ChangeNotifierProvider(create: (_) => RezervacijaProvider()),
       ChangeNotifierProvider(create: (_) => AutodijeloviProvider()),
+      ChangeNotifierProvider(create: (_) => AutomobilFavoritProvider()),
     ],
     child: const MyApp(),
   ));
@@ -83,7 +86,7 @@ class LoginPage extends StatelessWidget {
                   ),
                 ],
               ),
-            )
+            ),
           ],
         ),
       ),
@@ -92,7 +95,7 @@ class LoginPage extends StatelessWidget {
 
   Container _buildCard(BuildContext context) {
     return Container(
-      constraints: BoxConstraints(maxWidth: 400, maxHeight: 400),
+      constraints: BoxConstraints(maxWidth: 400, maxHeight: 440),
       child: Card(
         color: Colors.transparent,
         child: Padding(
@@ -168,6 +171,42 @@ class LoginPage extends StatelessWidget {
                         fontSize: 20,
                         fontWeight: FontWeight.bold),
                   )),
+                ),
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              Container(
+                height: 50,
+                margin: EdgeInsets.fromLTRB(40, 0, 40, 0),
+                child: InkWell(
+                  onTap: () async {
+                    await showDialog(
+                        context: context,
+                        builder: (context) {
+                          return Registracija();
+                        });
+                  },
+                  child: Center(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.person_add,
+                          color: Colors.black,
+                        ),
+                        SizedBox(width: 8),
+                        Text(
+                          "Nemate nalog? Registrujte se ovdje!",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ),
             ],

@@ -3,6 +3,7 @@ using eAutokuca.Models.Requests;
 using eAutokuca.Models.SearchObjects;
 using eAutokuca.Services;
 using eAutokuca.Services.Database;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace eAutokuca.Controllers
@@ -47,6 +48,12 @@ namespace eAutokuca.Controllers
         public async Task promijeniStanje(int id)
         {
             await _service.promijeniStanje(id);
+        }
+
+        [AllowAnonymous]
+        public override Task<Models.Korisnik> Insert([FromBody] KorisniciInsert insert)
+        {
+            return _service.Insert(insert);
         }
     }
 }

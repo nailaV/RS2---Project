@@ -11,5 +11,6 @@ namespace eAutokuca.Services
     public interface IRezervacijeService : ICrudService<Models.Rezervacija, RezervacijaSearchObject, RezervacijaInsert, RezervacijaUpdate>
     {
         public Task<List<Models.Rezervacija>> getRezervacijeZaUsera(string username);
+        public List<string> GetDostupne(int id, DateTime datum);
     }
 }

@@ -89,15 +89,7 @@ class _ListaAutomobilaState extends State<ListaAutomobila> {
                               [],
                         )
                       : const Center(
-                          child: Text(
-                            "Nema proizvoda",
-                            style: TextStyle(
-                              color: Colors.black87,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w400,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
+                          child: CircularProgressIndicator(),
                         ),
                 ],
               ),
@@ -304,12 +296,10 @@ class _ListaAutomobilaState extends State<ListaAutomobila> {
 
   Future<void> fetchPaged(dynamic request) async {
     try {
-      //filters!['Page'] = _currentPage;
       var data = await _carProvider.Filtriraj(request);
       setState(() {
         carData = data;
         isLoading = false;
-        //clearFilters=true;
       });
     } catch (e) {
       MyDialogs.showError(context, e.toString());

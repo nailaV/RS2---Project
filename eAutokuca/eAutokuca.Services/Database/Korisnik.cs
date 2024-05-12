@@ -27,6 +27,8 @@ public partial class Korisnik
 
     public DateTime? DatumRegistracije { get; set; }
 
+    public virtual ICollection<AutomobilFavoriti> AutomobilFavoritis { get; set; } = new List<AutomobilFavoriti>();
+
     public virtual ICollection<KorisnikUloga> KorisnikUlogas { get; set; } = new List<KorisnikUloga>();
 
     public virtual ICollection<Narudzba> Narudzbas { get; set; } = new List<Narudzba>();

@@ -140,6 +140,7 @@ class _RezervisaniTerminiState extends State<RezervisaniTermini> {
                 ),
                 Text(
                   "Nemate prethodno rezervisanih termina",
+                  textAlign: TextAlign.center,
                   style: TextStyle(
                       color: Colors.black,
                       fontSize: 20,

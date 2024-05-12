@@ -20,6 +20,7 @@ class Car {
   String? model;
   String? marka;
   String? status;
+  bool? isFavorit = false;
 
   Car(
       this.automobilId,

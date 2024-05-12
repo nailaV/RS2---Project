@@ -32,12 +32,30 @@ namespace eAutokuca.Services
             {
                 entity = entity.Where(x => x.DatumProdaje.Month == search.Mjesec);
             }
+            if(!string.IsNullOrWhiteSpace(search.Marka))
+            {
+                entity=entity.Where(x=>x.Automobil.Marka == search.Marka);
+            }
             await entity.ToListAsync();
             return _mapper.Map<List<Models.Report>>(entity);
         
         }
+        public async Task<List<string>> GetSveMarke()
+        {
+            var lista = new List<string>
+            {
+                "Sve marke"
+            };
 
-      
+            var marke = await _context.Reports.Select(x => x.Automobil.Marka).Distinct().ToListAsync();
+            foreach (var item in marke)
+            {
+                lista.Add(item);
+            }
+
+            return lista;
+        }
+
 
         public async Task<Models.Report> Insert(ReportInsert insert)
         {
@@ -51,5 +69,7 @@ namespace eAutokuca.Services
             await _context.SaveChangesAsync();
             return _mapper.Map<Models.Report>(entity);
         }
+
+        
     }
 }

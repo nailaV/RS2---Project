@@ -2,9 +2,11 @@
 
 import 'package:eautokuca_mobile/models/car.dart';
 import 'package:eautokuca_mobile/models/oprema.dart';
+import 'package:eautokuca_mobile/providers/automobilFavorit_provider.dart';
 import 'package:eautokuca_mobile/providers/car_provider.dart';
 import 'package:eautokuca_mobile/providers/oprema_provider.dart';
 import 'package:eautokuca_mobile/providers/rezervacija_provider.dart';
+import 'package:eautokuca_mobile/screens/lista_automobila.dart';
 import 'package:eautokuca_mobile/utils/popup_dialogs.dart';
 import 'package:eautokuca_mobile/utils/utils.dart';
 import 'package:eautokuca_mobile/widgets/master_screen.dart';
@@ -28,9 +30,11 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
   late CarProvider _carProvider;
   late OpremaProvider _opremaProvider;
   late RezervacijaProvider _rezervacijaProvider;
+  late AutomobilFavoritProvider _automobilFavoritProvider;
   Map<String, dynamic> _initialValue = {};
   late Oprema? opremaAutomobila;
   bool isLoading = true;
+  bool isFavorit = false;
 
   @override
   void initState() {
@@ -54,6 +58,8 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
     _carProvider = context.read<CarProvider>();
     _opremaProvider = context.read<OpremaProvider>();
     _rezervacijaProvider = context.read<RezervacijaProvider>();
+    _automobilFavoritProvider = context.read<AutomobilFavoritProvider>();
+
     getData();
   }
 
@@ -73,6 +79,7 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
       child: SingleChildScrollView(
         child: Column(
           children: [
+            isFavorit ? _ukloniFavorita(context) : _dodajFavorita(context),
             _buildFirstForm(),
             isLoading ? _buildNoDataField() : _buildOprema(),
             _buildButton(),
@@ -85,6 +92,42 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
           ],
         ),
       ),
+    );
+  }
+
+  MaterialButton _ukloniFavorita(BuildContext context) {
+    return MaterialButton(
+      onPressed: () async {
+        // await _automobilFavoritProvider.insert({
+        //   "automobilId": widget.car?.automobilId,
+        // });
+        MyDialogs.showSuccess(context, "Uspješno uklonjen favorit.", () {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (builder) => CarDetailsScreen(car: widget.car)));
+        });
+        setState(() {
+          isFavorit = false;
+        });
+      },
+      child: Text("Ukloni"),
+    );
+  }
+
+  MaterialButton _dodajFavorita(BuildContext context) {
+    return MaterialButton(
+      onPressed: () async {
+        // await _automobilFavoritProvider.insert({
+        //   "automobilId": widget.car?.automobilId,
+        // });
+        MyDialogs.showSuccess(context, "Uspješno dodan favorit.", () {
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (builder) => ListaAutomobila()));
+        });
+        setState(() {
+          isFavorit = true;
+        });
+      },
+      child: Text("Dodaj u fav"),
     );
   }
 
@@ -379,7 +422,6 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
         opremaAutomobila = data;
         isLoading = false;
       });
-      print(opremaAutomobila);
     } catch (e) {
       opremaAutomobila = null;
       isLoading = false;

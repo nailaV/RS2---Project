@@ -12,5 +12,6 @@ namespace eAutokuca.Services
     {
         public Task<List<Models.Report>> GetAllReports(ReportSearchObject? search = null);
         public Task<Models.Report> Insert(ReportInsert insert);
+        public  Task<List<string>> GetSveMarke();
     }
 }
