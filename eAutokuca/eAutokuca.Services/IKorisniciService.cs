@@ -16,5 +16,6 @@ namespace eAutokuca.Services
         public Task<Models.Korisnik> promjenaPassworda(int id, KorisnikPasswordPromjena request);
         public Task promjenaSlike(int id, PromjenaSlike request);
         public Task promijeniStanje(int id);
+        public Task<int> getKorisnikID(string username);
     }
 }

@@ -4,6 +4,7 @@ import 'package:eautokuca_mobile/models/car.dart';
 import 'package:eautokuca_mobile/models/oprema.dart';
 import 'package:eautokuca_mobile/providers/automobilFavorit_provider.dart';
 import 'package:eautokuca_mobile/providers/car_provider.dart';
+import 'package:eautokuca_mobile/providers/korisnici_provider.dart';
 import 'package:eautokuca_mobile/providers/oprema_provider.dart';
 import 'package:eautokuca_mobile/providers/rezervacija_provider.dart';
 import 'package:eautokuca_mobile/screens/lista_automobila.dart';
@@ -31,15 +32,18 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
   late OpremaProvider _opremaProvider;
   late RezervacijaProvider _rezervacijaProvider;
   late AutomobilFavoritProvider _automobilFavoritProvider;
+  late KorisniciProvider _korisniciProvider;
   Map<String, dynamic> _initialValue = {};
   late Oprema? opremaAutomobila;
   bool isLoading = true;
-  bool isFavorit = false;
+  bool favorit = false;
+  int? korisnikId;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+
     _initialValue = {
       "motor": widget.car?.motor,
       "mjenjac": widget.car?.mjenjac,
@@ -59,6 +63,7 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
     _opremaProvider = context.read<OpremaProvider>();
     _rezervacijaProvider = context.read<RezervacijaProvider>();
     _automobilFavoritProvider = context.read<AutomobilFavoritProvider>();
+    _korisniciProvider = context.read<KorisniciProvider>();
 
     getData();
   }
@@ -70,6 +75,8 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
     _carProvider = context.read<CarProvider>();
     _opremaProvider = context.read<OpremaProvider>();
     _rezervacijaProvider = context.read<RezervacijaProvider>();
+    _automobilFavoritProvider = context.read<AutomobilFavoritProvider>();
+    _korisniciProvider = context.read<KorisniciProvider>();
   }
 
   @override
@@ -79,7 +86,7 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
       child: SingleChildScrollView(
         child: Column(
           children: [
-            isFavorit ? _ukloniFavorita(context) : _dodajFavorita(context),
+            //favorit ? Text("DA") : Text("NE"),
             _buildFirstForm(),
             isLoading ? _buildNoDataField() : _buildOprema(),
             _buildButton(),
@@ -105,31 +112,28 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
           Navigator.of(context).push(MaterialPageRoute(
               builder: (builder) => CarDetailsScreen(car: widget.car)));
         });
-        setState(() {
-          isFavorit = false;
-        });
+        setState(() {});
       },
       child: Text("Ukloni"),
     );
   }
 
-  MaterialButton _dodajFavorita(BuildContext context) {
-    return MaterialButton(
-      onPressed: () async {
-        // await _automobilFavoritProvider.insert({
-        //   "automobilId": widget.car?.automobilId,
-        // });
-        MyDialogs.showSuccess(context, "Uspješno dodan favorit.", () {
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (builder) => ListaAutomobila()));
-        });
-        setState(() {
-          isFavorit = true;
-        });
-      },
-      child: Text("Dodaj u fav"),
-    );
-  }
+  // MaterialButton _dodajFavorita(BuildContext context) {
+  //   return MaterialButton(
+  //     onPressed: () async {
+
+  //       await _automobilFavoritProvider.insert(
+  //           {"automobilId": widget.car?.automobilId, "korisnikId": });
+
+  //       MyDialogs.showSuccess(context, "Uspješno dodan favorit.", () {
+  //         Navigator.of(context)
+  //             .push(MaterialPageRoute(builder: (builder) => ListaAutomobila()));
+  //       });
+  //       setState(() {});
+  //     },
+  //     child: Text("Dodaj u fav"),
+  //   );
+  // }
 
   Padding _buildButton() {
     return Padding(

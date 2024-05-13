@@ -21,6 +21,12 @@ namespace eAutokuca.Controllers
         {
             return await _service.getFavoriteZaUsera(username);
         }
+
+        [HttpGet("isFavorit")]
+        public async Task<bool> isFavorit(int automobilId, int korisnikId)
+        {
+            return await _service.isFavorit(automobilId, korisnikId);
+        }
     }
 }
 

@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:eautokuca_mobile/models/korisnici.dart';
 import 'package:eautokuca_mobile/providers/base_provider.dart';
+import 'package:eautokuca_mobile/utils/utils.dart';
 import 'package:http/http.dart' as http;
 
 class KorisniciProvider extends BaseProvider<Korisnici> {
@@ -61,6 +62,22 @@ class KorisniciProvider extends BaseProvider<Korisnici> {
 
     if (!isValidResponse(request)) {
       throw Exception("Greška...");
+    }
+  }
+
+  Future<int> getKorisnikID() async {
+    var url = "$baseUrl$end/getKorisnikID?username=${Authorization.username}";
+    var uri = Uri.parse(url);
+
+    var headers = createdHeaders();
+    var req = await http.get(uri, headers: headers);
+    if (isValidResponse(req)) {
+      int id = 0;
+      var data = jsonDecode(req.body);
+      id = data;
+      return id;
+    } else {
+      throw Exception('Greška...');
     }
   }
 }

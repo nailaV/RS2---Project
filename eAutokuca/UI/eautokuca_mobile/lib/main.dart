@@ -1,9 +1,10 @@
-// ignore_for_file: must_be_immutable, unnecessary_new, prefer_final_fields, prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: must_be_immutable, unnecessary_new, prefer_final_fields, prefer_const_constructors, prefer_const_literals_to_create_immutables, unused_field
 
 import 'package:eautokuca_mobile/providers/autodijelovi_provider.dart';
 import 'package:eautokuca_mobile/providers/automobilFavorit_provider.dart';
 import 'package:eautokuca_mobile/providers/car_provider.dart';
 import 'package:eautokuca_mobile/providers/korisnici_provider.dart';
+import 'package:eautokuca_mobile/providers/kosarica_provider.dart';
 import 'package:eautokuca_mobile/providers/oprema_provider.dart';
 import 'package:eautokuca_mobile/providers/rezervacija_provider.dart';
 import 'package:eautokuca_mobile/screens/lista_automobila.dart';
@@ -23,6 +24,7 @@ void main() {
       ChangeNotifierProvider(create: (_) => RezervacijaProvider()),
       ChangeNotifierProvider(create: (_) => AutodijeloviProvider()),
       ChangeNotifierProvider(create: (_) => AutomobilFavoritProvider()),
+      ChangeNotifierProvider(create: (_) => KosaricaProvider()),
     ],
     child: const MyApp(),
   ));
@@ -51,10 +53,12 @@ class LoginPage extends StatelessWidget {
   TextEditingController _passwordController = new TextEditingController();
 
   late CarProvider _carProvider;
+  late KorisniciProvider _korisniciProvider;
 
   @override
   Widget build(BuildContext context) {
     _carProvider = context.read<CarProvider>();
+    _korisniciProvider = context.read<KorisniciProvider>();
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -155,7 +159,6 @@ class LoginPage extends StatelessWidget {
 
                     try {
                       await _carProvider.getAll();
-
                       Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => ListaAutomobila(),
                       ));

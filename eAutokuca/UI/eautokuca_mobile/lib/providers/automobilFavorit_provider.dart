@@ -31,4 +31,27 @@ class AutomobilFavoritProvider extends BaseProvider<AutomobilFavorit> {
       throw Exception("Greška...");
     }
   }
+
+  Future<bool> isFavorit(int automobilId, int korisnikId) async {
+    var url =
+        "$baseUrl$end/isFavorit?automobilId=$automobilId&korisnikId=$korisnikId";
+
+    var uri = Uri.parse(url);
+    var headers = createdHeaders();
+
+    var request = await http.get(uri, headers: headers);
+    print(request.body);
+
+    if (isValidResponse(request)) {
+      if (request.body.toLowerCase() == 'true') {
+        return true;
+      } else if (request.body.toLowerCase() == 'false') {
+        return false;
+      } else {
+        throw Exception("Invalid response from server.");
+      }
+    } else {
+      throw Exception("Greška...");
+    }
+  }
 }

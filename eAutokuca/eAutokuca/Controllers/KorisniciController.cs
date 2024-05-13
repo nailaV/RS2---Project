@@ -55,5 +55,11 @@ namespace eAutokuca.Controllers
         {
             return _service.Insert(insert);
         }
+
+        [HttpGet("getKorisnikID/{username}")]
+        public async Task<int> getKorisnikID(string username)
+        {
+            return await _service.getKorisnikID( username);
+        }
     }
 }

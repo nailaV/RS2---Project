@@ -27,6 +27,8 @@ class Korisnici {
   factory Korisnici.fromJson(Map<String, dynamic> json) =>
       _$KorisniciFromJson(json);
 
+  get result => null;
+
   /// Connect the generated [_$PersonToJson] function to the `toJson` method.
   Map<String, dynamic> toJson() => _$KorisniciToJson(this);
 }

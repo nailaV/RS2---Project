@@ -3,7 +3,10 @@
 import 'package:eautokuca_mobile/models/autodijelovi.dart';
 import 'package:eautokuca_mobile/models/search_result.dart';
 import 'package:eautokuca_mobile/providers/autodijelovi_provider.dart';
+import 'package:eautokuca_mobile/providers/kosarica_provider.dart';
+
 import 'package:eautokuca_mobile/screens/detalji_proizvoda.dart';
+import 'package:eautokuca_mobile/screens/kosarica_screen.dart';
 
 import 'package:eautokuca_mobile/utils/popup_dialogs.dart';
 import 'package:eautokuca_mobile/utils/utils.dart';
@@ -21,9 +24,18 @@ class ShopMainScreen extends StatefulWidget {
 
 class _ShopMainScreenState extends State<ShopMainScreen> {
   late AutodijeloviProvider _autodijeloviProvider;
+  late KosaricaProvider _kosaricaProvider;
+
   bool isLoading = true;
   SearchResult<Autodijelovi>? autodijeloviData;
   TextEditingController _FTSController = TextEditingController();
+
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    _kosaricaProvider = context.read<KosaricaProvider>();
+  }
 
   @override
   void initState() {
@@ -106,6 +118,45 @@ class _ShopMainScreenState extends State<ShopMainScreen> {
             child: Icon(
               Icons.search,
               color: Colors.white,
+            ),
+          ),
+          Ink(
+            decoration: ShapeDecoration(
+                shape: CircleBorder(), color: Colors.yellow[700]),
+            child: IconButton(
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const KosaricaScreen(),
+                ));
+              },
+              icon: Stack(
+                children: [
+                  Icon(
+                    Icons.shopping_bag,
+                    size: 40,
+                    color: Colors.white,
+                  ),
+                  if (_kosaricaProvider.kosarica.items.isNotEmpty)
+                    Positioned(
+                      right: 0,
+                      top: 0,
+                      child: Container(
+                        padding: EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.red,
+                        ),
+                        child: Text(
+                          _kosaricaProvider.kosarica.items.length.toString(),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                    ),
+                ],
+              ),
             ),
           ),
         ],

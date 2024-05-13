@@ -177,5 +177,13 @@ namespace eAutokuca.Services
             query = query.Where(x => x.Stanje == search.AktivniNeaktivni);
             return query;
         }
+
+        public async Task<int> getKorisnikID(string username)
+        {
+            var entity= await _context.Korisniks.Where(x=>x.Username == username).FirstOrDefaultAsync();
+            if( entity == null )
+            { throw new Exception("Username ne psotoji"); }
+            return entity.KorisnikId;
+        }
     }
 }

@@ -8,6 +8,7 @@ import 'package:eautokuca_mobile/main.dart';
 import 'package:eautokuca_mobile/screens/car_details_screen.dart';
 import 'package:eautokuca_mobile/screens/favoriti_screen.dart';
 import 'package:eautokuca_mobile/screens/korisnicki_profil_screen.dart';
+import 'package:eautokuca_mobile/screens/kosarica_screen.dart';
 import 'package:eautokuca_mobile/screens/lista_automobila.dart';
 import 'package:eautokuca_mobile/screens/rezervisani_termini_screen.dart';
 import 'package:eautokuca_mobile/screens/shop_main_screen.dart';
@@ -166,6 +167,24 @@ class _drawerItems extends StatelessWidget {
           onTap: () {
             Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => const FavoritiScreen(),
+            ));
+          },
+        ),
+        SizedBox(
+          height: 12,
+        ),
+        ListTile(
+          title: Text(
+            "KOŠARICA",
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Colors.yellow[700],
+            ),
+          ),
+          onTap: () {
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => const KosaricaScreen(),
             ));
           },
         ),

@@ -2,6 +2,9 @@
 
 import 'package:eautokuca_mobile/models/autodijelovi.dart';
 import 'package:eautokuca_mobile/providers/autodijelovi_provider.dart';
+import 'package:eautokuca_mobile/providers/kosarica_provider.dart';
+import 'package:eautokuca_mobile/screens/shop_main_screen.dart';
+
 import 'package:eautokuca_mobile/utils/popup_dialogs.dart';
 import 'package:eautokuca_mobile/utils/utils.dart';
 import 'package:eautokuca_mobile/widgets/master_screen.dart';
@@ -20,6 +23,7 @@ class DetaljiProizvoda extends StatefulWidget {
 
 class _DetaljiProizvodaState extends State<DetaljiProizvoda> {
   late AutodijeloviProvider _autodijeloviProvider;
+  late KosaricaProvider _kosaricaProvider;
   bool isLoading = true;
   late Autodijelovi? dio;
 
@@ -28,6 +32,13 @@ class _DetaljiProizvodaState extends State<DetaljiProizvoda> {
     super.initState();
     _autodijeloviProvider = context.read<AutodijeloviProvider>();
     getData();
+  }
+
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    _kosaricaProvider = context.watch<KosaricaProvider>();
   }
 
   @override
@@ -121,10 +132,21 @@ class _DetaljiProizvodaState extends State<DetaljiProizvoda> {
             height: 10,
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               ElevatedButton.icon(
-                onPressed: () async {},
+                onPressed: () async {
+                  try {
+                    await _kosaricaProvider.dodajUkosaricu(widget.autodio!);
+                    MyDialogs.showSuccess(
+                        context, "Uspješno dodan proizvod u košaricu", () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (builder) => ShopMainScreen()));
+                    });
+                  } catch (e) {
+                    MyDialogs.showError(context, e.toString());
+                  }
+                },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.yellow[700],
                 ),
@@ -136,17 +158,6 @@ class _DetaljiProizvodaState extends State<DetaljiProizvoda> {
                 label: Text(
                   "Dodaj u košaricu",
                   style: TextStyle(color: Colors.white, fontSize: 18),
-                ),
-              ),
-              DropdownButton<int>(
-                value: 1,
-                onChanged: (value) {},
-                items: List.generate(
-                  dio!.kolicinaNaStanju ?? 0,
-                  (index) => DropdownMenuItem<int>(
-                    value: index + 1,
-                    child: Text("${index + 1}"),
-                  ),
                 ),
               ),
             ],

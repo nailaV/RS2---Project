@@ -31,6 +31,12 @@ namespace eAutokuca.Services
 
         }
 
-      
+        public async Task<bool> isFavorit(int automobilId, int korisnikId)
+        {
+           var isFavorit=await _context.AutomobilFavoritis.AnyAsync(x=>x.AutomobilId==automobilId && x.KorisnikId==korisnikId);
+            if (isFavorit == false)
+                throw new Exception("Nije favorit");
+            return isFavorit;
+        }
     }
 }
