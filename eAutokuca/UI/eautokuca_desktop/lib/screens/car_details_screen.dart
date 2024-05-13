@@ -400,7 +400,7 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
 
   Widget _buildButtons() {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         MaterialButton(
           shape:
@@ -479,7 +479,7 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           padding: EdgeInsets.all(15),
-          hoverColor: Colors.blue,
+          hoverColor: Colors.green,
           color: Colors.yellow[700],
           onPressed: () async {
             try {

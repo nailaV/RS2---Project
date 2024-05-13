@@ -42,4 +42,26 @@ class ReportProvider extends BaseProvider<Report> {
       throw new Exception("Unknown error.");
     }
   }
+
+  Future<List<String>> getSveProdaneMarke() async {
+    var url = "$baseUrl$end/getProdane";
+    var uri = Uri.parse(url);
+    var headers = createdHeaders();
+    var response = await http.get(uri, headers: headers);
+
+    if (isValidResponse(response)) {
+      List<String> lista = [];
+      var data = jsonDecode(response.body);
+      for (var item in data) {
+        lista.add(item);
+      }
+
+      if (!lista.contains("Sve marke")) {
+        lista.insert(0, "Sve marke");
+      }
+      return lista;
+    } else {
+      throw Exception("Greška pri učitavanju.");
+    }
+  }
 }
