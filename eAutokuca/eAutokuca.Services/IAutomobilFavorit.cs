@@ -12,6 +12,7 @@ namespace eAutokuca.Services
     {
         public Task<List<Models.AutomobilFavorit>> getFavoriteZaUsera(string username);
         public Task<bool> isFavorit(int automobilId, int korisnikId);
+        public Task brisiFavorita(int automobilId, int korisnikId);
       
     }
 }

@@ -40,7 +40,7 @@ class AutomobilFavoritProvider extends BaseProvider<AutomobilFavorit> {
     var headers = createdHeaders();
 
     var request = await http.get(uri, headers: headers);
-    print(request.body);
+    print("Jel favorit: ${request.body}");
 
     if (isValidResponse(request)) {
       if (request.body.toLowerCase() == 'true') {
@@ -52,6 +52,20 @@ class AutomobilFavoritProvider extends BaseProvider<AutomobilFavorit> {
       }
     } else {
       throw Exception("Greška...");
+    }
+  }
+
+  Future<void> ukloniFavorita(int automobilId, int korisnikId) async {
+    var url =
+        "$baseUrl$end/izbrisiFavorita?automobilId=$automobilId&korisnikId=$korisnikId";
+    print(url);
+    var uri = Uri.parse(url);
+    var headers = createdHeaders();
+
+    var request = await http.post(uri, headers: headers);
+    print(request.body);
+    if (!isValidResponse(request)) {
+      throw Exception("Greska");
     }
   }
 }

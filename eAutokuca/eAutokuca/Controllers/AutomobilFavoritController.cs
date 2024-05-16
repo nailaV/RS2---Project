@@ -27,6 +27,12 @@ namespace eAutokuca.Controllers
         {
             return await _service.isFavorit(automobilId, korisnikId);
         }
+
+        [HttpPost("izbrisiFavorita")]
+        public async Task izbrisiFavorita(int automobilId, int korisnikId)
+        {
+             await _service.brisiFavorita(automobilId, korisnikId);
+        }
     }
 }
 

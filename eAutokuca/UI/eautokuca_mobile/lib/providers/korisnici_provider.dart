@@ -66,15 +66,17 @@ class KorisniciProvider extends BaseProvider<Korisnici> {
   }
 
   Future<int> getKorisnikID() async {
-    var url = "$baseUrl$end/getKorisnikID?username=${Authorization.username}";
+    var url = "$baseUrl$end/getKorisnikID/${Authorization.username}";
     var uri = Uri.parse(url);
 
     var headers = createdHeaders();
     var req = await http.get(uri, headers: headers);
+
     if (isValidResponse(req)) {
       int id = 0;
       var data = jsonDecode(req.body);
       id = data;
+
       return id;
     } else {
       throw Exception('Greška...');

@@ -1,4 +1,4 @@
-// ignore_for_file: unused_import, must_be_immutable, unused_field, use_super_parameters, prefer_const_constructors, prefer_const_literals_to_create_immutables, unused_element
+// ignore_for_file:  must_be_immutable,  use_super_parameters, prefer_const_constructors, prefer_const_literals_to_create_immutables, unused_element, unused_local_variable, unused_field
 
 import 'package:eautokuca_mobile/models/car.dart';
 import 'package:eautokuca_mobile/models/oprema.dart';
@@ -7,6 +7,7 @@ import 'package:eautokuca_mobile/providers/car_provider.dart';
 import 'package:eautokuca_mobile/providers/korisnici_provider.dart';
 import 'package:eautokuca_mobile/providers/oprema_provider.dart';
 import 'package:eautokuca_mobile/providers/rezervacija_provider.dart';
+import 'package:eautokuca_mobile/screens/favoriti_screen.dart';
 import 'package:eautokuca_mobile/screens/lista_automobila.dart';
 import 'package:eautokuca_mobile/utils/popup_dialogs.dart';
 import 'package:eautokuca_mobile/utils/utils.dart';
@@ -83,34 +84,35 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
   Widget build(BuildContext context) {
     return MasterScreenWidget(
       title: "${widget.car?.marka} ${widget.car?.model}",
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            //favorit ? Text("DA") : Text("NE"),
-            _buildFirstForm(),
-            isLoading ? _buildNoDataField() : _buildOprema(),
-            _buildButton(),
-            SizedBox(
-              width: 100,
+      child: isLoading
+          ? Center(child: CircularProgressIndicator())
+          : SingleChildScrollView(
+              child: Column(
+                children: [
+                  favorit ? _ukloniFavorita(context) : _dodajFavorita(context),
+                  _buildFirstForm(),
+                  isLoading ? _buildNoDataField() : _buildOprema(),
+                  _buildButton(),
+                  SizedBox(
+                    width: 100,
+                  ),
+                  SizedBox(
+                    height: 20,
+                  )
+                ],
+              ),
             ),
-            SizedBox(
-              height: 20,
-            )
-          ],
-        ),
-      ),
     );
   }
 
   MaterialButton _ukloniFavorita(BuildContext context) {
     return MaterialButton(
       onPressed: () async {
-        // await _automobilFavoritProvider.insert({
-        //   "automobilId": widget.car?.automobilId,
-        // });
+        await _automobilFavoritProvider.ukloniFavorita(
+            widget.car!.automobilId!, korisnikId!);
         MyDialogs.showSuccess(context, "Uspješno uklonjen favorit.", () {
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (builder) => CarDetailsScreen(car: widget.car)));
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (builder) => FavoritiScreen()));
         });
         setState(() {});
       },
@@ -118,22 +120,21 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
     );
   }
 
-  // MaterialButton _dodajFavorita(BuildContext context) {
-  //   return MaterialButton(
-  //     onPressed: () async {
+  MaterialButton _dodajFavorita(BuildContext context) {
+    return MaterialButton(
+      onPressed: () async {
+        await _automobilFavoritProvider.insert(
+            {"automobilId": widget.car?.automobilId, "korisnikId": korisnikId});
 
-  //       await _automobilFavoritProvider.insert(
-  //           {"automobilId": widget.car?.automobilId, "korisnikId": });
-
-  //       MyDialogs.showSuccess(context, "Uspješno dodan favorit.", () {
-  //         Navigator.of(context)
-  //             .push(MaterialPageRoute(builder: (builder) => ListaAutomobila()));
-  //       });
-  //       setState(() {});
-  //     },
-  //     child: Text("Dodaj u fav"),
-  //   );
-  // }
+        MyDialogs.showSuccess(context, "Uspješno dodan favorit.", () {
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (builder) => ListaAutomobila()));
+        });
+        setState(() {});
+      },
+      child: Text("Dodaj u fav"),
+    );
+  }
 
   Padding _buildButton() {
     return Padding(
@@ -420,10 +421,19 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
 
   Future<void> getData() async {
     try {
+      var userID = await _korisniciProvider.getKorisnikID();
+      setState(() {
+        korisnikId = userID;
+      });
       var data =
           await _opremaProvider.getOpremuZaAutomobil(widget.car!.automobilId!);
+
+      var jelFavorit = await _automobilFavoritProvider.isFavorit(
+          widget.car!.automobilId!, korisnikId!);
+
       setState(() {
         opremaAutomobila = data;
+        favorit = jelFavorit;
         isLoading = false;
       });
     } catch (e) {

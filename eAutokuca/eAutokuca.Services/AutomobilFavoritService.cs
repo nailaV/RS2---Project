@@ -18,6 +18,13 @@ namespace eAutokuca.Services
         {
         }
 
+        public async Task brisiFavorita(int automobilId, int korisnikId)
+        {
+            var favorit = await _context.AutomobilFavoritis.FirstOrDefaultAsync(x => x.AutomobilId == automobilId && x.KorisnikId == korisnikId);
+            _context.AutomobilFavoritis.Remove(favorit);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<List<Models.AutomobilFavorit>> getFavoriteZaUsera(string username)
         {
             var korisnik= await _context.Korisniks.Where(x => x.Username == username).FirstOrDefaultAsync();
@@ -35,7 +42,7 @@ namespace eAutokuca.Services
         {
            var isFavorit=await _context.AutomobilFavoritis.AnyAsync(x=>x.AutomobilId==automobilId && x.KorisnikId==korisnikId);
             if (isFavorit == false)
-                throw new Exception("Nije favorit");
+                return false;
             return isFavorit;
         }
     }
