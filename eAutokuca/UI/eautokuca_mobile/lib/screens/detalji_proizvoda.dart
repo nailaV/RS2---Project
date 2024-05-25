@@ -137,7 +137,8 @@ class _DetaljiProizvodaState extends State<DetaljiProizvoda> {
               ElevatedButton.icon(
                 onPressed: () async {
                   try {
-                    await _kosaricaProvider.dodajUkosaricu(widget.autodio!);
+                    await _kosaricaProvider.dodajUkosaricu(
+                        widget.autodio!, context);
                     MyDialogs.showSuccess(
                         context, "Uspješno dodan proizvod u košaricu", () {
                       Navigator.of(context).push(MaterialPageRoute(

@@ -32,4 +32,23 @@ class RezervacijaProvider extends BaseProvider<Rezervacija> {
       throw Exception("Greška...");
     }
   }
+
+  Future<List<String>> getSlobodne(int id, DateTime datum) async {
+    var url = "$baseUrl$end/getDostupne/$id?datum=$datum";
+    var uri = Uri.parse(url);
+
+    var headers = createdHeaders();
+    var req = await http.get(uri, headers: headers);
+
+    if (isValidResponse(req)) {
+      List<String> lista = [];
+      var data = jsonDecode(req.body);
+      for (var item in data) {
+        lista.add(item);
+      }
+      return lista;
+    } else {
+      throw Exception('Greška...');
+    }
+  }
 }

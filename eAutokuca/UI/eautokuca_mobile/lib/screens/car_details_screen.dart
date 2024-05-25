@@ -89,7 +89,7 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
           : SingleChildScrollView(
               child: Column(
                 children: [
-                  favorit ? _ukloniFavorita(context) : _dodajFavorita(context),
+                  // favorit ? _ukloniFavorita(context) : _dodajFavorita(context),
                   _buildFirstForm(),
                   isLoading ? _buildNoDataField() : _buildOprema(),
                   _buildButton(),
@@ -105,8 +105,10 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
     );
   }
 
-  MaterialButton _ukloniFavorita(BuildContext context) {
-    return MaterialButton(
+  IconButton _ukloniFavorita(BuildContext context) {
+    return IconButton(
+      iconSize: 32,
+      icon: Icon(Icons.favorite),
       onPressed: () async {
         await _automobilFavoritProvider.ukloniFavorita(
             widget.car!.automobilId!, korisnikId!);
@@ -116,12 +118,13 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
         });
         setState(() {});
       },
-      child: Text("Ukloni"),
     );
   }
 
-  MaterialButton _dodajFavorita(BuildContext context) {
-    return MaterialButton(
+  IconButton _dodajFavorita(BuildContext context) {
+    return IconButton(
+      iconSize: 32,
+      icon: Icon(Icons.favorite_border),
       onPressed: () async {
         await _automobilFavoritProvider.insert(
             {"automobilId": widget.car?.automobilId, "korisnikId": korisnikId});
@@ -132,7 +135,6 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
         });
         setState(() {});
       },
-      child: Text("Dodaj u fav"),
     );
   }
 
@@ -148,7 +150,7 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
           await showDialog(
               context: context,
               builder: (context) {
-                return RezervisiTermin();
+                return RezervisiTermin(carId: widget.car!.automobilId!);
               });
         },
         child: Row(
@@ -222,12 +224,24 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
                       children: [
                         _buildImage(),
                         SizedBox(height: 10),
-                        Text(
-                          'Detalji ',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Detalji ',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            favorit
+                                ? Tooltip(
+                                    message: "Ukloni iz favorita.",
+                                    child: _ukloniFavorita(context))
+                                : Tooltip(
+                                    message: "Dodaj u favorite.",
+                                    child: _dodajFavorita(context)),
+                          ],
                         ),
                         SizedBox(height: 10),
                         Row(

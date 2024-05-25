@@ -22,12 +22,39 @@ namespace eAutokuca.Controllers
             return await _service.getRezervacijeZaUsera(username);
         }
 
-        [HttpGet]
+        [HttpGet("getDostupne")]
         public List<string> GetDostupne(int id, DateTime datum)
         {
             return _service.GetDostupne(id, datum);
         }
 
+        [HttpPost("kreirajRezervaciju")]
+        public async Task<Models.Rezervacija> KreirajRezervaciju([FromBody] RezervacijaInsert req)
+        {
+            return await _service.kreirajRezervaciju(req);
+        }
 
+        [HttpPut("Zavrsi/{rezervacijaId}")]
+        public async Task Zavrsi(int rezervacijaId)
+        {
+            await _service.Zavrsi(rezervacijaId);
+        }
+
+        [HttpPut("Otkazi/{rezervacijaId}")]
+        public async Task Otkazi(int rezervacijaId)
+        {
+            await _service.Otkazi(rezervacijaId);
+        }
+
+        [HttpGet("GetZavrsene")]
+        public async Task<PagedResult<Models.Rezervacija>> getZavrseneRezervacije([FromQuery] RezervacijaSearchObject? searchObject = null)
+        {
+            return await _service.getZavrseneRezervacije(searchObject);
+        }
+        [HttpGet("GetAktivne")]
+        public async Task<PagedResult<Models.Rezervacija>> getAktivneRezervacije([FromQuery] RezervacijaSearchObject? searchObject = null)
+        {
+            return await _service.GetAktivne(searchObject);
+        }
     }
 }

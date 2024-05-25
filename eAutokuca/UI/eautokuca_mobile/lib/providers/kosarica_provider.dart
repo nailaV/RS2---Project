@@ -3,29 +3,48 @@
 import 'package:eautokuca_mobile/models/autodijelovi.dart';
 import 'package:eautokuca_mobile/models/kosarica.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class KosaricaProvider with ChangeNotifier {
   Kosarica kosarica = Kosarica();
 
-  set total(double total) {}
+  double _total = 0.0;
+  double get total => _total;
+  set total(double total) {
+    _total = total;
+    notifyListeners();
+  }
 
-  dodajUkosaricu(Autodijelovi autodio) {
+  dodajUkosaricu(Autodijelovi autodio, BuildContext context) {
     KosaricaItem? existingItem = findInKosarica(autodio);
 
     if (existingItem != null) {
-      existingItem.count++;
+      if (existingItem.count < autodio.kolicinaNaStanju!) {
+        existingItem.count++;
+      } else {
+        _showSnackBar(
+            context, "Nije moguće dodati veću količinu nego na stanju.");
+      }
     } else {
-      kosarica.items.add(KosaricaItem(autodio, 1));
+      if (autodio.kolicinaNaStanju! > 0) {
+        kosarica.items.add(KosaricaItem(autodio, 1));
+      } else {
+        _showSnackBar(context, "Proizvod nije na stanju.");
+      }
     }
 
     izracunajTotal();
-    notifyListeners();
+  }
+
+  void _showSnackBar(BuildContext context, String message) {
+    final snackBar = SnackBar(content: Text(message));
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
   izbaciIzKosarice(Autodijelovi autodio) {
     kosarica.items
         .removeWhere((item) => item.autodio.autodioId == autodio.autodioId);
-    notifyListeners();
+    izracunajTotal();
   }
 
   KosaricaItem? findInKosarica(Autodijelovi autodio) {
@@ -48,12 +67,11 @@ class KosaricaProvider with ChangeNotifier {
       }
 
       izracunajTotal();
-      notifyListeners();
     }
   }
 
   izracunajTotal() {
-    var total = 0.0;
+    double total = 0.0;
     for (var item in kosarica.items) {
       total += item.count * (item.autodio.cijena ?? 0.0);
     }

@@ -18,8 +18,6 @@ class KosaricaScreen extends StatefulWidget {
   State<KosaricaScreen> createState() => _KosaricaScreenState();
 }
 
-double total = 0.0;
-
 class _KosaricaScreenState extends State<KosaricaScreen> {
   late KosaricaProvider _kosaricaProvider;
   late KorisniciProvider _korisniciProvider;
@@ -43,7 +41,7 @@ class _KosaricaScreenState extends State<KosaricaScreen> {
   @override
   Widget build(BuildContext context) {
     return MasterScreenWidget(
-      title: "Kosarica",
+      title: "Košarica",
       child: Column(
         children: [
           Expanded(
@@ -57,11 +55,21 @@ class _KosaricaScreenState extends State<KosaricaScreen> {
           Padding(
             padding: const EdgeInsets.all(10),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "Total: " + total.toString() + "KM",
-                  style: TextStyle(fontSize: 18),
+                  "UKUPNO: ${_kosaricaProvider.total.toStringAsFixed(2)} KM",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
+                MaterialButton(
+                  color: Colors.yellow[700],
+                  onPressed: () {},
+                  child: Text(
+                    "Kupi",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold, color: Colors.black),
+                  ),
+                )
               ],
             ),
           )
@@ -71,13 +79,11 @@ class _KosaricaScreenState extends State<KosaricaScreen> {
   }
 
   Widget _buildProductCardList() {
-    return Container(
-      child: ListView.builder(
-        itemCount: _kosaricaProvider.kosarica.items.length,
-        itemBuilder: (context, index) {
-          return _buildProductCard(_kosaricaProvider.kosarica.items[index]);
-        },
-      ),
+    return ListView.builder(
+      itemCount: _kosaricaProvider.kosarica.items.length,
+      itemBuilder: (context, index) {
+        return _buildProductCard(_kosaricaProvider.kosarica.items[index]);
+      },
     );
   }
 
@@ -107,11 +113,14 @@ class _KosaricaScreenState extends State<KosaricaScreen> {
                 IconButton(
                   icon: Icon(Icons.add),
                   onPressed: () {
-                    _kosaricaProvider.dodajUkosaricu(item.autodio);
+                    _kosaricaProvider.dodajUkosaricu(item.autodio, context);
                   },
                 ),
                 IconButton(
-                  icon: Icon(Icons.remove_circle),
+                  icon: Icon(
+                    Icons.highlight_remove,
+                    color: Colors.red,
+                  ),
                   onPressed: () {
                     _kosaricaProvider.izbaciIzKosarice(item.autodio);
                   },

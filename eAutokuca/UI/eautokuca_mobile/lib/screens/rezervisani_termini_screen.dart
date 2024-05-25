@@ -41,14 +41,14 @@ class _RezervisaniTerminiState extends State<RezervisaniTermini> {
                   child: rezervacijaData!.isNotEmpty
                       ? Column(
                           children: rezervacijaData!
-                              .map((Rezervacija e) => buildTestDriveBox(e))
+                              .map((Rezervacija e) => buildRes(e))
                               .toList())
                       : _buildNoDataField(),
                 ),
               ));
   }
 
-  Container buildTestDriveBox(Rezervacija object) {
+  Container buildRes(Rezervacija object) {
     return Container(
         width: double.infinity,
         padding: const EdgeInsets.all(15),

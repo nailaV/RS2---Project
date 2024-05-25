@@ -10,6 +10,7 @@ namespace eAutokuca.Models.Requests
     {
         public int AutomobilId { get; set; }
         public int KorisnikId { get; set; }
+        public string datum { get; set; }
         
     }
 }
