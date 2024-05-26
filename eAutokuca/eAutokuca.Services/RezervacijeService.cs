@@ -27,12 +27,11 @@ namespace eAutokuca.Services
         {
             if (search != null && search.datum != null)
             {
-                query = query.Where(x => x.DatumVrijemeRezervacije.Date == search.datum);
+                query = query.Where(x => x.Status == "Aktivna" && x.DatumVrijemeRezervacije.Date == search.datum);
+               
+
             }
-            if(search==null)
-            {
-                query = query.Where(x => x.Status == "Aktivna");
-            }
+           
          
 
             return query;
@@ -83,24 +82,24 @@ namespace eAutokuca.Services
 
         }
 
-        public override async Task<Models.Rezervacija> Insert(RezervacijaInsert insert)
-        {
+        //public override async Task<Models.Rezervacija> Insert(RezervacijaInsert insert)
+        //{
            
-            var reservation = new Database.Rezervacija();
-            _mapper.Map(insert, reservation);
+        //    var reservation = new Database.Rezervacija();
+        //    _mapper.Map(insert, reservation);
 
            
-            reservation.Status = "Aktivna";
+        //    reservation.Status = "Aktivna";
             
           
-            await _context.Rezervacijas.AddAsync(reservation);
+        //    await _context.Rezervacijas.AddAsync(reservation);
 
-            await _context.SaveChangesAsync();
+        //    await _context.SaveChangesAsync();
   
 
 
-            return _mapper.Map<Models.Rezervacija>(reservation);
-        }
+        //    return _mapper.Map<Models.Rezervacija>(reservation);
+        //}
 
         public async Task<List<Models.Rezervacija>> getRezervacijeZaUsera(string username)
         {
@@ -133,7 +132,7 @@ namespace eAutokuca.Services
             {
                 var timeOfDay = i.TimeOfDay;
 
-                if (!postojeci_termini.Any(x => x.Hours == timeOfDay.Hours))
+                if (!postojeci_termini.Any(x => x.Hours == timeOfDay.Hours && x.Minutes==timeOfDay.Minutes))
                 {
                     dostupni_termini.Add(timeOfDay.ToString(@"hh\:mm"));
                 }
@@ -145,12 +144,14 @@ namespace eAutokuca.Services
         public async Task<Models.Rezervacija> kreirajRezervaciju(RezervacijaInsert req)
         {
             var rezervacija=new Database.Rezervacija();
-            _mapper.Map(req, rezervacija);
-            rezervacija.DatumVrijemeRezervacije = DateTime.Parse(req.datum);
-            await _context.Rezervacijas.AddAsync(rezervacija);
             rezervacija.Status = "Aktivna";
+            rezervacija.DatumVrijemeRezervacije = DateTime.Parse(req.datum);
+            rezervacija.KorisnikId = req.KorisnikId;
+            rezervacija.AutomobilId=req.AutomobilId;
+            await _context.Rezervacijas.AddAsync(rezervacija);
+            
             await _context.SaveChangesAsync();
-            return _mapper.Map<Models.Rezervacija>(req);
+            return _mapper.Map<Models.Rezervacija>(rezervacija);
         }
 
         public async Task Zavrsi(int rezervacijaId)

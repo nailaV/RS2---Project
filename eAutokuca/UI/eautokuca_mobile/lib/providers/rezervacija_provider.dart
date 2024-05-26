@@ -34,7 +34,7 @@ class RezervacijaProvider extends BaseProvider<Rezervacija> {
   }
 
   Future<List<String>> getSlobodne(int id, DateTime datum) async {
-    var url = "$baseUrl$end/getDostupne/$id?datum=$datum";
+    var url = "$baseUrl$end/getDostupne?id=$id&datum=$datum";
     var uri = Uri.parse(url);
 
     var headers = createdHeaders();
@@ -49,6 +49,22 @@ class RezervacijaProvider extends BaseProvider<Rezervacija> {
       return lista;
     } else {
       throw Exception('Greška...');
+    }
+  }
+
+  Future<Rezervacija> kreirajRezervaciju(dynamic request) async {
+    var url = "$baseUrl$end/kreirajRezervaciju";
+    var uri = Uri.parse(url);
+    var headers = createdHeaders();
+    var jsonRequest = jsonEncode(request);
+
+    var response = await http.post(uri, headers: headers, body: jsonRequest);
+
+    if (isValidResponse(response)) {
+      var data = jsonDecode(response.body);
+      return fromJson(data);
+    } else {
+      throw new Exception("Unknown error.");
     }
   }
 }

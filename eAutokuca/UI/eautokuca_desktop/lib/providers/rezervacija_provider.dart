@@ -50,7 +50,7 @@ class RezervacijaProvider extends BaseProvider<Rezervacija> {
       result.total = data['totalPages'];
       result.hasNext = data['hasNext'];
       {}
-      var list = data['list'];
+      var list = data['result'];
       if (list != null && list is Iterable) {
         for (var item in list) {
           result.result.add(Rezervacija.fromJson(item));
@@ -59,7 +59,7 @@ class RezervacijaProvider extends BaseProvider<Rezervacija> {
       //print("body: ${request.body}");
       print("status code: ${request.statusCode}");
       print("result: ${result}");
-      print("result inst: ${result.result}");
+      print("result inst: ${result.result[0]}");
 
       return result;
     } else {

@@ -48,7 +48,7 @@ builder.Services.AddSwaggerGen(c =>
     } });
 });
 
-var connectionString = builder.Configuration.GetConnectionString("DeafaultConnection");
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<AutokucaContext>(options =>
     options.UseSqlServer(connectionString));
 
@@ -69,5 +69,11 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+//using (var scope = app.Services.CreateScope())
+//{
+//    var context = scope.ServiceProvider.GetRequiredService<AutokucaContext>();
+//    context.Database.Migrate();
+//}
 
 app.Run();

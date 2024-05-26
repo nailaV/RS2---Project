@@ -1,7 +1,10 @@
 // ignore_for_file: unused_field, prefer_const_constructors, unused_import
 
+import 'package:eautokuca_mobile/providers/korisnici_provider.dart';
 import 'package:eautokuca_mobile/providers/rezervacija_provider.dart';
+import 'package:eautokuca_mobile/screens/rezervisani_termini_screen.dart';
 import 'package:eautokuca_mobile/utils/popup_dialogs.dart';
+import 'package:eautokuca_mobile/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -19,15 +22,19 @@ class RezervisiTermin extends StatefulWidget {
 class _RezervisiTerminState extends State<RezervisiTermin> {
   DateTime datum = DateTime.now();
   late RezervacijaProvider _rezervacijaProvider;
+  late KorisniciProvider _korisniciProvider;
   bool isLoading = false;
   bool disabledButton = true;
   List<String> lista = [];
   String? termin;
+  int userId = 0;
 
   @override
   void initState() {
     super.initState();
     _rezervacijaProvider = context.read<RezervacijaProvider>();
+    _korisniciProvider = context.read<KorisniciProvider>();
+    getUserId();
   }
 
   @override
@@ -216,7 +223,32 @@ class _RezervisiTerminState extends State<RezervisiTermin> {
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           color: Colors.black87,
           disabledColor: Colors.grey,
-          onPressed: disabledButton ? null : () {},
+          onPressed: disabledButton
+              ? null
+              : () {
+                  String datumVrijeme = DateTime(
+                    datum.year,
+                    datum.month,
+                    datum.day,
+                    int.parse(termin!.split(':')[0]),
+                    int.parse(termin!.split(':')[1]),
+                  ).toIso8601String();
+                  try {
+                    var request = {
+                      "automobilId": widget.carId,
+                      "korisnikId": userId,
+                      "datum": datumVrijeme
+                    };
+                    _rezervacijaProvider.kreirajRezervaciju(request);
+                    MyDialogs.showSuccess(context, "Uspješno rezervisan termin",
+                        () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (builder) => RezervisaniTermini()));
+                    });
+                  } catch (e) {
+                    MyDialogs.showError(context, e.toString());
+                  }
+                },
           child: const Text(
             "REZERVACIJA",
             style: TextStyle(
@@ -256,6 +288,18 @@ class _RezervisiTerminState extends State<RezervisiTermin> {
       var satnice = await _rezervacijaProvider.getSlobodne(widget.carId, datum);
       setState(() {
         lista = satnice;
+        isLoading = false;
+      });
+    } catch (e) {
+      MyDialogs.showError(context, e.toString());
+    }
+  }
+
+  Future<void> getUserId() async {
+    try {
+      var korisnikId = await _korisniciProvider.getKorisnikID();
+      setState(() {
+        userId = korisnikId;
         isLoading = false;
       });
     } catch (e) {

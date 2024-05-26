@@ -174,123 +174,180 @@ class _RezervacijeScreenState extends State<RezervacijeScreen> {
           MaterialStateColor.resolveWith((states) => Colors.blueGrey[50]!),
       columns: const [
         DataColumn(
-          label: Text(
-            "Vrijeme",
-            style: TextStyle(fontWeight: FontWeight.bold),
+          label: Center(
+            child: Text(
+              "Vrijeme",
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
           ),
         ),
         DataColumn(
-          label: Text(
-            "Automobil",
-            style: TextStyle(fontWeight: FontWeight.bold),
+          label: Center(
+            child: Text(
+              "Automobil",
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
           ),
         ),
         DataColumn(
-          label: Text(
-            "Klijent",
-            style: TextStyle(fontWeight: FontWeight.bold),
+          label: Center(
+            child: Text(
+              "Klijent",
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
           ),
         ),
         DataColumn(
-          label: Text(
-            "Status",
-            style: TextStyle(fontWeight: FontWeight.bold),
+          label: Center(
+            child: Text(
+              "Status",
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
           ),
         ),
         DataColumn(
-          label: Text(
-            "Akcija",
-            style: TextStyle(fontWeight: FontWeight.bold),
+          label: Center(
+            child: Text(
+              "Završi",
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
           ),
         ),
         DataColumn(
-          label: Text(
-            "Akcija",
-            style: TextStyle(fontWeight: FontWeight.bold),
+          label: Center(
+            child: Text(
+              "Otkaži",
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
           ),
         ),
       ],
       rows: (rezervacijaResult?.result ?? []).map((Rezervacija e) {
-        return DataRow(
-          cells: [
-            DataCell(
-              Container(
+        List<DataCell> cells = [
+          DataCell(
+            Center(
+              child: Container(
                 padding: EdgeInsets.all(8.0),
                 child: Text(e.vrijeme),
               ),
             ),
-            DataCell(
-              Container(
+          ),
+          DataCell(
+            Center(
+              child: Container(
                 padding: EdgeInsets.all(8.0),
                 child: Text(e.auto),
               ),
             ),
-            DataCell(
-              Container(
+          ),
+          DataCell(
+            Center(
+              child: Container(
                 padding: EdgeInsets.all(8.0),
                 child: Text(e.user),
               ),
             ),
-            DataCell(
-              Container(
+          ),
+          DataCell(
+            Center(
+              child: Container(
                 padding: EdgeInsets.all(8.0),
                 child: Text(e.status ?? ""),
               ),
             ),
+          ),
+        ];
+
+        if (e.status == "Aktivna") {
+          cells.add(
             DataCell(
-              Container(
-                padding: EdgeInsets.all(8.0),
-                child: ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(
-                      Color.fromRGBO(236, 239, 241, 1.0),
+              Center(
+                child: Container(
+                  padding: EdgeInsets.all(8.0),
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                        Color.fromRGBO(236, 239, 241, 1.0),
+                      ),
                     ),
+                    onPressed: () async {
+                      try {
+                        await _rezervacijaProvider.zavrsi(e.rezervacijaId!);
+                        MyDialogs.showSuccess(
+                            context, "Uspješno završen termin.", () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (builder) => RezervacijeScreen()));
+                        });
+                      } catch (e) {
+                        MyDialogs.showError(context, e.toString());
+                      }
+                    },
+                    child: Text("Završi",
+                        style:
+                            TextStyle(fontSize: 14, color: Colors.green[700])),
                   ),
-                  onPressed: () async {
-                    try {
-                      await _rezervacijaProvider.zavrsi(e.rezervacijaId!);
-                      MyDialogs.showSuccess(context, "Uspješno završen termin.",
-                          () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (builder) => RezervacijeScreen()));
-                      });
-                    } catch (e) {
-                      MyDialogs.showError(context, e.toString());
-                    }
-                  },
-                  child: Text("Završi",
-                      style: TextStyle(fontSize: 14, color: Colors.green[700])),
                 ),
               ),
             ),
+          );
+          cells.add(
             DataCell(
-              Container(
-                padding: EdgeInsets.all(8.0),
-                child: ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(
-                      Color.fromRGBO(236, 239, 241, 1.0),
+              Center(
+                child: Container(
+                  padding: EdgeInsets.all(8.0),
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                        Color.fromRGBO(236, 239, 241, 1.0),
+                      ),
                     ),
+                    onPressed: () async {
+                      try {
+                        await _rezervacijaProvider.otkazi(e.rezervacijaId!);
+                        MyDialogs.showSuccess(
+                            context, "Uspješno otkazan termin.", () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (builder) => RezervacijeScreen()));
+                        });
+                      } catch (e) {
+                        MyDialogs.showError(context, e.toString());
+                      }
+                    },
+                    child: Text("Otkaži",
+                        style: TextStyle(fontSize: 14, color: Colors.red[700])),
                   ),
-                  onPressed: () async {
-                    try {
-                      await _rezervacijaProvider.otkazi(e.rezervacijaId!);
-                      MyDialogs.showSuccess(context, "Uspješno otkazan termin.",
-                          () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (builder) => RezervacijeScreen()));
-                      });
-                    } catch (e) {
-                      MyDialogs.showError(context, e.toString());
-                    }
-                  },
-                  child: Text("Otkaži",
-                      style: TextStyle(fontSize: 14, color: Colors.red[700])),
                 ),
               ),
             ),
-          ],
-        );
+          );
+        } else {
+          cells.add(DataCell(Center(
+            child: Container(
+              child: Text(
+                "X",
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          )));
+          cells.add(DataCell(Center(
+            child: Container(
+              child: Text(
+                "X",
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          )));
+        }
+
+        return DataRow(cells: cells);
       }).toList(),
     );
   }
