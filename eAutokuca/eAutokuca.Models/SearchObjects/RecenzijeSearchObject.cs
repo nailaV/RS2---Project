@@ -8,5 +8,6 @@ namespace eAutokuca.Models.SearchObjects
 {
     public class RecenzijeSearchObject:BaseSearchObject
     {
+        public int? ocjena { get; set; }
     }
 }

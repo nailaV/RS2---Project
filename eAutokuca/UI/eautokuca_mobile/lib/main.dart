@@ -6,6 +6,7 @@ import 'package:eautokuca_mobile/providers/car_provider.dart';
 import 'package:eautokuca_mobile/providers/korisnici_provider.dart';
 import 'package:eautokuca_mobile/providers/kosarica_provider.dart';
 import 'package:eautokuca_mobile/providers/oprema_provider.dart';
+import 'package:eautokuca_mobile/providers/recenzije_provider.dart';
 import 'package:eautokuca_mobile/providers/rezervacija_provider.dart';
 import 'package:eautokuca_mobile/screens/lista_automobila.dart';
 import 'package:eautokuca_mobile/utils/popup_dialogs.dart';
@@ -25,6 +26,7 @@ void main() {
       ChangeNotifierProvider(create: (_) => AutodijeloviProvider()),
       ChangeNotifierProvider(create: (_) => AutomobilFavoritProvider()),
       ChangeNotifierProvider(create: (_) => KosaricaProvider()),
+      ChangeNotifierProvider(create: (_) => RecenzijeProvider()),
     ],
     child: const MyApp(),
   ));

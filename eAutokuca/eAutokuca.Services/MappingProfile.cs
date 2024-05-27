@@ -40,7 +40,11 @@ namespace eAutokuca.Services
 
             CreateMap<Database.Report, Models.Report>();
             CreateMap<Models.Requests.ReportInsert, Database.Report>();
-          
+
+            CreateMap<Database.Recenzije, Models.Recenzije>();
+            CreateMap<Models.Requests.RecenzijeInsert, Database.Recenzije>();
+            CreateMap<Models.Requests.RecenzijeUpdate, Database.Recenzije>();
+
         }
     }
 }

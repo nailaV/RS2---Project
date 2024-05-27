@@ -10,6 +10,7 @@ import 'package:eautokuca_mobile/screens/favoriti_screen.dart';
 import 'package:eautokuca_mobile/screens/korisnicki_profil_screen.dart';
 import 'package:eautokuca_mobile/screens/kosarica_screen.dart';
 import 'package:eautokuca_mobile/screens/lista_automobila.dart';
+import 'package:eautokuca_mobile/screens/recenzije_screen.dart';
 import 'package:eautokuca_mobile/screens/rezervisani_termini_screen.dart';
 import 'package:eautokuca_mobile/screens/shop_main_screen.dart';
 import 'package:eautokuca_mobile/utils/popup_dialogs.dart';
@@ -187,6 +188,53 @@ class _drawerItems extends StatelessWidget {
               builder: (context) => const KosaricaScreen(),
             ));
           },
+        ),
+        Spacer(),
+        Padding(
+          padding: const EdgeInsets.only(right: 16.0, bottom: 16.0),
+          child: Align(
+            alignment: Alignment.bottomRight,
+            child: GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const RecenzijeScreen(),
+                ));
+              },
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.question_answer_outlined,
+                        size: 20,
+                        color: Colors.white,
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        "Sviđa ti se aplikacija? ",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Text(
+                    "Klikni da ostaviš recenziju! ",
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
         ),
       ],
     );
