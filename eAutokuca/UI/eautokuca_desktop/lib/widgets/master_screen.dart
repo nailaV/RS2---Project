@@ -1,17 +1,18 @@
 // ignore_for_file: must_be_immutable, prefer_const_constructors, camel_case_types, unused_element, unused_import, prefer_const_literals_to_create_immutables
 
-//import 'dart:ffi';
-
+import 'dart:isolate';
 import 'dart:math';
 
 import 'package:eautokuca_desktop/main.dart';
 import 'package:eautokuca_desktop/models/korisnici.dart';
 import 'package:eautokuca_desktop/providers/korisnici_provider.dart';
+import 'package:eautokuca_desktop/providers/recenzije_provider.dart';
 import 'package:eautokuca_desktop/screens/autodijelovi_main_screen.dart';
 import 'package:eautokuca_desktop/screens/finansije_screen.dart';
 import 'package:eautokuca_desktop/screens/korisnici_screen.dart';
 import 'package:eautokuca_desktop/screens/korisnicki_profil_screen.dart';
 import 'package:eautokuca_desktop/screens/lista_automobila.dart';
+import 'package:eautokuca_desktop/screens/recenzije_screen.dart';
 import 'package:eautokuca_desktop/screens/report_screen.dart';
 import 'package:eautokuca_desktop/screens/rezervacije_screen.dart';
 import 'package:eautokuca_desktop/utils/popup_dialogs.dart';
@@ -19,6 +20,7 @@ import 'package:eautokuca_desktop/utils/utils.dart';
 import 'package:eautokuca_desktop/widgets/promjena_passworda_popup.dart';
 import 'package:eautokuca_desktop/widgets/novi_automobil_popup.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class MasterScreenWidget extends StatefulWidget {
   Widget? child;
@@ -30,6 +32,29 @@ class MasterScreenWidget extends StatefulWidget {
 }
 
 class _MasterScreenWidgetState extends State<MasterScreenWidget> {
+  double prosjecnaOcjena = 0.0;
+  late RecenzijeProvider _recenzijeProvider;
+  bool isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _recenzijeProvider = context.read<RecenzijeProvider>();
+    getData();
+  }
+
+  Future<void> getData() async {
+    try {
+      var data = await _recenzijeProvider.getAverage();
+      setState(() {
+        prosjecnaOcjena = data;
+        isLoading = true;
+      });
+    } catch (e) {
+      MyDialogs.showError(context, e.toString());
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,7 +79,7 @@ class _MasterScreenWidgetState extends State<MasterScreenWidget> {
           backgroundColor: Colors.yellow[700]),
       drawer: Drawer(
         backgroundColor: Colors.black,
-        child: _drawerItems(),
+        child: _drawerItems(prosjecnaOcjena: prosjecnaOcjena),
       ),
       body: widget.child!,
     );
@@ -62,8 +87,11 @@ class _MasterScreenWidgetState extends State<MasterScreenWidget> {
 }
 
 class _drawerItems extends StatelessWidget {
+  final double prosjecnaOcjena;
+
   const _drawerItems({
     Key? key,
+    required this.prosjecnaOcjena,
   }) : super(key: key);
 
   @override
@@ -257,6 +285,50 @@ class _drawerItems extends StatelessWidget {
         ),
         SizedBox(
           height: 12,
+        ),
+        Spacer(),
+        Padding(
+          padding: const EdgeInsets.only(right: 16.0, bottom: 16.0),
+          child: Align(
+            alignment: Alignment.bottomRight,
+            child: GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const RecenzijeScreen(),
+                ));
+              },
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.star,
+                        color: Colors.yellow[700],
+                        size: 30,
+                      ),
+                      Text(
+                        "Prosječna ocjena $prosjecnaOcjena",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.yellow[700],
+                        ),
+                      ),
+                    ],
+                  ),
+                  Text(
+                    "Klikni za više detalja!",
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
         ),
       ],
     );

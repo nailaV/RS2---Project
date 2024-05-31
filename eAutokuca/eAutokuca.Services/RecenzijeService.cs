@@ -26,6 +26,11 @@ namespace eAutokuca.Services
             return query;
         }
 
+        public async Task<double> getProsjecnuRecenziju()
+        {
+            return await _context.Recenzijes.AverageAsync(x => x.Ocjena);
+        }
+
         public async Task<List<Models.Recenzije>> getRecenzijeZaUsera(string username)
         {
             var result = await _context.Recenzijes.Where(x => x.Korisnik.Username == username).ToListAsync();

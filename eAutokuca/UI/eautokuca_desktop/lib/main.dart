@@ -4,6 +4,7 @@ import 'package:eautokuca_desktop/providers/autodijelovi_provider.dart';
 import 'package:eautokuca_desktop/providers/car_provider.dart';
 import 'package:eautokuca_desktop/providers/korisnici_provider.dart';
 import 'package:eautokuca_desktop/providers/oprema_provider.dart';
+import 'package:eautokuca_desktop/providers/recenzije_provider.dart';
 import 'package:eautokuca_desktop/providers/report_provider.dart';
 import 'package:eautokuca_desktop/providers/rezervacija_provider.dart';
 import 'package:eautokuca_desktop/screens/lista_automobila.dart';
@@ -19,7 +20,8 @@ void main() {
       ChangeNotifierProvider(create: (_) => OpremaProvider()),
       ChangeNotifierProvider(create: (_) => AutodijeloviProvider()),
       ChangeNotifierProvider(create: (_) => RezervacijaProvider()),
-      ChangeNotifierProvider(create: (_) => ReportProvider())
+      ChangeNotifierProvider(create: (_) => ReportProvider()),
+      ChangeNotifierProvider(create: (_) => RecenzijeProvider())
     ],
     child: const MyApp(),
   ));

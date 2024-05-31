@@ -11,5 +11,6 @@ namespace eAutokuca.Services
     public interface IRecenzijeService:ICrudService<Models.Recenzije,RecenzijeSearchObject, RecenzijeInsert, RecenzijeUpdate>
     {
         public Task<List<Models.Recenzije>> getRecenzijeZaUsera(string username);
+        public Task<double> getProsjecnuRecenziju();
     }
 }

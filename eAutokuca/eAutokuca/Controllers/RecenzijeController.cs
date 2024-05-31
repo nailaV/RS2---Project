@@ -20,5 +20,11 @@ namespace eAutokuca.Controllers
         {
             return await _service.getRecenzijeZaUsera(username);
         }
+
+        [HttpGet("getAverage")]
+        public async Task<double> getProsjecnuRecenziju()
+        {
+            return await _service.getProsjecnuRecenziju();
+        }
     }
 }
