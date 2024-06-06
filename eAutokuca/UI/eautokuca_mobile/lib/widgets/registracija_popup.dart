@@ -134,6 +134,18 @@ class _RegistracijaState extends State<Registracija> {
           child: FormBuilderTextField(
             cursorColor: Colors.grey,
             autovalidateMode: AutovalidateMode.onUserInteraction,
+            validator: FormBuilderValidators.compose([
+              (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Polje je obavezno.';
+                }
+
+                if (!RegExp(r'^[a-zA-Z]+$').hasMatch(value)) {
+                  return 'Polje može sadržavati samo slova.';
+                }
+                return null;
+              },
+            ]),
             name: 'ime',
             decoration: const InputDecoration(
                 border: OutlineInputBorder(
@@ -141,16 +153,6 @@ class _RegistracijaState extends State<Registracija> {
                 ),
                 labelText: 'Ime',
                 labelStyle: TextStyle(fontSize: 14)),
-            validator: FormBuilderValidators.compose([
-              FormBuilderValidators.required(errorText: "Polje je obavezno."),
-              (value) {
-                if (value != null && value.startsWith(" ")) {
-                  return "Počnite sa slovima";
-                } else {
-                  return null;
-                }
-              }
-            ]),
           ),
         ),
         SizedBox(
@@ -158,6 +160,18 @@ class _RegistracijaState extends State<Registracija> {
           child: FormBuilderTextField(
             cursorColor: Colors.grey,
             autovalidateMode: AutovalidateMode.onUserInteraction,
+            validator: FormBuilderValidators.compose([
+              (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Polje je obavezno.';
+                }
+
+                if (!RegExp(r'^[a-zA-Z]+$').hasMatch(value)) {
+                  return 'Polje može sadržavati samo slova.';
+                }
+                return null;
+              },
+            ]),
             name: 'prezime',
             decoration: const InputDecoration(
                 border: OutlineInputBorder(
@@ -172,6 +186,10 @@ class _RegistracijaState extends State<Registracija> {
           child: FormBuilderTextField(
             cursorColor: Colors.grey,
             autovalidateMode: AutovalidateMode.onUserInteraction,
+            validator: FormBuilderValidators.compose([
+              FormBuilderValidators.required(errorText: "Polje je obavezno."),
+              FormBuilderValidators.email(errorText: "Unijeti validan email.")
+            ]),
             name: 'email',
             decoration: const InputDecoration(
                 border: OutlineInputBorder(
@@ -186,6 +204,16 @@ class _RegistracijaState extends State<Registracija> {
           child: FormBuilderTextField(
             cursorColor: Colors.grey,
             autovalidateMode: AutovalidateMode.onUserInteraction,
+            validator: FormBuilderValidators.compose([
+              FormBuilderValidators.required(errorText: "Polje je obavezno."),
+              (value) {
+                if (value != null &&
+                    !RegExp(r'^\d{3}-\d{3}/\d{3}$').hasMatch(value)) {
+                  return 'Unijeti format XXX-XXX/XXX';
+                }
+                return null;
+              },
+            ]),
             name: 'telefon',
             decoration: const InputDecoration(
                 border: OutlineInputBorder(
@@ -200,6 +228,16 @@ class _RegistracijaState extends State<Registracija> {
           child: FormBuilderTextField(
             cursorColor: Colors.grey,
             autovalidateMode: AutovalidateMode.onUserInteraction,
+            validator: FormBuilderValidators.compose([
+              FormBuilderValidators.required(errorText: 'Polje je obavezno.'),
+              FormBuilderValidators.minLength(3,
+                  errorText: 'Minimalno 3 karaktera.'),
+              FormBuilderValidators.maxLength(10,
+                  errorText: 'Maksimalno 10 karaktera.'),
+              FormBuilderValidators.match(
+                  r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$',
+                  errorText: 'Slova i brojevi dozvoljeni.'),
+            ]),
             name: 'username',
             decoration: const InputDecoration(
                 border: OutlineInputBorder(
@@ -214,6 +252,14 @@ class _RegistracijaState extends State<Registracija> {
           child: FormBuilderTextField(
             cursorColor: Colors.grey,
             autovalidateMode: AutovalidateMode.onUserInteraction,
+            validator: FormBuilderValidators.compose([
+              FormBuilderValidators.required(errorText: 'Polje je obavezno.'),
+              FormBuilderValidators.minLength(8,
+                  errorText: 'Minimalno 8 karaktera.'),
+              FormBuilderValidators.match(
+                  r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$',
+                  errorText: 'Kombinacija A,a,7,%,!,@'),
+            ]),
             name: 'password',
             decoration: const InputDecoration(
                 border: OutlineInputBorder(
@@ -228,6 +274,15 @@ class _RegistracijaState extends State<Registracija> {
           child: FormBuilderTextField(
             cursorColor: Colors.grey,
             autovalidateMode: AutovalidateMode.onUserInteraction,
+            validator: (val) {
+              if (val == null || val.isEmpty) {
+                return 'Polje je obavezno.';
+              }
+              if (val != _formKey.currentState?.fields['password']?.value) {
+                return 'Šifre se ne poklapaju.';
+              }
+              return null;
+            },
             name: 'passwordPotvrda',
             decoration: const InputDecoration(
                 border: OutlineInputBorder(

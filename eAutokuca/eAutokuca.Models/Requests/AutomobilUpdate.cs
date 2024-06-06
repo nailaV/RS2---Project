@@ -10,7 +10,7 @@ namespace eAutokuca.Models.Requests
     {
         public decimal? Cijena { get; set; }
         public decimal? PredjeniKilometri { get; set; }
-        public string? Status { get; set; } = null!;
+  
 
 
 

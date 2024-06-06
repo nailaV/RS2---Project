@@ -56,7 +56,6 @@ class _ReportScreenState extends State<ReportScreen> {
         reportData = data;
         isLoading = false;
       });
-      print(reportData?[0].datumProdaje);
     } catch (e) {
       MyDialogs.showError(context, e.toString());
     }

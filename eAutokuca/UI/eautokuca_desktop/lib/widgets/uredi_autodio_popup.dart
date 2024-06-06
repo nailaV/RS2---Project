@@ -11,6 +11,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:provider/provider.dart';
 
 class UrediAutodio extends StatefulWidget {
@@ -38,7 +39,6 @@ class _UrediAutodioState extends State<UrediAutodio> {
       "cijena": widget.autodijelovi.cijena.toString(),
       "naziv": widget.autodijelovi.naziv,
       "kolicinaNaStanju": widget.autodijelovi.kolicinaNaStanju.toString(),
-      "status": widget.autodijelovi.status,
       "opis": widget.autodijelovi.opis,
       "slika": widget.autodijelovi.slika
     };
@@ -135,6 +135,16 @@ class _UrediAutodioState extends State<UrediAutodio> {
           child: FormBuilderTextField(
             cursorColor: Colors.grey,
             autovalidateMode: AutovalidateMode.onUserInteraction,
+            validator: FormBuilderValidators.compose([
+              FormBuilderValidators.required(errorText: "Polje je obavezno."),
+              (value) {
+                if (value != null && value.startsWith(" ")) {
+                  return "Počnite sa slovima";
+                } else {
+                  return null;
+                }
+              }
+            ]),
             name: 'naziv',
             decoration: const InputDecoration(
                 border: OutlineInputBorder(
@@ -149,6 +159,19 @@ class _UrediAutodioState extends State<UrediAutodio> {
           child: FormBuilderTextField(
             cursorColor: Colors.grey,
             autovalidateMode: AutovalidateMode.onUserInteraction,
+            validator: FormBuilderValidators.compose([
+              FormBuilderValidators.required(errorText: 'Polje je obavezno'),
+              (val) {
+                if (val == null || val.isEmpty) {
+                  return null;
+                }
+                final number = double.tryParse(val);
+                if (number == null) {
+                  return 'Unesite vrijedost sa . ';
+                }
+                return null;
+              },
+            ]),
             name: 'cijena',
             decoration: const InputDecoration(
                 border: OutlineInputBorder(
@@ -163,6 +186,10 @@ class _UrediAutodioState extends State<UrediAutodio> {
           child: FormBuilderTextField(
             cursorColor: Colors.grey,
             autovalidateMode: AutovalidateMode.onUserInteraction,
+            validator: FormBuilderValidators.compose([
+              FormBuilderValidators.required(errorText: "Polje je obavezno"),
+              FormBuilderValidators.integer(errorText: 'Unesite cijeli broj.'),
+            ]),
             name: 'kolicinaNaStanju',
             decoration: const InputDecoration(
                 border: OutlineInputBorder(
@@ -177,20 +204,16 @@ class _UrediAutodioState extends State<UrediAutodio> {
           child: FormBuilderTextField(
             cursorColor: Colors.grey,
             autovalidateMode: AutovalidateMode.onUserInteraction,
-            name: 'status',
-            decoration: const InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(30)),
-                ),
-                labelText: 'Status',
-                labelStyle: TextStyle(fontSize: 14)),
-          ),
-        ),
-        SizedBox(
-          width: 230,
-          child: FormBuilderTextField(
-            cursorColor: Colors.grey,
-            autovalidateMode: AutovalidateMode.onUserInteraction,
+            validator: FormBuilderValidators.compose([
+              FormBuilderValidators.required(errorText: "Polje je obavezno."),
+              (value) {
+                if (value != null && value.startsWith(" ")) {
+                  return "Počnite sa slovima";
+                } else {
+                  return null;
+                }
+              }
+            ]),
             name: 'opis',
             decoration: const InputDecoration(
                 border: OutlineInputBorder(

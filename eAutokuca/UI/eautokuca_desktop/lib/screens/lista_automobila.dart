@@ -1,4 +1,4 @@
-// ignore_for_file: unused_import, use_super_parameters, prefer_const_literals_to_create_immutables
+// ignore_for_file: unused_import, use_super_parameters, prefer_const_literals_to_create_immutables, non_constant_identifier_names, prefer_final_fields, unused_element
 
 //ignore_for_file: avoid_unnecessary_containers, unused_field, prefer_const_constructors, sized_box_for_whitespace
 

@@ -86,6 +86,7 @@ class LoginPage extends StatelessWidget {
   TextEditingController _passwordController = new TextEditingController();
 
   late CarProvider _carProvider;
+  bool _obscurePass = true;
 
   @override
   Widget build(BuildContext context) {
@@ -109,23 +110,31 @@ class LoginPage extends StatelessWidget {
                     height: 100,
                     width: 100,
                   ),
-                  TextField(
+                  TextFormField(
                     decoration: InputDecoration(
                       labelText: "Username",
                       labelStyle: TextStyle(color: Colors.yellow),
                       prefixIcon: Icon(Icons.email, color: Colors.yellow),
                       enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.yellow)),
+                        borderSide: BorderSide(color: Colors.yellow),
+                      ),
                     ),
                     controller: _usernameController,
                   ),
                   SizedBox(height: 20),
                   TextField(
-                    obscureText: true,
+                    obscureText: _obscurePass,
                     decoration: InputDecoration(
                       labelText: "Password",
                       labelStyle: TextStyle(color: Colors.yellow),
                       prefixIcon: Icon(Icons.password, color: Colors.yellow),
+                      suffixIcon: IconButton(
+                          onPressed: () {
+                            _obscurePass = !_obscurePass;
+                          },
+                          icon: Icon(_obscurePass
+                              ? Icons.visibility
+                              : Icons.visibility_off)),
                       enabledBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: Colors.yellow)),
                     ),

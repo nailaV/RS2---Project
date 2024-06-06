@@ -166,21 +166,21 @@ class _DetaljiProizvodaState extends State<DetaljiProizvoda> {
           SizedBox(
             height: 10,
           ),
-          ElevatedButton.icon(
-            onPressed: () async {},
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.red[700],
-            ),
-            icon: Icon(
-              Icons.favorite_border,
-              color: Colors.white,
-              size: 25,
-            ),
-            label: Text(
-              "Dodaj na listu želja",
-              style: TextStyle(color: Colors.white, fontSize: 18),
-            ),
-          ),
+          // ElevatedButton.icon(
+          //   onPressed: () async {},
+          //   style: ElevatedButton.styleFrom(
+          //     backgroundColor: Colors.red[700],
+          //   ),
+          //   icon: Icon(
+          //     Icons.favorite_border,
+          //     color: Colors.white,
+          //     size: 25,
+          //   ),
+          //   label: Text(
+          //     "Dodaj na listu želja",
+          //     style: TextStyle(color: Colors.white, fontSize: 18),
+          //   ),
+          // ),
         ],
       ),
     );

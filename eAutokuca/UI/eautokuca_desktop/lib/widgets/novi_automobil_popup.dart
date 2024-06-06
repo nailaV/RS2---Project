@@ -1,4 +1,4 @@
-// ignore_for_file: must_be_immutable, prefer_const_constructors, use_build_context_synchronously, unused_field
+// ignore_for_file: prefer_const_constructors
 
 import 'dart:convert';
 import 'dart:io';
@@ -15,7 +15,7 @@ import 'package:provider/provider.dart';
 
 class NoviAutomobil extends StatefulWidget {
   //Car car;
-  const NoviAutomobil({super.key});
+  const NoviAutomobil({Key? key}) : super(key: key);
 
   @override
   State<NoviAutomobil> createState() => _NoviAutomobilState();
@@ -130,20 +130,20 @@ class _NoviAutomobilState extends State<NoviAutomobil> {
             autovalidateMode: AutovalidateMode.onUserInteraction,
             name: 'model',
             decoration: const InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(30)),
-                ),
-                labelText: 'Model',
-                labelStyle: TextStyle(fontSize: 14)),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(30)),
+              ),
+              labelText: 'Model',
+              labelStyle: TextStyle(fontSize: 14),
+            ),
             validator: FormBuilderValidators.compose([
-              FormBuilderValidators.required(errorText: "Polje je obavezno."),
               (value) {
-                if (value != null && value.startsWith(" ")) {
-                  return "Počnite sa slovima";
-                } else {
-                  return null;
+                if (value == null || value.isEmpty) {
+                  return 'Polje je obavezno.';
                 }
-              }
+
+                return null;
+              },
             ]),
           ),
         ),
@@ -152,6 +152,18 @@ class _NoviAutomobilState extends State<NoviAutomobil> {
           child: FormBuilderTextField(
             cursorColor: Colors.grey,
             autovalidateMode: AutovalidateMode.onUserInteraction,
+            validator: FormBuilderValidators.compose([
+              (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Polje je obavezno.';
+                }
+
+                if (!RegExp(r'^[a-zA-Z]+$').hasMatch(value)) {
+                  return 'Polje može sadržavati samo slova.';
+                }
+                return null;
+              },
+            ]),
             name: 'marka',
             decoration: const InputDecoration(
                 border: OutlineInputBorder(
@@ -165,6 +177,9 @@ class _NoviAutomobilState extends State<NoviAutomobil> {
           width: 230,
           child: FormBuilderDropdown(
             name: 'mjenjac',
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            validator: FormBuilderValidators.required(
+                errorText: "Obavezno izabrati transmisiju."),
             decoration: InputDecoration(
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(30)),
@@ -191,6 +206,18 @@ class _NoviAutomobilState extends State<NoviAutomobil> {
           child: FormBuilderTextField(
             cursorColor: Colors.grey,
             autovalidateMode: AutovalidateMode.onUserInteraction,
+            validator: FormBuilderValidators.compose([
+              (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Polje je obavezno.';
+                }
+
+                if (!RegExp(r'^[a-zA-Z]+$').hasMatch(value)) {
+                  return 'Polje može sadržavati samo slova.';
+                }
+                return null;
+              },
+            ]),
             name: 'motor',
             decoration: const InputDecoration(
                 border: OutlineInputBorder(
@@ -205,6 +232,11 @@ class _NoviAutomobilState extends State<NoviAutomobil> {
           child: FormBuilderTextField(
             cursorColor: Colors.grey,
             autovalidateMode: AutovalidateMode.onUserInteraction,
+            validator: FormBuilderValidators.compose([
+              FormBuilderValidators.required(errorText: "Polje je obavezno"),
+              FormBuilderValidators.integer(
+                  errorText: 'Unesite brojčanu vrijednost.'),
+            ]),
             name: 'godinaProizvodnje',
             decoration: const InputDecoration(
                 border: OutlineInputBorder(
@@ -219,6 +251,11 @@ class _NoviAutomobilState extends State<NoviAutomobil> {
           child: FormBuilderTextField(
             cursorColor: Colors.grey,
             autovalidateMode: AutovalidateMode.onUserInteraction,
+            validator: FormBuilderValidators.compose([
+              FormBuilderValidators.required(errorText: "Polje je obavezno"),
+              FormBuilderValidators.numeric(
+                  errorText: 'Unesite brojčanu vrijednost.'),
+            ]),
             name: 'predjeniKilometri',
             decoration: const InputDecoration(
                 border: OutlineInputBorder(
@@ -233,6 +270,18 @@ class _NoviAutomobilState extends State<NoviAutomobil> {
           child: FormBuilderTextField(
             cursorColor: Colors.grey,
             autovalidateMode: AutovalidateMode.onUserInteraction,
+            validator: FormBuilderValidators.compose([
+              (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Polje je obavezno.';
+                }
+
+                if (!RegExp(r'^[a-zA-Z]+$').hasMatch(value)) {
+                  return 'Polje može sadržavati samo slova.';
+                }
+                return null;
+              },
+            ]),
             name: 'status',
             decoration: const InputDecoration(
                 border: OutlineInputBorder(
@@ -248,12 +297,22 @@ class _NoviAutomobilState extends State<NoviAutomobil> {
             cursorColor: Colors.grey,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             name: 'brojSasije',
+            validator: FormBuilderValidators.compose([
+              FormBuilderValidators.required(errorText: "Polje je obavezno."),
+              (value) {
+                if (value == null || value.length != 17) {
+                  return 'Unijeti 17 karaktera.';
+                }
+                return null;
+              },
+            ]),
             decoration: const InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(30)),
-                ),
-                labelText: 'Broj šasije',
-                labelStyle: TextStyle(fontSize: 14)),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(30)),
+              ),
+              labelText: 'Broj šasije',
+              labelStyle: TextStyle(fontSize: 14),
+            ),
           ),
         ),
         SizedBox(
@@ -261,6 +320,8 @@ class _NoviAutomobilState extends State<NoviAutomobil> {
           child: FormBuilderTextField(
             cursorColor: Colors.grey,
             autovalidateMode: AutovalidateMode.onUserInteraction,
+            validator:
+                FormBuilderValidators.required(errorText: "Polje je obavezno."),
             name: 'snagaMotora',
             decoration: const InputDecoration(
                 border: OutlineInputBorder(
@@ -275,6 +336,11 @@ class _NoviAutomobilState extends State<NoviAutomobil> {
           child: FormBuilderTextField(
             cursorColor: Colors.grey,
             autovalidateMode: AutovalidateMode.onUserInteraction,
+            validator: FormBuilderValidators.compose([
+              FormBuilderValidators.required(errorText: "Polje je obavezno"),
+              FormBuilderValidators.integer(
+                  errorText: 'Unesite brojčanu vrijednost.'),
+            ]),
             name: 'brojVrata',
             decoration: const InputDecoration(
                 border: OutlineInputBorder(
@@ -289,6 +355,18 @@ class _NoviAutomobilState extends State<NoviAutomobil> {
           child: FormBuilderTextField(
             cursorColor: Colors.grey,
             autovalidateMode: AutovalidateMode.onUserInteraction,
+            validator: FormBuilderValidators.compose([
+              (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Polje je obavezno.';
+                }
+
+                if (!RegExp(r'^[a-zA-Z]+$').hasMatch(value)) {
+                  return 'Polje može sadržavati samo slova.';
+                }
+                return null;
+              },
+            ]),
             name: 'boja',
             decoration: const InputDecoration(
                 border: OutlineInputBorder(
@@ -303,6 +381,11 @@ class _NoviAutomobilState extends State<NoviAutomobil> {
           child: FormBuilderTextField(
             cursorColor: Colors.grey,
             autovalidateMode: AutovalidateMode.onUserInteraction,
+            validator: FormBuilderValidators.compose([
+              FormBuilderValidators.required(errorText: "Polje je obavezno"),
+              FormBuilderValidators.numeric(
+                  errorText: 'Unesite brojčanu vrijednost.'),
+            ]),
             name: 'cijena',
             decoration: const InputDecoration(
                 border: OutlineInputBorder(
@@ -314,6 +397,9 @@ class _NoviAutomobilState extends State<NoviAutomobil> {
         ),
         FormBuilderField(
           name: 'slikaBase64',
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          validator:
+              FormBuilderValidators.required(errorText: "Polje je obavezno."),
           builder: (field) {
             return SizedBox(
               width: 250,

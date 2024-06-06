@@ -1,4 +1,4 @@
-// ignore_for_file: unused_import, must_be_immutable
+// ignore_for_file: unused_import, must_be_immutable, prefer_const_constructors
 
 import 'dart:convert';
 import 'dart:io';
@@ -125,13 +125,6 @@ class _DodajAutodioState extends State<DodajAutodio> {
           child: FormBuilderTextField(
             cursorColor: Colors.grey,
             autovalidateMode: AutovalidateMode.onUserInteraction,
-            name: 'naziv',
-            decoration: const InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(30)),
-                ),
-                labelText: 'Naziv proizvoda',
-                labelStyle: TextStyle(fontSize: 14)),
             validator: FormBuilderValidators.compose([
               FormBuilderValidators.required(errorText: "Polje je obavezno."),
               (value) {
@@ -142,6 +135,13 @@ class _DodajAutodioState extends State<DodajAutodio> {
                 }
               }
             ]),
+            name: 'naziv',
+            decoration: const InputDecoration(
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(30)),
+                ),
+                labelText: 'Naziv proizvoda',
+                labelStyle: TextStyle(fontSize: 14)),
           ),
         ),
         SizedBox(
@@ -149,6 +149,19 @@ class _DodajAutodioState extends State<DodajAutodio> {
           child: FormBuilderTextField(
             cursorColor: Colors.grey,
             autovalidateMode: AutovalidateMode.onUserInteraction,
+            validator: FormBuilderValidators.compose([
+              FormBuilderValidators.required(errorText: 'Polje je obavezno'),
+              (val) {
+                if (val == null || val.isEmpty) {
+                  return null;
+                }
+                final number = double.tryParse(val);
+                if (number == null) {
+                  return 'Unesite vrijedost sa . ';
+                }
+                return null;
+              },
+            ]),
             name: 'cijena',
             decoration: const InputDecoration(
                 border: OutlineInputBorder(
@@ -163,6 +176,10 @@ class _DodajAutodioState extends State<DodajAutodio> {
           child: FormBuilderTextField(
             cursorColor: Colors.grey,
             autovalidateMode: AutovalidateMode.onUserInteraction,
+            validator: FormBuilderValidators.compose([
+              FormBuilderValidators.required(errorText: "Polje je obavezno"),
+              FormBuilderValidators.integer(errorText: 'Unesite cijeli broj.'),
+            ]),
             name: 'kolicinaNaStanju',
             decoration: const InputDecoration(
                 border: OutlineInputBorder(
@@ -177,6 +194,16 @@ class _DodajAutodioState extends State<DodajAutodio> {
           child: FormBuilderTextField(
             cursorColor: Colors.grey,
             autovalidateMode: AutovalidateMode.onUserInteraction,
+            validator: FormBuilderValidators.compose([
+              FormBuilderValidators.required(errorText: "Polje je obavezno."),
+              (value) {
+                if (value != null && value.startsWith(" ")) {
+                  return "Počnite sa slovima";
+                } else {
+                  return null;
+                }
+              }
+            ]),
             name: 'opis',
             decoration: const InputDecoration(
                 border: OutlineInputBorder(

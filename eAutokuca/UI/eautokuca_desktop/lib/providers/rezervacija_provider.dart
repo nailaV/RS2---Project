@@ -56,10 +56,6 @@ class RezervacijaProvider extends BaseProvider<Rezervacija> {
           result.result.add(Rezervacija.fromJson(item));
         }
       }
-      //print("body: ${request.body}");
-      print("status code: ${request.statusCode}");
-      print("result: ${result}");
-      print("result inst: ${result.result[0]}");
 
       return result;
     } else {

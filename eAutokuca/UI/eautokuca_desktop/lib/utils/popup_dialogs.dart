@@ -1,6 +1,7 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:flutter/animation.dart';
 
 class MyDialogs {
   static Future<void> showSuccess(
@@ -10,7 +11,7 @@ class MyDialogs {
       context: context,
       builder: (context) => Dialog(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20.0),
+          borderRadius: BorderRadius.circular(15.0),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -20,68 +21,70 @@ class MyDialogs {
               width: double.infinity,
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: Colors.green,
+                gradient: LinearGradient(
+                  colors: [Colors.greenAccent, Colors.green],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
                 borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20.0),
-                  topRight: Radius.circular(20.0),
+                  topLeft: Radius.circular(15.0),
+                  topRight: Radius.circular(15.0),
                 ),
               ),
               child: Column(
-                children: const [
-                  Icon(
-                    Icons.check_circle,
-                    size: 40,
+                children: [
+                  AnimatedIcon(
+                    icon: Icons.check_circle_outline,
                     color: Colors.white,
+                    size: 50,
                   ),
                   SizedBox(height: 10),
                   Text(
-                    "USPJEŠNO",
+                    "Success!",
                     style: TextStyle(
-                      fontSize: 19,
+                      fontSize: 22,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
-                      letterSpacing: 3,
+                      letterSpacing: 1,
                     ),
                   ),
                 ],
               ),
             ),
-            const SizedBox(height: 15),
             Container(
-              padding: const EdgeInsets.all(15),
+              padding: const EdgeInsets.all(20),
               child: Text(
                 message,
                 textAlign: TextAlign.center,
                 style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.grey,
+                  fontSize: 16,
+                  fontWeight: FontWeight.normal,
+                  color: Colors.black87,
                 ),
               ),
             ),
-            const SizedBox(height: 20),
-            SizedBox(
-              width: 150,
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10),
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.green,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  padding: const EdgeInsets.all(15),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 15, horizontal: 30),
                 ),
                 onPressed: onYes,
                 child: const Text(
                   "OK",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 17,
+                    fontSize: 16,
                     color: Colors.white,
                   ),
                 ),
               ),
             ),
-            const SizedBox(height: 15),
           ],
         ),
       ),
@@ -93,85 +96,83 @@ class MyDialogs {
       context: context,
       builder: (context) => Dialog(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20.0),
+          borderRadius: BorderRadius.circular(15.0),
         ),
-        child: Container(
-          constraints: BoxConstraints(maxWidth: 300),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [Colors.grey[800]!, Colors.grey[700]!],
-                  ),
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(20.0),
-                    topRight: Radius.circular(20.0),
-                  ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              constraints: BoxConstraints(maxWidth: 300),
+              width: double.infinity,
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [Colors.redAccent, Colors.red],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
                 ),
-                child: Center(
-                  child: Column(
-                    children: const [
-                      Icon(Icons.error_outline, size: 40, color: Colors.red),
-                      SizedBox(height: 10),
-                      Text(
-                        "ERROR",
-                        style: TextStyle(
-                          fontSize: 19,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.red,
-                          letterSpacing: 3,
-                        ),
-                      )
-                    ],
-                  ),
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(15.0),
+                  topRight: Radius.circular(15.0),
                 ),
               ),
-              const SizedBox(height: 15),
-              Container(
-                padding: const EdgeInsets.all(15),
-                child: Text(
-                  text,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
+              child: Column(
+                children: [
+                  AnimatedIcon(
+                    icon: Icons.error_outline,
+                    color: Colors.white,
+                    size: 50,
                   ),
-                ),
-              ),
-              const SizedBox(height: 20),
-              SizedBox(
-                width: 150,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.yellow,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    padding: const EdgeInsets.all(15),
-                  ),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text(
-                    "OK",
+                  SizedBox(height: 10),
+                  Text(
+                    "Error!",
                     style: TextStyle(
+                      fontSize: 22,
                       fontWeight: FontWeight.bold,
-                      fontSize: 17,
-                      color: Colors.black87,
+                      color: Colors.white,
+                      letterSpacing: 1,
                     ),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.all(20),
+              child: Text(
+                text,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.normal,
+                  color: Colors.black87,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.red,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text(
+                  "OK",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    color: Colors.white,
                   ),
                 ),
               ),
-              const SizedBox(height: 15),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -184,91 +185,161 @@ class MyDialogs {
       context: context,
       builder: (context) => Dialog(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20.0),
+          borderRadius: BorderRadius.circular(15.0),
         ),
-        child: Container(
-          constraints: BoxConstraints(maxWidth: 300),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(25),
-                decoration: BoxDecoration(
-                  color: Colors.yellow[700],
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(20.0),
-                    topRight: Radius.circular(20.0),
-                  ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              constraints: BoxConstraints(maxWidth: 300),
+              width: double.infinity,
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [Colors.amber, Colors.orange],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
                 ),
-                child: Center(
-                  child: Column(
-                    children: const [
-                      Icon(Icons.question_mark_outlined,
-                          size: 50, color: Colors.white),
-                    ],
-                  ),
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(15.0),
+                  topRight: Radius.circular(15.0),
                 ),
               ),
-              const SizedBox(height: 20),
-              Container(
-                padding: const EdgeInsets.all(15),
-                child: Text(
-                  question,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black87,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              child: Column(
                 children: [
-                  SizedBox(
-                    width: 130,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.black87,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12)),
-                        padding: const EdgeInsets.all(15),
-                      ),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: const Text("Ne",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16)),
+                  AnimatedIcon(
+                    icon: Icons.question_mark_outlined,
+                    color: Colors.white,
+                    size: 50,
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                    "Question",
+                    style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      letterSpacing: 1,
                     ),
                   ),
-                  SizedBox(
-                    width: 130,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.black87,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12)),
-                        padding: const EdgeInsets.all(15),
-                      ),
-                      onPressed: onYes,
-                      child: const Text("Da",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16)),
-                    ),
-                  )
                 ],
               ),
-              const SizedBox(height: 15),
-            ],
-          ),
+            ),
+            Container(
+              padding: const EdgeInsets.all(20),
+              child: Text(
+                question,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.normal,
+                  color: Colors.black87,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.grey[800],
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 15, horizontal: 30),
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text(
+                      "No",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.amber,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 15, horizontal: 30),
+                    ),
+                    onPressed: onYes,
+                    child: const Text(
+                      "Yes",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
+      ),
+    );
+  }
+}
+
+class AnimatedIcon extends StatefulWidget {
+  final IconData icon;
+  final Color color;
+  final double size;
+
+  const AnimatedIcon({
+    Key? key,
+    required this.icon,
+    required this.color,
+    required this.size,
+  }) : super(key: key);
+
+  @override
+  _AnimatedIconState createState() => _AnimatedIconState();
+}
+
+class _AnimatedIconState extends State<AnimatedIcon>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(seconds: 1),
+      vsync: this,
+    )..repeat(reverse: true);
+    _animation = CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeInOut,
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ScaleTransition(
+      scale: _animation,
+      child: Icon(
+        widget.icon,
+        color: widget.color,
+        size: widget.size,
       ),
     );
   }

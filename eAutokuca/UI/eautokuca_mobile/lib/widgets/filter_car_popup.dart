@@ -5,6 +5,7 @@ import 'package:eautokuca_mobile/utils/popup_dialogs.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:provider/provider.dart';
 //import 'package:flutter_form_builder/flutter_form_builder.dart';
 
@@ -344,6 +345,9 @@ class _FilterDataState extends State<FilterData> {
             child: FormBuilderTextField(
               cursorColor: Colors.grey,
               autovalidateMode: AutovalidateMode.onUserInteraction,
+              validator: FormBuilderValidators.compose([
+                FormBuilderValidators.integer(errorText: 'Unesite broj.'),
+              ]),
               name: name,
               textAlign: TextAlign.center,
               decoration: InputDecoration(

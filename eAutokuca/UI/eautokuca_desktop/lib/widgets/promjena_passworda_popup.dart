@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously, avoid_print, prefer_const_constructors, sized_box_for_whitespace, must_be_immutable, unused_field, prefer_final_fields, unused_import
+// ignore_for_file: must_be_immutable, unused_import, prefer_const_constructors
 
 import 'dart:convert';
 
@@ -10,6 +10,7 @@ import 'package:eautokuca_desktop/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:provider/provider.dart';
 
 class PromjenaPassworda extends StatefulWidget {
@@ -31,7 +32,6 @@ class _KorisnickiProfilState extends State<PromjenaPassworda> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _korisniciProvider = context.read<KorisniciProvider>();
   }
@@ -114,6 +114,8 @@ class _KorisnickiProfilState extends State<PromjenaPassworda> {
                   icon: Icon(_obscurePass1
                       ? Icons.visibility
                       : Icons.visibility_off))),
+          validator:
+              FormBuilderValidators.required(errorText: 'Polje je obavezno'),
         ),
         SizedBox(
           height: 10,
@@ -135,6 +137,15 @@ class _KorisnickiProfilState extends State<PromjenaPassworda> {
                   icon: Icon(_obscurePass2
                       ? Icons.visibility
                       : Icons.visibility_off))),
+          validator: FormBuilderValidators.compose([
+            FormBuilderValidators.required(errorText: 'Polje je obavezno'),
+            FormBuilderValidators.minLength(8,
+                errorText: 'Minimalna dužina je 8 karaktera'),
+            FormBuilderValidators.match(
+                r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$',
+                errorText:
+                    'Mora sadržavati slova, brojeve i specijalne karaktere.'),
+          ]),
         ),
         SizedBox(
           height: 10,
@@ -156,6 +167,15 @@ class _KorisnickiProfilState extends State<PromjenaPassworda> {
                   icon: Icon(_obscurePass3
                       ? Icons.visibility
                       : Icons.visibility_off))),
+          validator: (val) {
+            if (val == null || val.isEmpty) {
+              return 'Polje je obavezno';
+            }
+            if (val != _formKey.currentState?.fields['noviPassword']?.value) {
+              return 'Šifre se ne podudaraju';
+            }
+            return null;
+          },
         ),
         SizedBox(
           height: 10,
