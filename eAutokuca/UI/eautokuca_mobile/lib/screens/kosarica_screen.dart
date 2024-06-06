@@ -4,6 +4,7 @@ import 'package:eautokuca_mobile/models/kosarica.dart';
 import 'package:eautokuca_mobile/providers/autodijelovi_provider.dart';
 import 'package:eautokuca_mobile/providers/korisnici_provider.dart';
 import 'package:eautokuca_mobile/providers/kosarica_provider.dart';
+import 'package:eautokuca_mobile/utils/popup_dialogs.dart';
 import 'package:eautokuca_mobile/utils/utils.dart';
 import 'package:eautokuca_mobile/widgets/master_screen.dart';
 import 'package:flutter/cupertino.dart';
@@ -88,19 +89,49 @@ class _KosaricaScreenState extends State<KosaricaScreen> {
   }
 
   Widget _buildProductCard(KosaricaItem item) {
-    return Row(
-      children: [
-        Container(
-          width: 100,
-          height: 100,
-          child: imageFromBase64String(item.autodio.slika!),
-        ),
-        SizedBox(width: 10),
-        Expanded(
-          child: ListTile(
-            title: Text(item.autodio.naziv ?? ""),
-            subtitle: Text(item.autodio.cijena.toString()),
-            trailing: Row(
+    return Card(
+      elevation: 3,
+      margin: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Row(
+          children: [
+            Container(
+              width: 100,
+              height: 100,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: imageFromBase64String(item.autodio.slika!),
+              ),
+            ),
+            SizedBox(width: 10),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    item.autodio.naziv ?? "",
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 5),
+                  Text(
+                    '${item.autodio.cijena.toString()} €',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.grey[600],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(width: 10),
+            Row(
               mainAxisSize: MainAxisSize.min,
               children: [
                 IconButton(
@@ -109,7 +140,7 @@ class _KosaricaScreenState extends State<KosaricaScreen> {
                     _kosaricaProvider.smanjiKolicinu(item.autodio);
                   },
                 ),
-                Text(item.count.toString()),
+                Text(item.count.toString(), style: TextStyle(fontSize: 16)),
                 IconButton(
                   icon: Icon(Icons.add),
                   onPressed: () {
@@ -117,33 +148,39 @@ class _KosaricaScreenState extends State<KosaricaScreen> {
                   },
                 ),
                 IconButton(
-                  icon: Icon(
-                    Icons.highlight_remove,
-                    color: Colors.red,
-                  ),
+                  icon: Icon(Icons.highlight_remove, color: Colors.red),
                   onPressed: () {
-                    _kosaricaProvider.izbaciIzKosarice(item.autodio);
+                    MyDialogs.showQuestion(
+                        context, "Želite izbaciti proizvod iz košarice?", () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => KosaricaScreen(),
+                      ));
+                      _kosaricaProvider.izbaciIzKosarice(item.autodio);
+                    });
                   },
                 ),
               ],
             ),
-          ),
+          ],
         ),
-      ],
+      ),
     );
   }
 
   Padding _buildNoDataField() {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Container(
+      child: Center(
+        child: Container(
           constraints: BoxConstraints(maxHeight: 200),
           padding: EdgeInsets.only(left: 50, right: 50, top: 30, bottom: 30),
           decoration: BoxDecoration(
-              border: Border.all(color: Colors.red),
-              borderRadius: BorderRadius.circular(30),
-              color: Colors.blueGrey[50]),
+            border: Border.all(color: Colors.red),
+            borderRadius: BorderRadius.circular(30),
+            color: Colors.blueGrey[50],
+          ),
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
               Icon(Icons.remove_shopping_cart),
               SizedBox(
@@ -158,7 +195,9 @@ class _KosaricaScreenState extends State<KosaricaScreen> {
                     fontWeight: FontWeight.bold),
               ),
             ],
-          )),
+          ),
+        ),
+      ),
     );
   }
 }

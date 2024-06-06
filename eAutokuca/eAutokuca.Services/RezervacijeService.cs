@@ -82,24 +82,6 @@ namespace eAutokuca.Services
 
         }
 
-        //public override async Task<Models.Rezervacija> Insert(RezervacijaInsert insert)
-        //{
-           
-        //    var reservation = new Database.Rezervacija();
-        //    _mapper.Map(insert, reservation);
-
-           
-        //    reservation.Status = "Aktivna";
-            
-          
-        //    await _context.Rezervacijas.AddAsync(reservation);
-
-        //    await _context.SaveChangesAsync();
-  
-
-
-        //    return _mapper.Map<Models.Rezervacija>(reservation);
-        //}
 
         public async Task<List<Models.Rezervacija>> getRezervacijeZaUsera(string username)
         {

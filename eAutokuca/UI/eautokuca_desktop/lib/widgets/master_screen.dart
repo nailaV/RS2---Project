@@ -1,4 +1,4 @@
-// ignore_for_file: must_be_immutable, prefer_const_constructors, camel_case_types, unused_element, unused_import, prefer_const_literals_to_create_immutables
+// ignore_for_file: must_be_immutable, prefer_const_constructors, camel_case_types, unused_element, unused_import, prefer_const_literals_to_create_immutables, deprecated_member_use
 
 import 'dart:isolate';
 import 'dart:math';
@@ -21,6 +21,7 @@ import 'package:eautokuca_desktop/widgets/promjena_passworda_popup.dart';
 import 'package:eautokuca_desktop/widgets/novi_automobil_popup.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MasterScreenWidget extends StatefulWidget {
   Widget? child;
@@ -89,6 +90,16 @@ class _MasterScreenWidgetState extends State<MasterScreenWidget> {
 class _drawerItems extends StatelessWidget {
   final double prosjecnaOcjena;
 
+  void _openMap() async {
+    const url =
+        'https://www.google.com/maps/dir//44.0251186,18.2668996/@44.025069,18.2665992,20z/data=!4m2!4m1!3e0?entry=ttu';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
   const _drawerItems({
     Key? key,
     required this.prosjecnaOcjena,
@@ -120,9 +131,15 @@ class _drawerItems extends StatelessWidget {
               Row(
                 children: [
                   Icon(Icons.location_on_outlined),
-                  Text(
-                    "Sarajevo",
-                    style: TextStyle(color: Colors.black, fontSize: 16),
+                  Tooltip(
+                    message: 'Klikni da otvoriš GoogleMaps',
+                    child: GestureDetector(
+                      onTap: _openMap,
+                      child: Text(
+                        "Ismeta Šarica 10, Breza",
+                        style: TextStyle(color: Colors.black, fontSize: 16),
+                      ),
+                    ),
                   ),
                 ],
               ),

@@ -89,7 +89,6 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
           : SingleChildScrollView(
               child: Column(
                 children: [
-                  // favorit ? _ukloniFavorita(context) : _dodajFavorita(context),
                   _buildFirstForm(),
                   isLoading ? _buildNoDataField() : _buildOprema(),
                   _buildButton(),
@@ -108,6 +107,7 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
   IconButton _ukloniFavorita(BuildContext context) {
     return IconButton(
       iconSize: 32,
+      color: Colors.red,
       icon: Icon(Icons.favorite),
       onPressed: () async {
         await _automobilFavoritProvider.ukloniFavorita(
@@ -124,6 +124,7 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
   IconButton _dodajFavorita(BuildContext context) {
     return IconButton(
       iconSize: 32,
+      color: Colors.red,
       icon: Icon(Icons.favorite_border),
       onPressed: () async {
         await _automobilFavoritProvider.insert(

@@ -169,56 +169,64 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
                               SizedBox(
                                 height: 20,
                               ),
-                              MaterialButton(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20)),
-                                padding: EdgeInsets.all(15),
-                                hoverColor:
-                                    imaOpremu ? Colors.blue : Colors.green,
-                                color: Colors.yellow[700],
-                                onPressed: () async {
-                                  try {
-                                    var result = await showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return DodajOpremu(
-                                            oprema: opremaAutomobila);
-                                      },
-                                    );
-                                    if (result != null) {
-                                      Map<String, dynamic> map =
-                                          Map.from(result);
-                                      map["automobilId"] =
-                                          widget.car!.automobilId;
-                                      if (imaOpremu) {
-                                        _opremaProvider.update(
-                                            widget.car!.automobilId!, map);
-                                      } else {
-                                        _opremaProvider.insert(map);
-                                      }
-                                      setState(() {
-                                        isLoading = true;
-                                      });
+                              widget.car!.status == "Prodan"
+                                  ? SizedBox.shrink()
+                                  : MaterialButton(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(20)),
+                                      padding: EdgeInsets.all(15),
+                                      hoverColor: imaOpremu
+                                          ? Colors.blue
+                                          : Colors.green,
+                                      color: Colors.yellow[700],
+                                      onPressed: () async {
+                                        try {
+                                          var result = await showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return DodajOpremu(
+                                                  oprema: opremaAutomobila);
+                                            },
+                                          );
+                                          if (result != null) {
+                                            Map<String, dynamic> map =
+                                                Map.from(result);
+                                            map["automobilId"] =
+                                                widget.car!.automobilId;
+                                            if (imaOpremu) {
+                                              _opremaProvider.update(
+                                                  widget.car!.automobilId!,
+                                                  map);
+                                            } else {
+                                              _opremaProvider.insert(map);
+                                            }
+                                            setState(() {
+                                              isLoading = true;
+                                            });
 
-                                      await getData();
-                                      Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                CarDetailsScreen(
-                                                  car: widget.car!,
-                                                )),
-                                      );
-                                    }
-                                  } on Exception catch (e) {
-                                    MyDialogs.showError(context, e.toString());
-                                  }
-                                },
-                                child: Text(
-                                  imaOpremu ? "Uredi opremu" : "Dodaj opremu",
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              )
+                                            await getData();
+                                            Navigator.pushReplacement(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      CarDetailsScreen(
+                                                        car: widget.car!,
+                                                      )),
+                                            );
+                                          }
+                                        } on Exception catch (e) {
+                                          MyDialogs.showError(
+                                              context, e.toString());
+                                        }
+                                      },
+                                      child: Text(
+                                        imaOpremu
+                                            ? "Uredi opremu"
+                                            : "Dodaj opremu",
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                    )
                             ],
                           ),
                         )))
@@ -399,15 +407,19 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
   }
 
   Widget _buildButtons() {
+    if (widget.car!.status == "Prodan") {
+      return SizedBox.shrink();
+    }
+
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         MaterialButton(
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           padding: EdgeInsets.all(15),
           hoverColor: Colors.blue,
-          color: Colors.yellow[700],
+          color: Colors.blue[700],
           onPressed: () async {
             showDialog(
               context: context,
@@ -423,28 +435,32 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
             style: TextStyle(color: Colors.white),
           ),
         ),
-        SizedBox(
-          width: 100,
-        ),
         widget.car!.status == "Aktivan"
             ? MaterialButton(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20)),
                 padding: EdgeInsets.all(15),
                 hoverColor: Colors.red,
-                color: Colors.yellow[700],
-                onPressed: () async {
-                  try {
-                    await _carProvider
-                        .promijeniStanje(widget.car!.automobilId!);
-                    setState(() {
-                      isLoading = true;
-                    });
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (builder) => ListaAutomobila()));
-                  } catch (e) {
-                    MyDialogs.showError(context, e.toString());
-                  }
+                color: Colors.red[700],
+                onPressed: () {
+                  MyDialogs.showQuestion(context,
+                      "Da li ste sigurni da želite deaktivirati automobil?",
+                      () async {
+                    try {
+                      await _carProvider
+                          .promijeniStanje(widget.car!.automobilId!);
+                      setState(() {
+                        isLoading = true;
+                      });
+                      MyDialogs.showSuccess(
+                          context, "Uspješno deaktiviran automobil.", () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (builder) => ListaAutomobila()));
+                      });
+                    } catch (e) {
+                      MyDialogs.showError(context, e.toString());
+                    }
+                  });
                 },
                 child: Text(
                   "Deaktiviraj",
@@ -455,17 +471,19 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20)),
                 padding: EdgeInsets.all(15),
-                hoverColor: Colors.red,
-                color: Colors.yellow[700],
+                hoverColor: Colors.green,
+                color: Colors.green[700],
                 onPressed: () async {
                   try {
-                    await _carProvider
-                        .promijeniStanje(widget.car!.automobilId!);
+                    await _carProvider.aktiviraj(widget.car!.automobilId!);
                     setState(() {
                       isLoading = true;
                     });
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (builder) => ListaAutomobila()));
+                    MyDialogs.showSuccess(
+                        context, "Uspješno aktiviran automobil.", () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (builder) => ListaAutomobila()));
+                    });
                   } catch (e) {
                     MyDialogs.showError(context, e.toString());
                   }
@@ -475,31 +493,34 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
                   style: TextStyle(color: Colors.white),
                 ),
               ),
-        MaterialButton(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          padding: EdgeInsets.all(15),
-          hoverColor: Colors.green,
-          color: Colors.yellow[700],
-          onPressed: () async {
-            try {
-              await _reportProvider.insert({
-                "automobilId": widget.car?.automobilId!,
-                "prihodi": widget.car?.cijena
-              });
-              MyDialogs.showSuccess(context, "Uspješno prodan automobil", () {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (builder) => ListaAutomobila()));
-              });
-            } catch (e) {
-              MyDialogs.showError(context, e.toString());
-            }
-          },
-          child: Text(
-            "Prodaj",
-            style: TextStyle(color: Colors.white),
-          ),
-        ),
+        widget.car!.status == "Aktivan"
+            ? MaterialButton(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20)),
+                padding: EdgeInsets.all(15),
+                hoverColor: Colors.orange,
+                color: Colors.orange[700],
+                onPressed: () async {
+                  try {
+                    await _reportProvider.insert({
+                      "automobilId": widget.car?.automobilId!,
+                      "prihodi": widget.car?.cijena
+                    });
+                    MyDialogs.showSuccess(context, "Uspješno prodan automobil",
+                        () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (builder) => ListaAutomobila()));
+                    });
+                  } catch (e) {
+                    MyDialogs.showError(context, e.toString());
+                  }
+                },
+                child: Text(
+                  "Prodaj",
+                  style: TextStyle(color: Colors.white),
+                ),
+              )
+            : SizedBox.shrink(),
       ],
     );
   }

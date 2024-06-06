@@ -46,8 +46,16 @@ namespace eAutokuca.Controllers
         [HttpPost("promijeniStanje/{id}")]
         public async Task promijeniStanje(int id)
         {
-            await _service.promijeniStanje(id);
+            await _service.deaktiviraj(id);
         }
+
+        [HttpPost("aktiviraj/{id}")]
+        public async Task aktiviraj(int id)
+        {
+            await _service.aktiviraj(id);
+        }
+
+
 
 
 

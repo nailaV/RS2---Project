@@ -91,8 +91,9 @@ class MyDialogs {
     );
   }
 
-  static Future<void> showError(BuildContext context, String text) async {
+  static Future<void> showError(BuildContext context, String text) {
     return showDialog(
+      barrierDismissible: false,
       context: context,
       builder: (context) => Dialog(
         shape: RoundedRectangleBorder(
@@ -179,7 +180,7 @@ class MyDialogs {
   }
 
   static Future<void> showQuestion(
-      BuildContext context, String question, VoidCallback onYes) async {
+      BuildContext context, String question, VoidCallback onYes) {
     return showDialog(
       barrierDismissible: false,
       context: context,
@@ -255,7 +256,7 @@ class MyDialogs {
                       Navigator.of(context).pop();
                     },
                     child: const Text(
-                      "No",
+                      "Ne",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
@@ -274,7 +275,7 @@ class MyDialogs {
                     ),
                     onPressed: onYes,
                     child: const Text(
-                      "Yes",
+                      "Da",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,

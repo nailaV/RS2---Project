@@ -1,4 +1,4 @@
-// ignore_for_file: must_be_immutable, prefer_const_constructors, camel_case_types, unused_element, unused_import, prefer_const_literals_to_create_immutables
+// ignore_for_file: must_be_immutable, prefer_const_constructors, camel_case_types, unused_element, unused_import, prefer_const_literals_to_create_immutables, deprecated_member_use
 
 //import 'dart:ffi';
 
@@ -16,6 +16,7 @@ import 'package:eautokuca_mobile/screens/shop_main_screen.dart';
 import 'package:eautokuca_mobile/utils/popup_dialogs.dart';
 import 'package:eautokuca_mobile/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MasterScreenWidget extends StatefulWidget {
   Widget? child;
@@ -93,6 +94,16 @@ class _MasterScreenWidgetState extends State<MasterScreenWidget> {
 }
 
 class _drawerItems extends StatelessWidget {
+  void _openMap() async {
+    const url =
+        'https://www.google.com/maps/dir//44.0251186,18.2668996/@44.025069,18.2665992,20z/data=!4m2!4m1!3e0?entry=ttu';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
   const _drawerItems({
     Key? key,
   }) : super(key: key);

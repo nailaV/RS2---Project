@@ -50,6 +50,18 @@ class CarProvider extends BaseProvider<Car> {
     }
   }
 
+  Future<void> aktiviraj(int id) async {
+    var url = "$baseUrl$end/aktiviraj/$id";
+    var uri = Uri.parse(url);
+    var headers = createdHeaders();
+
+    var request = await http.post(uri, headers: headers);
+
+    if (!isValidResponse(request)) {
+      throw Exception("Greška...");
+    }
+  }
+
   Future<List<String>> getSveModele() async {
     var url = "$baseUrl$end/GetSveModele";
     var uri = Uri.parse(url);

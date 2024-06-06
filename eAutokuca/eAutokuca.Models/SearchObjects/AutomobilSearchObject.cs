@@ -17,6 +17,7 @@ namespace eAutokuca.Models.SearchObjects
         public string? Mjenjac { get; set; } = null!;
         public string? Motor { get; set; } = null!;
         public string? AktivniNeaktivni { get; set; }
+        public string? Status { get; set; } = null!;
 
 
     }

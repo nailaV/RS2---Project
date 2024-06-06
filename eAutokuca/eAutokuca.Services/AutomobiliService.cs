@@ -119,7 +119,11 @@ namespace eAutokuca.Services
             if(!string.IsNullOrWhiteSpace(searchObject?.AktivniNeaktivni))
             {
                 query = query.Where(x => x.Status == searchObject.AktivniNeaktivni);
-            }    
+            }
+            if (!string.IsNullOrWhiteSpace(searchObject?.Status))
+            {
+                query = query.Where(x => x.Status == searchObject.Status);
+            }
             if (!string.IsNullOrWhiteSpace(searchObject?.FTS))
             {
                 query = query.Where(x => x.Model.Contains(searchObject.FTS) || x.Marka.Contains(searchObject.FTS) || x.Boja.Contains(searchObject.FTS));
@@ -189,7 +193,7 @@ namespace eAutokuca.Services
             return lista;
         }
 
-        public async Task promijeniStanje(int id)
+        public async Task deaktiviraj(int id)
         {
             var entity=await _context.Automobils.FindAsync(id);
             if(entity==null)
@@ -197,6 +201,17 @@ namespace eAutokuca.Services
                 throw new Exception("Automobil ne postoji");
             }
             entity.Status = "Neaktivan";
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task aktiviraj(int id)
+        {
+            var entity = await _context.Automobils.FindAsync(id);
+            if (entity == null)
+            {
+                throw new Exception("Automobil ne postoji");
+            }
+            entity.Status = "Aktivan";
             await _context.SaveChangesAsync();
         }
     }
