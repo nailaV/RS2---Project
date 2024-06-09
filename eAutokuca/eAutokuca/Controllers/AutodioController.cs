@@ -15,7 +15,27 @@ namespace eAutokuca.Controllers
         { 
             _service = service;
         }
-      
+
+
+        [HttpPost("nabavi/{id}")]
+        public async Task nabavi(int id)
+        {
+            await _service.nabavi(id);
+        }
+
+        [HttpPost("prodaj/{id}")]
+        public async Task prodaj(int id)
+        {
+            await _service.prodaj(id);
+        }
+
+        [HttpGet("recommend")]
+        public List<Models.Autodio> Recommend(int autodioID)
+        {
+            return _service.Recommend(autodioID);
+        }
+
+
 
     }
 }

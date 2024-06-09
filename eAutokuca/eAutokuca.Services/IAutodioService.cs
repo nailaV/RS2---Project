@@ -10,6 +10,9 @@ namespace eAutokuca.Services
 {
     public interface IAutodioService:ICrudService<Models.Autodio, AutodioSearchObject, AutodioInsert, AutodioUpdate>
     {
+        public Task nabavi(int id);
+        public Task prodaj(int id);
 
+        List<Models.Autodio> Recommend(int autodioID);
     }
 }

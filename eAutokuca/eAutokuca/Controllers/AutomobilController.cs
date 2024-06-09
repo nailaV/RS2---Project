@@ -54,27 +54,5 @@ namespace eAutokuca.Controllers
         {
             await _service.aktiviraj(id);
         }
-
-
-
-
-
-        //[HttpPut("{id}/activate")]
-        //public virtual async Task<Models.Automobil> Activate(int id)
-        //{
-        //    return await (_service as IAutomobiliService).Activate(id);
-        //}
-
-        //[HttpPut("{id}/hide")]
-        //public virtual async Task<Models.Automobil> Hide(int id)
-        //{
-        //    return await (_service as IAutomobiliService).Hide(id);
-        //}
-
-        //[HttpGet("{id}/allowedActions")]
-        //public virtual async Task<List<string>> AllowedActions(int id)
-        //{
-        //    return await (_service as IAutomobiliService).AllowedActions(id);
-        //}
     }
 }
