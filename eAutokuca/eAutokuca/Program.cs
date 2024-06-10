@@ -19,6 +19,7 @@ builder.Services.AddTransient<IRezervacijeService, RezervacijeService>();
 builder.Services.AddTransient<IReportService, ReportService>();
 builder.Services.AddTransient<IAutomobilFavorit, AutomobilFavoritService>();
 builder.Services.AddTransient<IRecenzijeService, RecenzijeService>();
+builder.Services.AddTransient<IMailService, MailService>();
 
 builder.Services.AddTransient<BaseState>();
 builder.Services.AddTransient<InitialState>();

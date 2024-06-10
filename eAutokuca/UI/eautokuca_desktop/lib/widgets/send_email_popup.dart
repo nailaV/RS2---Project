@@ -1,10 +1,14 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, unused_field
 
 import 'package:eautokuca_desktop/models/korisnici.dart';
+import 'package:eautokuca_desktop/providers/korisnici_provider.dart';
+import 'package:eautokuca_desktop/screens/korisnici_screen.dart';
+import 'package:eautokuca_desktop/utils/popup_dialogs.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:provider/provider.dart';
 
 class PosaljiEmail extends StatefulWidget {
   final Korisnici korisnik;
@@ -18,10 +22,12 @@ class PosaljiEmail extends StatefulWidget {
 class _PosaljiEmailState extends State<PosaljiEmail> {
   final _formKey = GlobalKey<FormBuilderState>();
   Map<String, dynamic> _initialValue = {};
+  late KorisniciProvider _korisniciProvider;
 
   @override
   void initState() {
     super.initState();
+    _korisniciProvider = context.read<KorisniciProvider>();
   }
 
   @override
@@ -88,9 +94,16 @@ class _PosaljiEmailState extends State<PosaljiEmail> {
       color: Colors.yellow[700],
       onPressed: () {
         if (_formKey.currentState?.saveAndValidate() ?? false) {
-          final formData = _formKey.currentState?.value;
-
-          print('Sending email with data: $formData');
+          try {
+            _korisniciProvider.sendMail(_formKey.currentState!.value);
+            MyDialogs.showSuccess(context, "Uspješno poslan mail!", () {
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => KorisniciScreen(),
+              ));
+            });
+          } catch (e) {
+            MyDialogs.showError(context, e.toString());
+          }
         }
       },
       child: const Text(
@@ -111,7 +124,9 @@ class _PosaljiEmailState extends State<PosaljiEmail> {
             FormBuilderValidators.required(errorText: "Polje je obavezno."),
             FormBuilderValidators.email(errorText: "Unesite ispravan email."),
           ]),
-          name: 'primalac',
+          name: 'mailAdresa',
+          readOnly: true,
+          initialValue: widget.korisnik.email,
           decoration: InputDecoration(
             prefixIcon: Icon(Icons.email),
             border: OutlineInputBorder(
@@ -128,7 +143,7 @@ class _PosaljiEmailState extends State<PosaljiEmail> {
           validator: FormBuilderValidators.compose([
             FormBuilderValidators.required(errorText: 'Polje je obavezno'),
           ]),
-          name: 'predmet',
+          name: 'subject',
           decoration: InputDecoration(
             prefixIcon: Icon(Icons.subject),
             border: OutlineInputBorder(

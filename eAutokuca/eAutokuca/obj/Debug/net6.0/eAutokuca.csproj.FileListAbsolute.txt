@@ -244,3 +244,5 @@ C:\Users\User\Desktop\RS2 ispravni\RS2---Project\eAutokuca\eAutokuca\bin\Debug\n
 C:\Users\User\Desktop\RS2 ispravni\RS2---Project\eAutokuca\eAutokuca\bin\Debug\net6.0\runtimes\win-arm64\native\MatrixFactorizationNative.dll
 C:\Users\User\Desktop\RS2 ispravni\RS2---Project\eAutokuca\eAutokuca\bin\Debug\net6.0\runtimes\win-x64\native\MatrixFactorizationNative.dll
 C:\Users\User\Desktop\RS2 ispravni\RS2---Project\eAutokuca\eAutokuca\bin\Debug\net6.0\runtimes\win-x86\native\MatrixFactorizationNative.dll
+C:\Users\User\Desktop\RS2 ispravni\RS2---Project\eAutokuca\eAutokuca\bin\Debug\net6.0\RabbitMQ.Client.dll
+C:\Users\User\Desktop\RS2 ispravni\RS2---Project\eAutokuca\eAutokuca\bin\Debug\net6.0\System.Threading.Channels.dll

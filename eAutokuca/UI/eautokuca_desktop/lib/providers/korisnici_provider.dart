@@ -63,4 +63,15 @@ class KorisniciProvider extends BaseProvider<Korisnici> {
       throw Exception("Greška...");
     }
   }
+
+  Future<void> sendMail(dynamic object) async {
+    var url = "${baseUrl}MailContoller";
+    var uri = Uri.parse(url);
+    var headers = createdHeaders();
+    var obj = jsonEncode(object);
+    var req = await http.post(uri, headers: headers, body: obj);
+    if (!isValidResponse(req)) {
+      throw Exception("Greška.");
+    }
+  }
 }
