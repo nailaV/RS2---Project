@@ -93,7 +93,7 @@ namespace eAutokuca.Services
             return base.AddFilter(query, search);
         }
 
-        public async Task nabavi(int id)
+        public async Task aktiviraj(int id)
         {
             var entity = await _context.Autodios.FindAsync(id);
             if (entity == null)
@@ -104,15 +104,14 @@ namespace eAutokuca.Services
             await _context.SaveChangesAsync();
         }
 
-        public async Task prodaj(int id)
+        public async Task deaktiviraj(int id)
         {
             var entity = await _context.Autodios.FindAsync(id);
             if (entity == null)
             {
                 throw new Exception("Autodio ne postoji");
             }
-            entity.Status = "Rasprodato";
-            entity.KolicinaNaStanju = 0;
+            entity.Status = "Deaktiviran";
             await _context.SaveChangesAsync();
         }
 

@@ -246,15 +246,57 @@ class _AutodijeloviDetaljiState extends State<AutodijeloviDetalji> {
             ),
             icon: Icon(Icons.edit),
             label: Text("Uredi proizvod")),
-        ElevatedButton.icon(
-          onPressed: () {},
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.yellow[700],
-            foregroundColor: Colors.white,
-          ),
-          icon: Icon(Icons.replay_outlined),
-          label: Text("Promijeni stanje"),
-        ),
+        autodioInfo!.status == "Dostupno"
+            ? ElevatedButton.icon(
+                onPressed: () {
+                  MyDialogs.showQuestion(context,
+                      "Da li ste sigurni da želite deaktivirati proizvod?", () {
+                    try {
+                      _autodijeloviProvider.deaktiviraj(widget.autodioId);
+                      MyDialogs.showSuccess(context, "Uspješno deaktivirano!",
+                          () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (builder) => AutodijeloviScreen()));
+                      });
+                    } catch (e) {
+                      MyDialogs.showError(context, e.toString());
+                    }
+                  });
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.yellow[700],
+                  foregroundColor: Colors.red,
+                ),
+                icon: Icon(
+                  Icons.replay_outlined,
+                  color: Colors.red,
+                ),
+                label: Text("Deaktiviraj proizvod"))
+            : ElevatedButton.icon(
+                onPressed: () {
+                  MyDialogs.showQuestion(context,
+                      "Da li ste sigurni da želite aktivirati proizvod?", () {
+                    try {
+                      _autodijeloviProvider.aktiviraj(widget.autodioId);
+                      MyDialogs.showSuccess(context, "Uspješno aktivirano!",
+                          () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (builder) => AutodijeloviScreen()));
+                      });
+                    } catch (e) {
+                      MyDialogs.showError(context, e.toString());
+                    }
+                  });
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.yellow[700],
+                  foregroundColor: Colors.green,
+                ),
+                icon: Icon(
+                  Icons.replay_outlined,
+                  color: Colors.green,
+                ),
+                label: Text("Aktiviraj proizvod"))
       ],
     );
   }

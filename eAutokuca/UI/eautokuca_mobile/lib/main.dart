@@ -48,14 +48,20 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   LoginPage({Key? key}) : super(key: key);
 
-  TextEditingController _usernameController = new TextEditingController();
-  TextEditingController _passwordController = new TextEditingController();
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  late KorisniciProvider _korisniciProvider;
 
   late CarProvider _carProvider;
-  late KorisniciProvider _korisniciProvider;
+  bool _obscurePass = true;
 
   @override
   Widget build(BuildContext context) {
@@ -130,13 +136,24 @@ class LoginPage extends StatelessWidget {
               ),
               SizedBox(height: 20),
               TextField(
-                obscureText: true,
+                obscureText: _obscurePass,
                 decoration: InputDecoration(
                   labelText: "Šifra",
                   labelStyle: TextStyle(color: Colors.black),
                   prefixIcon: Icon(Icons.password, color: Colors.black),
+                  suffixIcon: IconButton(
+                    onPressed: () {
+                      setState(() {
+                        _obscurePass = !_obscurePass;
+                      });
+                    },
+                    icon: Icon(
+                      _obscurePass ? Icons.visibility_off : Icons.visibility,
+                    ),
+                  ),
                   enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black)),
+                    borderSide: BorderSide(color: Colors.black),
+                  ),
                 ),
                 controller: _passwordController,
               ),

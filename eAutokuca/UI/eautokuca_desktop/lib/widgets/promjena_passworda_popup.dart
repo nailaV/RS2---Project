@@ -112,8 +112,8 @@ class _KorisnickiProfilState extends State<PromjenaPassworda> {
                     });
                   },
                   icon: Icon(_obscurePass1
-                      ? Icons.visibility
-                      : Icons.visibility_off))),
+                      ? Icons.visibility_off
+                      : Icons.visibility))),
           validator:
               FormBuilderValidators.required(errorText: 'Polje je obavezno'),
         ),
@@ -135,8 +135,8 @@ class _KorisnickiProfilState extends State<PromjenaPassworda> {
                     });
                   },
                   icon: Icon(_obscurePass2
-                      ? Icons.visibility
-                      : Icons.visibility_off))),
+                      ? Icons.visibility_off
+                      : Icons.visibility))),
           validator: FormBuilderValidators.compose([
             FormBuilderValidators.required(errorText: 'Polje je obavezno'),
             FormBuilderValidators.minLength(8,
@@ -165,8 +165,8 @@ class _KorisnickiProfilState extends State<PromjenaPassworda> {
                     });
                   },
                   icon: Icon(_obscurePass3
-                      ? Icons.visibility
-                      : Icons.visibility_off))),
+                      ? Icons.visibility_off
+                      : Icons.visibility))),
           validator: (val) {
             if (val == null || val.isEmpty) {
               return 'Polje je obavezno';

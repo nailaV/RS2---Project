@@ -79,11 +79,16 @@ class _CounterState extends State<Counter> {
   }
 }
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   LoginPage({Key? key}) : super(key: key);
 
-  TextEditingController _usernameController = new TextEditingController();
-  TextEditingController _passwordController = new TextEditingController();
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   late CarProvider _carProvider;
   bool _obscurePass = true;
@@ -112,7 +117,7 @@ class LoginPage extends StatelessWidget {
                   ),
                   TextFormField(
                     decoration: InputDecoration(
-                      labelText: "Username",
+                      labelText: "Korisničko ime",
                       labelStyle: TextStyle(color: Colors.yellow),
                       prefixIcon: Icon(Icons.email, color: Colors.yellow),
                       enabledBorder: UnderlineInputBorder(
@@ -125,18 +130,24 @@ class LoginPage extends StatelessWidget {
                   TextField(
                     obscureText: _obscurePass,
                     decoration: InputDecoration(
-                      labelText: "Password",
+                      labelText: "Šifra",
                       labelStyle: TextStyle(color: Colors.yellow),
                       prefixIcon: Icon(Icons.password, color: Colors.yellow),
                       suffixIcon: IconButton(
-                          onPressed: () {
+                        onPressed: () {
+                          setState(() {
                             _obscurePass = !_obscurePass;
-                          },
-                          icon: Icon(_obscurePass
-                              ? Icons.visibility
-                              : Icons.visibility_off)),
+                          });
+                        },
+                        icon: Icon(
+                          _obscurePass
+                              ? Icons.visibility_off
+                              : Icons.visibility,
+                        ),
+                      ),
                       enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.yellow)),
+                        borderSide: BorderSide(color: Colors.yellow),
+                      ),
                     ),
                     controller: _passwordController,
                   ),
@@ -157,28 +168,33 @@ class LoginPage extends StatelessWidget {
                         ));
                       } on Exception catch (e) {
                         showDialog(
-                            context: context,
-                            builder: (BuildContext context) => AlertDialog(
-                                    title: Text("Error"),
-                                    content: Text(e.toString()),
-                                    actions: [
-                                      TextButton(
-                                          onPressed: () =>
-                                              Navigator.pop(context),
-                                          child: Text("Ok"))
-                                    ]));
+                          context: context,
+                          builder: (BuildContext context) => AlertDialog(
+                            title: Text("Error"),
+                            content: Text(e.toString()),
+                            actions: [
+                              TextButton(
+                                onPressed: () => Navigator.pop(context),
+                                child: Text("Ok"),
+                              ),
+                            ],
+                          ),
+                        );
                       }
                     },
                     style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.yellow[700],
-                        minimumSize: Size(200, 50),
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 20, vertical: 15)),
+                      backgroundColor: Colors.yellow[700],
+                      minimumSize: Size(200, 50),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 15,
+                      ),
+                    ),
                     child: Text(
                       "Login",
                       style: TextStyle(color: Colors.black, fontSize: 18),
                     ),
-                  )
+                  ),
                 ],
               ),
             ),

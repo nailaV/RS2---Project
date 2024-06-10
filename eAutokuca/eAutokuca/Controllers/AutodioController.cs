@@ -17,16 +17,16 @@ namespace eAutokuca.Controllers
         }
 
 
-        [HttpPost("nabavi/{id}")]
-        public async Task nabavi(int id)
+        [HttpPost("aktiviraj/{id}")]
+        public async Task aktiviraj(int id)
         {
-            await _service.nabavi(id);
+            await _service.aktiviraj(id);
         }
 
-        [HttpPost("prodaj/{id}")]
-        public async Task prodaj(int id)
+        [HttpPost("deaktiviraj/{id}")]
+        public async Task deaktiviraj(int id)
         {
-            await _service.prodaj(id);
+            await _service.deaktiviraj(id);
         }
 
         [HttpGet("recommend")]

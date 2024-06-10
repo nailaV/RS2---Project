@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_unnecessary_containers, prefer_const_literals_to_create_immutables, prefer_const_constructors, must_be_immutable, unused_import
+// ignore_for_file: unused_import, prefer_const_constructors
 
 import 'package:eautokuca_desktop/models/autodijelovi.dart';
 import 'package:eautokuca_desktop/models/search_result.dart';
@@ -24,10 +24,10 @@ class _AutodijeloviScreenState extends State<AutodijeloviScreen> {
   bool isLoading = true;
   late AutodijeloviProvider _autodijeloviProvider;
   SearchResult<Autodijelovi>? autodijeloviResult;
+  String currentState = "Dostupno"; // Initial state
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _autodijeloviProvider = context.read<AutodijeloviProvider>();
     getData();
@@ -46,7 +46,7 @@ class _AutodijeloviScreenState extends State<AutodijeloviScreen> {
                   child: Column(
                     children: [
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           ElevatedButton.icon(
                             onPressed: () async {
@@ -63,6 +63,47 @@ class _AutodijeloviScreenState extends State<AutodijeloviScreen> {
                             ),
                             icon: Icon(Icons.add_shopping_cart),
                             label: Text("Dodaj novi proizvod"),
+                          ),
+                          Row(
+                            children: [
+                              ElevatedButton(
+                                onPressed: () {
+                                  setState(() {
+                                    currentState = "Dostupno";
+                                    isLoading = true;
+                                  });
+                                  getData();
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: currentState == "Dostupno"
+                                      ? Colors.yellow[700]
+                                      : Colors.white,
+                                ),
+                                child: Text(
+                                  "Aktivni",
+                                  style: TextStyle(color: Colors.black),
+                                ),
+                              ),
+                              SizedBox(width: 10),
+                              ElevatedButton(
+                                onPressed: () {
+                                  setState(() {
+                                    currentState = "Deaktiviran";
+                                    isLoading = true;
+                                  });
+                                  getData();
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: currentState == "Deaktiviran"
+                                      ? Colors.yellow[700]
+                                      : Colors.white,
+                                ),
+                                child: Text(
+                                  "Deaktivirani",
+                                  style: TextStyle(color: Colors.black),
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
@@ -170,7 +211,8 @@ class _AutodijeloviScreenState extends State<AutodijeloviScreen> {
 
   Future<void> getData() async {
     try {
-      var data = await _autodijeloviProvider.getAll();
+      var data =
+          await _autodijeloviProvider.getAll(filter: {"Status": currentState});
       setState(() {
         autodijeloviResult = data;
         isLoading = false;

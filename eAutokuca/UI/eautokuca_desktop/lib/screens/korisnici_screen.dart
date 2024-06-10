@@ -7,6 +7,7 @@ import 'package:eautokuca_desktop/utils/popup_dialogs.dart';
 import 'package:eautokuca_desktop/utils/utils.dart';
 import 'package:eautokuca_desktop/widgets/dodaj_korisnika_popup.dart';
 import 'package:eautokuca_desktop/widgets/master_screen.dart';
+import 'package:eautokuca_desktop/widgets/send_email_popup.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -185,17 +186,12 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
                           padding: EdgeInsets.all(15),
                           hoverColor: Colors.blue,
                           color: Colors.yellow[700],
-                          onPressed: () async {
-                            // try {
-                            //   await _korisniciProvider
-                            //       .promijeniStanje(e.korisnikId!);
-                            //   setState(() {
-                            //     isLoading = true;
-                            //   });
-                            //   getData();
-                            // } catch (e) {
-                            //   MyDialogs.showError(context, e.toString());
-                            // }
+                          onPressed: () {
+                            showDialog(
+                                context: context,
+                                builder: (context) => PosaljiEmail(
+                                      korisnik: e,
+                                    ));
                           },
                           child: Text(
                             "Pošalji",
