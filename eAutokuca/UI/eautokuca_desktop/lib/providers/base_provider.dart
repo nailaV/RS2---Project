@@ -39,6 +39,7 @@ abstract class BaseProvider<T> with ChangeNotifier {
       var result = SearchResult<T>();
 
       result.count = data['count'];
+      result.total = data['totalPages'];
 
       for (var item in data['result']) {
         result.result.add(fromJson(item));
@@ -48,9 +49,6 @@ abstract class BaseProvider<T> with ChangeNotifier {
     } else {
       throw new Exception("Unknown error.");
     }
-
-    //OVO SAM KUCALA DA BI U TERMINALU VIDJELA STATUS KOD I ERROR!
-    //print("response: ${response.request} code: ${response.statusCode} body: ${response.body}");
   }
 
   Future<bool> delete(int id) async {

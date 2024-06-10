@@ -22,24 +22,40 @@ namespace eAutokuca.Services
         }
         public virtual async Task<PagedResult<T>> Get(TSearch? search=null)
         {
-            var query=_context.Set<TDb>().AsQueryable();
+            var query = _context.Set<TDb>().AsQueryable();
 
-            PagedResult<T> result = new PagedResult<T>();
+            PagedResult<T> list = new PagedResult<T>();
 
             query = AddFilter(query, search);
-            query= AddInclude(query, search);
 
-            result.Count = await query.CountAsync();
+            list.Count = await query.CountAsync();
 
-            if (search?.Page.HasValue==true && search?.PageSize.HasValue == true)
+            if (search?.PageSize != null)
             {
-                query = query.Take(search.PageSize.Value).Skip(search.Page.Value * search.PageSize.Value);
+                double? pageCount = list.Count;
+                double? pageSize = search.PageSize;
+                if (pageCount.HasValue && pageSize.HasValue)
+                {
+                    list.TotalPages = (int)Math.Ceiling(pageCount.Value / pageSize.Value);
+                }
             }
 
-            var list = await query.ToListAsync();
-            var tmp = _mapper.Map<List<T>>(list);
-            result.Result = tmp;
-            return result;
+         
+            query = AddInclude(query);
+
+            if (search?.Page.HasValue == true && search?.PageSize.HasValue == true)
+            {
+                query = query.Skip(search.PageSize.Value * (search.Page.Value - 1)).Take(search.PageSize.Value);
+                list.HasNext = search.Page < list.TotalPages;
+            }
+
+
+
+            var lista = await query.ToListAsync();
+
+            list.Result = _mapper.Map<List<T>>(lista);
+
+            return list;
         }
 
         public virtual IQueryable<TDb> AddInclude(IQueryable<TDb> query, TSearch? search = null)

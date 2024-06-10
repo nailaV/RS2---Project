@@ -30,6 +30,8 @@ class _ListaAutomobilaState extends State<ListaAutomobila> {
   Korisnici? korisnikInfo;
   TextEditingController _markaModelController = TextEditingController();
   Map<String, dynamic>? filters;
+  int currentPage = 1;
+  int pageSize = 3;
 
   bool isLoading = false;
 
@@ -91,9 +93,63 @@ class _ListaAutomobilaState extends State<ListaAutomobila> {
                       : const Center(
                           child: CircularProgressIndicator(),
                         ),
+                  _buildPageing()
                 ],
               ),
             ),
+    );
+  }
+
+  Padding _buildPageing() {
+    return Padding(
+      padding: const EdgeInsets.all(12.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          currentPage > 1
+              ? ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      currentPage--;
+                      isLoading = true;
+                    });
+                    getSveAutomobile();
+                  },
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor: Colors.yellow[700],
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                    elevation: 3,
+                  ),
+                  child: Icon(Icons.arrow_back),
+                )
+              : SizedBox.shrink(),
+          SizedBox(width: 10),
+          currentPage < (carData!.total ?? 0)
+              ? ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      currentPage++;
+                      isLoading = true;
+                    });
+                    getSveAutomobile();
+                  },
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor: Colors.yellow[700],
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                    elevation: 3,
+                  ),
+                  child: Icon(Icons.arrow_forward))
+              : SizedBox.shrink(),
+        ],
+      ),
     );
   }
 
@@ -320,8 +376,11 @@ class _ListaAutomobilaState extends State<ListaAutomobila> {
 
   Future<void> getSveAutomobile() async {
     try {
-      var data = await _carProvider.Filtriraj(
-          {"PageSize": 10, "AktivniNeaktivni": "Aktivan"});
+      var data = await _carProvider.Filtriraj({
+        "PageSize": pageSize,
+        "Page": currentPage,
+        "AktivniNeaktivni": "Aktivan"
+      });
       setState(() {
         carData = data;
         isLoading = false;

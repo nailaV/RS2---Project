@@ -1,4 +1,4 @@
-// ignore_for_file: unused_import, prefer_const_constructors
+// ignore_for_file: unused_import, prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:eautokuca_desktop/models/autodijelovi.dart';
 import 'package:eautokuca_desktop/models/search_result.dart';
@@ -24,7 +24,9 @@ class _AutodijeloviScreenState extends State<AutodijeloviScreen> {
   bool isLoading = true;
   late AutodijeloviProvider _autodijeloviProvider;
   SearchResult<Autodijelovi>? autodijeloviResult;
-  String currentState = "Dostupno"; // Initial state
+  String currentState = "Dostupno";
+  int currentPage = 1;
+  int pageSize = 6;
 
   @override
   void initState() {
@@ -39,83 +41,142 @@ class _AutodijeloviScreenState extends State<AutodijeloviScreen> {
       title: "AUTODIJELOVI SHOP",
       child: isLoading
           ? const Center(child: CircularProgressIndicator())
-          : Container(
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          ElevatedButton.icon(
-                            onPressed: () async {
-                              await showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return DodajAutodio();
-                                },
-                              );
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.yellow[700],
-                              foregroundColor: Colors.white,
-                            ),
-                            icon: Icon(Icons.add_shopping_cart),
-                            label: Text("Dodaj novi proizvod"),
-                          ),
-                          Row(
-                            children: [
-                              ElevatedButton(
-                                onPressed: () {
-                                  setState(() {
-                                    currentState = "Dostupno";
-                                    isLoading = true;
-                                  });
-                                  getData();
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: currentState == "Dostupno"
-                                      ? Colors.yellow[700]
-                                      : Colors.white,
-                                ),
-                                child: Text(
-                                  "Aktivni",
-                                  style: TextStyle(color: Colors.black),
-                                ),
-                              ),
-                              SizedBox(width: 10),
-                              ElevatedButton(
-                                onPressed: () {
-                                  setState(() {
-                                    currentState = "Deaktiviran";
-                                    isLoading = true;
-                                  });
-                                  getData();
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: currentState == "Deaktiviran"
-                                      ? Colors.yellow[700]
-                                      : Colors.white,
-                                ),
-                                child: Text(
-                                  "Deaktivirani",
-                                  style: TextStyle(color: Colors.black),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      _buildGrid(),
-                    ],
-                  ),
+          : Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    _buildRow(context),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    _buildGrid(),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    _buildPageing(),
+                    SizedBox(
+                      height: 10,
+                    )
+                  ],
                 ),
               ),
             ),
+    );
+  }
+
+  Row _buildPageing() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        currentPage > 1
+            ? ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    currentPage--;
+                    isLoading = true;
+                  });
+                  getData();
+                },
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  backgroundColor: Colors.yellow[700],
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                  elevation: 3,
+                ),
+                child: Icon(Icons.arrow_back),
+              )
+            : SizedBox.shrink(),
+        SizedBox(width: 10),
+        currentPage < (autodijeloviResult!.total ?? 0)
+            ? ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    currentPage++;
+                    isLoading = true;
+                  });
+                  getData();
+                },
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  backgroundColor: Colors.yellow[700],
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                  elevation: 3,
+                ),
+                child: Icon(Icons.arrow_forward))
+            : SizedBox.shrink(),
+      ],
+    );
+  }
+
+  Row _buildRow(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        ElevatedButton.icon(
+          onPressed: () async {
+            await showDialog(
+              context: context,
+              builder: (context) {
+                return DodajAutodio();
+              },
+            );
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.yellow[700],
+            foregroundColor: Colors.white,
+          ),
+          icon: Icon(Icons.add_shopping_cart),
+          label: Text("Dodaj novi proizvod"),
+        ),
+        Row(
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                setState(() {
+                  currentState = "Dostupno";
+                  isLoading = true;
+                });
+                getData();
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: currentState == "Dostupno"
+                    ? Colors.yellow[700]
+                    : Colors.white,
+              ),
+              child: Text(
+                "Aktivni",
+                style: TextStyle(color: Colors.black),
+              ),
+            ),
+            SizedBox(width: 10),
+            ElevatedButton(
+              onPressed: () {
+                setState(() {
+                  currentState = "Deaktiviran";
+                  isLoading = true;
+                });
+                getData();
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: currentState == "Deaktiviran"
+                    ? Colors.yellow[700]
+                    : Colors.white,
+              ),
+              child: Text(
+                "Deaktivirani",
+                style: TextStyle(color: Colors.black),
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 
@@ -211,8 +272,12 @@ class _AutodijeloviScreenState extends State<AutodijeloviScreen> {
 
   Future<void> getData() async {
     try {
-      var data =
-          await _autodijeloviProvider.getAll(filter: {"Status": currentState});
+      var data = await _autodijeloviProvider.getAll(filter: {
+        "Status": currentState,
+        "Page": currentPage,
+        "PageSize": pageSize
+      });
+
       setState(() {
         autodijeloviResult = data;
         isLoading = false;

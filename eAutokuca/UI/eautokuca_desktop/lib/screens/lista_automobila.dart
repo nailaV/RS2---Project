@@ -43,6 +43,8 @@ class _ListaAutomobilaState extends State<ListaAutomobila>
   List<String> _listaMarki = [];
   TextEditingController _markaModelContorller = TextEditingController();
   String selectedButton = "Aktivan";
+  int currentPage = 1;
+  int pageSize = 8;
 
   @override
   void didChangeDependencies() {
@@ -78,89 +80,159 @@ class _ListaAutomobilaState extends State<ListaAutomobila>
   Widget build(BuildContext context) {
     return MasterScreenWidget(
         title: "POČETNA",
-        child: Container(
-            child: Column(
-          children: [
-            _buildSeacrh(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ElevatedButton(
+        child: isLoading
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : Container(
+                child: Column(
+                children: [
+                  _buildSeacrh(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            selectedButton = "Aktivan";
+                            UcitajAktivne = "Aktivan";
+                            Prodan = "";
+                            isLoading = true;
+                          });
+                          getData();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: selectedButton == "Aktivan"
+                              ? Colors.green
+                              : Colors.white,
+                          foregroundColor: selectedButton == "Aktivan"
+                              ? Colors.white
+                              : Colors.green,
+                        ),
+                        child: Text("Aktivni"),
+                      ),
+                      SizedBox(
+                        width: 50,
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            selectedButton = "Neaktivan";
+                            UcitajAktivne = "Neaktivan";
+                            Prodan = "";
+                            isLoading = true;
+                          });
+                          getData();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: selectedButton == "Neaktivan"
+                              ? Colors.red
+                              : Colors.white,
+                          foregroundColor: selectedButton == "Neaktivan"
+                              ? Colors.white
+                              : Colors.red,
+                        ),
+                        child: Text("Neaktivni"),
+                      ),
+                      SizedBox(
+                        width: 50,
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            selectedButton = "Prodan";
+                            Prodan = "Prodan";
+                            UcitajAktivne = "";
+                            isLoading = true;
+                          });
+                          getData();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: selectedButton == "Prodan"
+                              ? Colors.blue
+                              : Colors.white,
+                          foregroundColor: selectedButton == "Prodan"
+                              ? Colors.white
+                              : Colors.blue,
+                        ),
+                        child: Text("Prodani"),
+                      ),
+                      _buildButton(),
+                    ],
+                  ),
+                  _buildDataListView(),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  _buildPageing(),
+                  SizedBox(
+                    height: 10,
+                  )
+                ],
+              )));
+  }
+
+  Padding _buildPageing() {
+    return Padding(
+      padding: const EdgeInsets.all(12.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          currentPage > 1
+              ? ElevatedButton(
                   onPressed: () {
                     setState(() {
-                      selectedButton = "Aktivan";
-                      UcitajAktivne = "Aktivan";
-                      Prodan = "";
+                      currentPage--;
                       isLoading = true;
                     });
                     getData();
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: selectedButton == "Aktivan"
-                        ? Colors.green
-                        : Colors.white,
-                    foregroundColor: selectedButton == "Aktivan"
-                        ? Colors.white
-                        : Colors.green,
+                    foregroundColor: Colors.white,
+                    backgroundColor: Colors.yellow[700],
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                    elevation: 3,
                   ),
-                  child: Text("Aktivni"),
-                ),
-                SizedBox(
-                  width: 50,
-                ),
-                ElevatedButton(
+                  child: Icon(Icons.arrow_back),
+                )
+              : SizedBox.shrink(),
+          SizedBox(width: 10),
+          currentPage < (result!.total ?? 0)
+              ? ElevatedButton(
                   onPressed: () {
                     setState(() {
-                      selectedButton = "Neaktivan";
-                      UcitajAktivne = "Neaktivan";
-                      Prodan = "";
+                      currentPage++;
                       isLoading = true;
                     });
                     getData();
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: selectedButton == "Neaktivan"
-                        ? Colors.red
-                        : Colors.white,
-                    foregroundColor: selectedButton == "Neaktivan"
-                        ? Colors.white
-                        : Colors.red,
+                    foregroundColor: Colors.white,
+                    backgroundColor: Colors.yellow[700],
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                    elevation: 3,
                   ),
-                  child: Text("Neaktivni"),
-                ),
-                SizedBox(
-                  width: 50,
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      selectedButton = "Prodan";
-                      Prodan = "Prodan";
-                      UcitajAktivne = "";
-                      isLoading = true;
-                    });
-                    getData();
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor:
-                        selectedButton == "Prodan" ? Colors.blue : Colors.white,
-                    foregroundColor:
-                        selectedButton == "Prodan" ? Colors.white : Colors.blue,
-                  ),
-                  child: Text("Prodani"),
-                ),
-              ],
-            ),
-            _buildDataListView(),
-            _buildButton()
-          ],
-        )));
+                  child: Icon(Icons.arrow_forward))
+              : SizedBox.shrink(),
+        ],
+      ),
+    );
   }
 
   Future<void> getData() async {
     try {
-      var data = await _carProvider.Filtriraj(
-          {"AktivniNeaktivni": UcitajAktivne, "Status": Prodan});
+      var data = await _carProvider.Filtriraj({
+        "AktivniNeaktivni": UcitajAktivne,
+        "Status": Prodan,
+        "Page": currentPage,
+        "PageSize": pageSize
+      });
       setState(() {
         result = data;
         isLoading = false;

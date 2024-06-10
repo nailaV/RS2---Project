@@ -398,8 +398,6 @@ class _NoviAutomobilState extends State<NoviAutomobil> {
         FormBuilderField(
           name: 'slikaBase64',
           autovalidateMode: AutovalidateMode.onUserInteraction,
-          validator:
-              FormBuilderValidators.required(errorText: "Polje je obavezno."),
           builder: (field) {
             return SizedBox(
               width: 250,

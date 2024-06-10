@@ -28,6 +28,9 @@ class _ShopMainScreenState extends State<ShopMainScreen> {
 
   bool isLoading = true;
   SearchResult<Autodijelovi>? autodijeloviData;
+  String currentState = "Dostupno";
+  int currentPage = 1;
+  int pageSize = 3;
   TextEditingController _FTSController = TextEditingController();
 
   @override
@@ -80,9 +83,60 @@ class _ShopMainScreenState extends State<ShopMainScreen> {
                             textAlign: TextAlign.center,
                           ),
                         ),
+                  _buildPageing(),
                 ],
               ),
             ),
+    );
+  }
+
+  Row _buildPageing() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        currentPage > 1
+            ? ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    currentPage--;
+                    isLoading = true;
+                  });
+                  getData();
+                },
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  backgroundColor: Colors.yellow[700],
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                  elevation: 3,
+                ),
+                child: Icon(Icons.arrow_back),
+              )
+            : SizedBox.shrink(),
+        SizedBox(width: 10),
+        currentPage < (autodijeloviData!.total ?? 0)
+            ? ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    currentPage++;
+                    isLoading = true;
+                  });
+                  getData();
+                },
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  backgroundColor: Colors.yellow[700],
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                  elevation: 3,
+                ),
+                child: Icon(Icons.arrow_forward))
+            : SizedBox.shrink(),
+      ],
     );
   }
 
@@ -244,7 +298,11 @@ class _ShopMainScreenState extends State<ShopMainScreen> {
 
   Future<void> getData() async {
     try {
-      var data = await _autodijeloviProvider.getAll();
+      var data = await _autodijeloviProvider.getAll(filter: {
+        "Status": currentState,
+        "Page": currentPage,
+        "PageSize": pageSize
+      });
       setState(() {
         autodijeloviData = data;
         isLoading = false;
