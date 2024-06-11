@@ -90,7 +90,9 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
               child: Column(
                 children: [
                   _buildFirstForm(),
-                  isLoading ? _buildNoDataField() : _buildOprema(),
+                  opremaAutomobila == null
+                      ? _buildNoDataField()
+                      : _buildOprema(),
                   _buildButton(),
                   SizedBox(
                     width: 100,
@@ -440,15 +442,17 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
       setState(() {
         korisnikId = userID;
       });
-      var data =
-          await _opremaProvider.getOpremuZaAutomobil(widget.car!.automobilId!);
 
       var jelFavorit = await _automobilFavoritProvider.isFavorit(
           widget.car!.automobilId!, korisnikId!);
 
       setState(() {
-        opremaAutomobila = data;
         favorit = jelFavorit;
+      });
+      var data =
+          await _opremaProvider.getOpremuZaAutomobil(widget.car!.automobilId!);
+      setState(() {
+        opremaAutomobila = data;
         isLoading = false;
       });
     } catch (e) {

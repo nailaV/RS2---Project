@@ -26,6 +26,7 @@ class _DetaljiProizvodaState extends State<DetaljiProizvoda> {
   late KosaricaProvider _kosaricaProvider;
   bool isLoading = true;
   late Autodijelovi? dio;
+  List<Autodijelovi> listaRekomed = [];
 
   @override
   void initState() {
@@ -68,6 +69,16 @@ class _DetaljiProizvodaState extends State<DetaljiProizvoda> {
                   dio!.kolicinaNaStanju != null
                       ? _buildSecondPart()
                       : _buildNoDataField(),
+                  listaRekomed.isNotEmpty
+                      ? SizedBox(
+                          height: 330,
+                          child: ListView.builder(
+                              itemCount: listaRekomed.length,
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (context, index) =>
+                                  buildProductContainer(listaRekomed[index])),
+                        )
+                      : Text("No data to recommend"),
                 ],
               ),
             ),
@@ -246,12 +257,93 @@ class _DetaljiProizvodaState extends State<DetaljiProizvoda> {
     try {
       var data =
           await _autodijeloviProvider.getById(widget.autodio!.autodioId!);
+      var lista =
+          await _autodijeloviProvider.recommend(widget.autodio!.autodioId!);
       setState(() {
         dio = data;
+        listaRekomed = lista;
         isLoading = false;
       });
     } catch (e) {
       MyDialogs.showError(context, e.toString());
     }
+  }
+
+  GestureDetector buildProductContainer(Autodijelovi item) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (builder) => DetaljiProizvoda(
+                  autodio: item,
+                )));
+      },
+      child: Container(
+        width: double.infinity,
+        margin: const EdgeInsets.only(bottom: 10, left: 15, right: 15),
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(15),
+          color: Colors.blueGrey[50],
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(5),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Colors.blueGrey[50],
+              ),
+              height: 150,
+              width: 150,
+              child: item.slika != ""
+                  ? SizedBox(
+                      width: double.infinity,
+                      height: double.infinity,
+                      child: imageFromBase64String(item.slika!),
+                    )
+                  : const Center(
+                      child: Icon(
+                        Icons.no_photography,
+                        size: 35,
+                        color: Colors.black87,
+                      ),
+                    ),
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    item.naziv ?? "",
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      color: Colors.black,
+                      letterSpacing: 1,
+                    ),
+                  ),
+                  const SizedBox(height: 5),
+                  Text(
+                    "${item.cijena}KM",
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 1,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Icon(Icons.arrow_forward_ios)
+          ],
+        ),
+      ),
+    );
   }
 }
