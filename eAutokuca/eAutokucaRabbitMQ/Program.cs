@@ -9,16 +9,12 @@ using System.Text;
 using Newtonsoft.Json;
 
 using eAutokucaRabbitMQ;
- 
-var hostname = //Environment.GetEnvironmentVariable("RABBITMQ_HOST") ?? 
-    "localhost";
 
-//var username = Environment.GetEnvironmentVariable("RABBITMQ_USER") ?? "user";
+var hostname = Environment.GetEnvironmentVariable("RABBITMQ_HOST") ?? "localhost";
+var username = Environment.GetEnvironmentVariable("RABBITMQ_USER") ?? "guest";
+var password = Environment.GetEnvironmentVariable("RABBITMQ_PASS") ?? "guest";
 
-//var password = Environment.GetEnvironmentVariable("RABBITMQ_PASS") ?? "pass";
-
-var factory = new ConnectionFactory { HostName = hostname };
-   // UserName = username, Password = password };
+var factory = new ConnectionFactory { HostName = hostname, UserName = username, Password = password };
 
 using var connection = factory.CreateConnection();
 

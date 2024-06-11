@@ -8,5 +8,6 @@ namespace eAutokuca.Models.SearchObjects
 {
     public class NarudzbaSearchObject:BaseSearchObject
     {
+        public string? Status { get; set; }
     }
 }

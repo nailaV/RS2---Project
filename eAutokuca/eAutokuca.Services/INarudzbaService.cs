@@ -10,5 +10,8 @@ namespace eAutokuca.Services
 {
     public interface INarudzbaService:ICrudService<Models.Narudzba, NarudzbaSearchObject, NarudzbaInsert, NarudzbaUpdate>
     {
+        public Task posaljiNarudzbu(int id);
+        public Task otkaziNarudzbu(int id);
+        Task dodajNarudzbu (NarudzbaInsert insert);
     }
 }

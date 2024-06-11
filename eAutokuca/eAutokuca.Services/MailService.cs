@@ -13,16 +13,13 @@ namespace eAutokuca.Services
 {
     public class MailService : IMailService
     {
-        private readonly string serverAddress = Environment.GetEnvironmentVariable("SERVER_ADDRESS") ?? "smtp.gmail.com";
-        private readonly string mailSender = Environment.GetEnvironmentVariable("MAIL_SENDER") ?? "autokucalena@gmail.com";
-        private readonly string mailPass = Environment.GetEnvironmentVariable("MAIL_PASS") ?? "iszgskdnofylaxqo";
-        private readonly int port = int.Parse(Environment.GetEnvironmentVariable("MAIL_PORT") ?? "587");
         public async Task startConnection(MailObject obj)
         {
-            var hostname = "localhost";
+            var hostname = Environment.GetEnvironmentVariable("RABBITMQ_HOST") ?? "localhost";
+            var username = Environment.GetEnvironmentVariable("RABBITMQ_USER") ?? "guest";
+            var password = Environment.GetEnvironmentVariable("RABBITMQ_PASS") ?? "guest";
 
-            var factory = new ConnectionFactory { HostName = hostname };
-                //UserName = username, Password = password };
+            var factory = new ConnectionFactory { HostName = hostname , UserName = username, Password = password };
             using var connection = factory.CreateConnection();
             using var channel = connection.CreateModel();
 

@@ -17,6 +17,7 @@ namespace eAutokuca.Models
         public DateTime DatumNarudzbe { get; set; }
 
         public string Status { get; set; } = null!;
+        public string BrojTransakcije { get; set; } = null!;
 
         public virtual Korisnik? Korisnik { get; set; }
 

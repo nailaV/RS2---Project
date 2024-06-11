@@ -4,6 +4,7 @@ import 'package:eautokuca_desktop/models/autodijelovi.dart';
 import 'package:eautokuca_desktop/models/search_result.dart';
 import 'package:eautokuca_desktop/providers/autodijelovi_provider.dart';
 import 'package:eautokuca_desktop/screens/autodijelovi_detalji_screen.dart';
+import 'package:eautokuca_desktop/screens/narudzbe_screen.dart';
 import 'package:eautokuca_desktop/utils/popup_dialogs.dart';
 import 'package:eautokuca_desktop/utils/utils.dart';
 import 'package:eautokuca_desktop/widgets/dodaj_autodio_popup.dart';
@@ -136,7 +137,10 @@ class _AutodijeloviScreenState extends State<AutodijeloviScreen> {
           label: Text("Dodaj novi proizvod"),
         ),
         ElevatedButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.of(context).push(
+                MaterialPageRoute(builder: (builder) => NarudzbeScreen()));
+          },
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.yellow[700],
             foregroundColor: Colors.white,

@@ -43,6 +43,7 @@ dependencies:
   file_picker: ^8.0.3
   form_builder_validators: ^9.1.0
   url_launcher: ^6.3.0
+  flutter_stripe: ^10.1.1
 
 dev_dependencies:
   build_runner: ^2.4.8

@@ -18,6 +18,7 @@ namespace eAutokuca.Controllers
             _service = service;
         }
 
+        [Authorize(Roles = "Admin")]
         public override Task<Models.Korisnik> Update(int id, [FromBody] KorisniciUpdate update)
         {
             return base.Update(id, update);
@@ -33,17 +34,21 @@ namespace eAutokuca.Controllers
             return await _service.getByUsername(username);
         }
 
+        [Authorize(Roles = "Admin, ObicanUser")]
         [HttpPost("PromjenaPassworda/{id}")]
         public async Task<Models.Korisnik> promjenaPassworda(int id,[FromBody] KorisnikPasswordPromjena request)
         {
             return await _service.promjenaPassworda(id, request);
         }
 
+        [Authorize(Roles = "Admin, ObicanUser")]
         [HttpPost("PromjenaSlike/{id}")]
         public async Task promjenaSlike(int id, PromjenaSlike request)
         {
             await _service.promjenaSlike(id, request);
         }
+
+        [Authorize(Roles = "Admin")]
         [HttpPost("promijeniStanje/{id}")]
         public async Task promijeniStanje(int id)
         {

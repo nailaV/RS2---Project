@@ -2,7 +2,9 @@
 using eAutokuca.Models.Requests;
 using eAutokuca.Models.SearchObjects;
 using eAutokuca.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 
 namespace eAutokuca.Controllers
 {
@@ -28,6 +30,7 @@ namespace eAutokuca.Controllers
             return await _service.isFavorit(automobilId, korisnikId);
         }
 
+        [Authorize(Roles = "Admin, ObicanUser")]
         [HttpPost("izbrisiFavorita")]
         public async Task izbrisiFavorita(int automobilId, int korisnikId)
         {

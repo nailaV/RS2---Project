@@ -3,7 +3,9 @@ using eAutokuca.Models.Requests;
 using eAutokuca.Models.SearchObjects;
 using eAutokuca.Services;
 using eAutokuca.Services.Database;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 
 namespace eAutokuca.Controllers
 {
@@ -17,12 +19,14 @@ namespace eAutokuca.Controllers
         }
 
 
+        [Authorize(Roles = "Admin")]
         [HttpPost("aktiviraj/{id}")]
         public async Task aktiviraj(int id)
         {
             await _service.aktiviraj(id);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost("deaktiviraj/{id}")]
         public async Task deaktiviraj(int id)
         {

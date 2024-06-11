@@ -15,8 +15,19 @@ services:
     networks:
       - eautokucanet
     
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    restart: unless-stopped
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    networks:
+      - eautokucanet
   
-
   eautokuca-api:
     restart: unless-stopped
     build:
@@ -24,6 +35,13 @@ services:
     environment:
       - ConnectionStrings:DefaultConnection=Server=eautokuca-sql,1433;Database=eAutoKucaDatabase;User=sa;Password=Naila123!;ConnectRetryCount=0; TrustServerCertificate=True
       - ASPNETCORE_ENVIRONMENT=Development
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_USER=guest
+      - RABBITMQ_PASS=guest
+      - SERVER_ADDRESS=smtp.gmail.com
+      - MAIL_SENDER=autokucalena@gmail.com
+      - MAIL_PASS=iszgskdnofylaxqo
+      - MAIL_PORT=587
     ports:
       - 5146:5146
     networks:
@@ -32,10 +50,25 @@ services:
       - eautokuca-sql
     depends_on:
       - eautokuca-sql
+      - rabbitmq
 
-  
+  eautokuca-console:
+    restart: unless-stopped
+    build:
+      context: ./eAutokucaRabbitMQ
+    environment:
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_USER=guest
+      - RABBITMQ_PASS=guest
+      - SERVER_ADDRESS=smtp.gmail.com
+      - MAIL_SENDER=autokucalena@gmail.com
+      - MAIL_PASS=iszgskdnofylaxqo
+      - MAIL_PORT=587
+    networks:
+      - eautokucanet
+    depends_on:
+      - rabbitmq
  
-      
 networks:
   eautokucanet:
     driver: bridge 

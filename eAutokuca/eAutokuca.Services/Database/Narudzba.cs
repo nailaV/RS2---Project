@@ -15,6 +15,8 @@ public partial class Narudzba
 
     public string Status { get; set; } = null!;
 
+    public string? BrojTransakcije { get; set; }
+
     public virtual Korisnik? Korisnik { get; set; }
 
     public virtual ICollection<StavkeNarudzbe> StavkeNarudzbes { get; set; } = new List<StavkeNarudzbe>();

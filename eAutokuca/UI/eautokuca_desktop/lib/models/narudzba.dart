@@ -1,4 +1,5 @@
 import 'package:eautokuca_desktop/models/korisnici.dart';
+import 'package:intl/intl.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'narudzba.g.dart';
@@ -6,13 +7,21 @@ part 'narudzba.g.dart';
 @JsonSerializable()
 class Narudzba {
   int? narudzbaId;
-  String? ukupniIznos;
+  double? ukupniIznos;
   Korisnici? korisnik;
   DateTime? datumNarudzbe;
   String? status;
 
   Narudzba(this.narudzbaId, this.ukupniIznos, this.korisnik, this.datumNarudzbe,
       this.status);
+
+  String get datum {
+    return DateFormat('dd.MM.yyyy').format(datumNarudzbe!);
+  }
+
+  String get user {
+    return "${korisnik?.ime} ${korisnik?.prezime}";
+  }
 
   factory Narudzba.fromJson(Map<String, dynamic> json) =>
       _$NarudzbaFromJson(json);

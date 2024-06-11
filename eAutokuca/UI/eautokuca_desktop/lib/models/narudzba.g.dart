@@ -8,7 +8,7 @@ part of 'narudzba.dart';
 
 Narudzba _$NarudzbaFromJson(Map<String, dynamic> json) => Narudzba(
       json['narudzbaId'] as int?,
-      json['ukupniIznos'] as String?,
+      (json['ukupniIznos'] as num?)?.toDouble(),
       json['korisnik'] == null
           ? null
           : Korisnici.fromJson(json['korisnik'] as Map<String, dynamic>),

@@ -5,18 +5,23 @@ import 'package:eautokuca_mobile/providers/automobilFavorit_provider.dart';
 import 'package:eautokuca_mobile/providers/car_provider.dart';
 import 'package:eautokuca_mobile/providers/korisnici_provider.dart';
 import 'package:eautokuca_mobile/providers/kosarica_provider.dart';
+import 'package:eautokuca_mobile/providers/narudzba_provider.dart';
 import 'package:eautokuca_mobile/providers/oprema_provider.dart';
 import 'package:eautokuca_mobile/providers/recenzije_provider.dart';
 import 'package:eautokuca_mobile/providers/rezervacija_provider.dart';
 import 'package:eautokuca_mobile/screens/lista_automobila.dart';
+import 'package:eautokuca_mobile/stripeKeys.dart';
 import 'package:eautokuca_mobile/utils/popup_dialogs.dart';
 import 'package:eautokuca_mobile/utils/utils.dart';
 import 'package:eautokuca_mobile/widgets/registracija_popup.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_stripe/flutter_stripe.dart' as sp;
 import 'package:provider/provider.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  sp.Stripe.publishableKey =
+      const String.fromEnvironment('pubKey', defaultValue: pubKey);
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (_) => CarProvider()),
@@ -27,6 +32,7 @@ void main() {
       ChangeNotifierProvider(create: (_) => AutomobilFavoritProvider()),
       ChangeNotifierProvider(create: (_) => KosaricaProvider()),
       ChangeNotifierProvider(create: (_) => RecenzijeProvider()),
+      ChangeNotifierProvider(create: (_) => NarudzbaProvider()),
     ],
     child: const MyApp(),
   ));

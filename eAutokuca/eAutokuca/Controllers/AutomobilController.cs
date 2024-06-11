@@ -35,6 +35,7 @@ namespace eAutokuca.Controllers
             return await _service.Filtriraj(searchObject);
         }
 
+        [Authorize(Roles = "Admin")]
         public override async Task<Models.Automobil> Update(int id, [FromBody] AutomobilUpdate update)
         {
             return await base.Update(id, update);
@@ -52,6 +53,7 @@ namespace eAutokuca.Controllers
             await _service.deaktiviraj(id);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost("aktiviraj/{id}")]
         public async Task aktiviraj(int id)
         {

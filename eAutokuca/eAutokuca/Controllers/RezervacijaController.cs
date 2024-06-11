@@ -2,7 +2,9 @@
 using eAutokuca.Models.Requests;
 using eAutokuca.Models.SearchObjects;
 using eAutokuca.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 
 namespace eAutokuca.Controllers
 {
@@ -28,18 +30,22 @@ namespace eAutokuca.Controllers
             return _service.GetDostupne(id, datum);
         }
 
+        [Authorize(Roles = "ObicanUser")]
         [HttpPost("kreirajRezervaciju")]
         public async Task<Models.Rezervacija> KreirajRezervaciju([FromBody] RezervacijaInsert req)
         {
             return await _service.kreirajRezervaciju(req);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut("Zavrsi/{rezervacijaId}")]
         public async Task Zavrsi(int rezervacijaId)
         {
             await _service.Zavrsi(rezervacijaId);
         }
 
+
+        [Authorize(Roles = "Admin")]
         [HttpPut("Otkazi/{rezervacijaId}")]
         public async Task Otkazi(int rezervacijaId)
         {

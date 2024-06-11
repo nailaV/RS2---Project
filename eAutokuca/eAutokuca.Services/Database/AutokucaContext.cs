@@ -39,7 +39,7 @@ public partial class AutokucaContext : DbContext
 
     public virtual DbSet<Uloga> Ulogas { get; set; }
 
-    
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -157,6 +157,7 @@ public partial class AutokucaContext : DbContext
             entity.ToTable("Narudzba");
 
             entity.Property(e => e.NarudzbaId).HasColumnName("NarudzbaID");
+            entity.Property(e => e.BrojTransakcije).IsUnicode(false);
             entity.Property(e => e.DatumNarudzbe).HasColumnType("datetime");
             entity.Property(e => e.KorisnikId).HasColumnName("KorisnikID");
             entity.Property(e => e.Status)
