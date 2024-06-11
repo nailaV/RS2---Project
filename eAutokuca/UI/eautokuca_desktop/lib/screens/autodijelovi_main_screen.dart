@@ -1,4 +1,4 @@
-// ignore_for_file: unused_import, prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: unused_import, prefer_const_constructors
 
 import 'package:eautokuca_desktop/models/autodijelovi.dart';
 import 'package:eautokuca_desktop/models/search_result.dart';
@@ -134,6 +134,14 @@ class _AutodijeloviScreenState extends State<AutodijeloviScreen> {
           ),
           icon: Icon(Icons.add_shopping_cart),
           label: Text("Dodaj novi proizvod"),
+        ),
+        ElevatedButton(
+          onPressed: () {},
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.yellow[700],
+            foregroundColor: Colors.white,
+          ),
+          child: Text("Vidi sve narudžbe"),
         ),
         Row(
           children: [

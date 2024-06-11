@@ -45,6 +45,14 @@ namespace eAutokuca.Services
             CreateMap<Models.Requests.RecenzijeInsert, Database.Recenzije>();
             CreateMap<Models.Requests.RecenzijeUpdate, Database.Recenzije>();
 
+            CreateMap<Database.Narudzba, Models.Narudzba>();
+            CreateMap<Models.Requests.NarudzbaInsert, Database.Narudzba>();
+            CreateMap<Models.Requests.NarudzbaUpdate, Database.Narudzba>();
+
+            CreateMap<Database.StavkeNarudzbe, Models.StavkeNarudzbe>();
+            CreateMap<Models.Requests.StavkeNarudzbeInsert, Database.StavkeNarudzbe>();
+            CreateMap<Models.Requests.StavkeNarudzbeUpdate, Database.StavkeNarudzbe>();
+
         }
     }
 }

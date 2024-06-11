@@ -113,7 +113,7 @@ class _ListaAutomobilaState extends State<ListaAutomobila> {
                       currentPage--;
                       isLoading = true;
                     });
-                    getSveAutomobile();
+                    fetchPaged(filters ?? {});
                   },
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white,
@@ -128,14 +128,14 @@ class _ListaAutomobilaState extends State<ListaAutomobila> {
                 )
               : SizedBox.shrink(),
           SizedBox(width: 10),
-          currentPage < (carData!.total ?? 0)
+          currentPage < (carData?.total ?? 0)
               ? ElevatedButton(
                   onPressed: () {
                     setState(() {
                       currentPage++;
                       isLoading = true;
                     });
-                    getSveAutomobile();
+                    fetchPaged(filters ?? {});
                   },
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white,
@@ -249,10 +249,12 @@ class _ListaAutomobilaState extends State<ListaAutomobila> {
       children: [
         GestureDetector(
           onTap: () async {
-            var data = await _carProvider.Filtriraj({'FTS': "Audi"});
             setState(() {
-              carData = data;
+              filters = {'FTS': "Audi"};
+              currentPage = 1;
+              isLoading = true;
             });
+            fetchPaged(filters!);
           },
           child: SizedBox(
             width: 100,
@@ -262,10 +264,12 @@ class _ListaAutomobilaState extends State<ListaAutomobila> {
         ),
         GestureDetector(
           onTap: () async {
-            var data = await _carProvider.Filtriraj({'FTS': "BMW"});
             setState(() {
-              carData = data;
+              filters = {'FTS': "BMW"};
+              currentPage = 1;
+              isLoading = true;
             });
+            fetchPaged(filters!);
           },
           child: SizedBox(
             width: 100,
@@ -275,10 +279,12 @@ class _ListaAutomobilaState extends State<ListaAutomobila> {
         ),
         GestureDetector(
           onTap: () async {
-            var data = await _carProvider.Filtriraj({'FTS': "Kia"});
             setState(() {
-              carData = data;
+              filters = {'FTS': "Kia"};
+              currentPage = 1;
+              isLoading = true;
             });
+            fetchPaged(filters!);
           },
           child: SizedBox(
             width: 100,
@@ -300,12 +306,12 @@ class _ListaAutomobilaState extends State<ListaAutomobila> {
             shape: CircleBorder(),
             color: Colors.yellow[700],
             onPressed: () async {
-              var data = await _carProvider.Filtriraj(
-                {'FTS': _markaModelController.text},
-              );
               setState(() {
-                carData = data;
+                filters = {'FTS': _markaModelController.text};
+                currentPage = 1;
+                isLoading = true;
               });
+              fetchPaged(filters!);
             },
             child: Icon(
               Icons.search,
@@ -335,9 +341,10 @@ class _ListaAutomobilaState extends State<ListaAutomobila> {
               if (rezultat != null) {
                 filters = Map.from(rezultat);
                 setState(() {
+                  currentPage = 1;
                   isLoading = true;
                 });
-                fetchPaged(filters);
+                fetchPaged(filters!);
               }
             },
             child: Icon(
@@ -350,8 +357,11 @@ class _ListaAutomobilaState extends State<ListaAutomobila> {
     );
   }
 
-  Future<void> fetchPaged(dynamic request) async {
+  Future<void> fetchPaged(Map<String, dynamic> request) async {
     try {
+      request['PageSize'] = pageSize;
+      request['Page'] = currentPage;
+      request['AktivniNeaktivni'] = "Aktivan";
       var data = await _carProvider.Filtriraj(request);
       setState(() {
         carData = data;

@@ -3,6 +3,7 @@
 import 'package:eautokuca_desktop/providers/autodijelovi_provider.dart';
 import 'package:eautokuca_desktop/providers/car_provider.dart';
 import 'package:eautokuca_desktop/providers/korisnici_provider.dart';
+import 'package:eautokuca_desktop/providers/narudzba_provider.dart';
 import 'package:eautokuca_desktop/providers/oprema_provider.dart';
 import 'package:eautokuca_desktop/providers/recenzije_provider.dart';
 import 'package:eautokuca_desktop/providers/report_provider.dart';
@@ -21,7 +22,8 @@ void main() {
       ChangeNotifierProvider(create: (_) => AutodijeloviProvider()),
       ChangeNotifierProvider(create: (_) => RezervacijaProvider()),
       ChangeNotifierProvider(create: (_) => ReportProvider()),
-      ChangeNotifierProvider(create: (_) => RecenzijeProvider())
+      ChangeNotifierProvider(create: (_) => RecenzijeProvider()),
+      ChangeNotifierProvider(create: (_) => NarudzbaProvider()),
     ],
     child: const MyApp(),
   ));
