@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\User\\Desktop\\RS2 ispravni\\RS2---Project\\eAutokuca\\eAutokuca\\eAutokuca.csproj": {}
+    "C:\\Users\\User\\Desktop\\RS2 sem\\RS2---Project\\eAutokuca\\eAutokuca\\eAutokuca.csproj": {}
   },
   "projects": {
-    "C:\\Users\\User\\Desktop\\RS2 ispravni\\RS2---Project\\eAutokuca\\eAutokuca.Models\\eAutokuca.Models.csproj": {
+    "C:\\Users\\User\\Desktop\\RS2 sem\\RS2---Project\\eAutokuca\\eAutokuca.Models\\eAutokuca.Models.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\User\\Desktop\\RS2 ispravni\\RS2---Project\\eAutokuca\\eAutokuca.Models\\eAutokuca.Models.csproj",
+        "projectUniqueName": "C:\\Users\\User\\Desktop\\RS2 sem\\RS2---Project\\eAutokuca\\eAutokuca.Models\\eAutokuca.Models.csproj",
         "projectName": "eAutokuca.Models",
-        "projectPath": "C:\\Users\\User\\Desktop\\RS2 ispravni\\RS2---Project\\eAutokuca\\eAutokuca.Models\\eAutokuca.Models.csproj",
+        "projectPath": "C:\\Users\\User\\Desktop\\RS2 sem\\RS2---Project\\eAutokuca\\eAutokuca.Models\\eAutokuca.Models.csproj",
         "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\User\\Desktop\\RS2 ispravni\\RS2---Project\\eAutokuca\\eAutokuca.Models\\obj\\",
+        "outputPath": "C:\\Users\\User\\Desktop\\RS2 sem\\RS2---Project\\eAutokuca\\eAutokuca.Models\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -59,14 +59,14 @@
         }
       }
     },
-    "C:\\Users\\User\\Desktop\\RS2 ispravni\\RS2---Project\\eAutokuca\\eAutokuca.Services\\eAutokuca.Services.csproj": {
+    "C:\\Users\\User\\Desktop\\RS2 sem\\RS2---Project\\eAutokuca\\eAutokuca.Services\\eAutokuca.Services.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\User\\Desktop\\RS2 ispravni\\RS2---Project\\eAutokuca\\eAutokuca.Services\\eAutokuca.Services.csproj",
+        "projectUniqueName": "C:\\Users\\User\\Desktop\\RS2 sem\\RS2---Project\\eAutokuca\\eAutokuca.Services\\eAutokuca.Services.csproj",
         "projectName": "eAutokuca.Services",
-        "projectPath": "C:\\Users\\User\\Desktop\\RS2 ispravni\\RS2---Project\\eAutokuca\\eAutokuca.Services\\eAutokuca.Services.csproj",
+        "projectPath": "C:\\Users\\User\\Desktop\\RS2 sem\\RS2---Project\\eAutokuca\\eAutokuca.Services\\eAutokuca.Services.csproj",
         "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\User\\Desktop\\RS2 ispravni\\RS2---Project\\eAutokuca\\eAutokuca.Services\\obj\\",
+        "outputPath": "C:\\Users\\User\\Desktop\\RS2 sem\\RS2---Project\\eAutokuca\\eAutokuca.Services\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -83,8 +83,8 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "C:\\Users\\User\\Desktop\\RS2 ispravni\\RS2---Project\\eAutokuca\\eAutokuca.Models\\eAutokuca.Models.csproj": {
-                "projectPath": "C:\\Users\\User\\Desktop\\RS2 ispravni\\RS2---Project\\eAutokuca\\eAutokuca.Models\\eAutokuca.Models.csproj"
+              "C:\\Users\\User\\Desktop\\RS2 sem\\RS2---Project\\eAutokuca\\eAutokuca.Models\\eAutokuca.Models.csproj": {
+                "projectPath": "C:\\Users\\User\\Desktop\\RS2 sem\\RS2---Project\\eAutokuca\\eAutokuca.Models\\eAutokuca.Models.csproj"
               }
             }
           }
@@ -152,14 +152,14 @@
         }
       }
     },
-    "C:\\Users\\User\\Desktop\\RS2 ispravni\\RS2---Project\\eAutokuca\\eAutokuca\\eAutokuca.csproj": {
+    "C:\\Users\\User\\Desktop\\RS2 sem\\RS2---Project\\eAutokuca\\eAutokuca\\eAutokuca.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\User\\Desktop\\RS2 ispravni\\RS2---Project\\eAutokuca\\eAutokuca\\eAutokuca.csproj",
+        "projectUniqueName": "C:\\Users\\User\\Desktop\\RS2 sem\\RS2---Project\\eAutokuca\\eAutokuca\\eAutokuca.csproj",
         "projectName": "eAutokuca",
-        "projectPath": "C:\\Users\\User\\Desktop\\RS2 ispravni\\RS2---Project\\eAutokuca\\eAutokuca\\eAutokuca.csproj",
+        "projectPath": "C:\\Users\\User\\Desktop\\RS2 sem\\RS2---Project\\eAutokuca\\eAutokuca\\eAutokuca.csproj",
         "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\User\\Desktop\\RS2 ispravni\\RS2---Project\\eAutokuca\\eAutokuca\\obj\\",
+        "outputPath": "C:\\Users\\User\\Desktop\\RS2 sem\\RS2---Project\\eAutokuca\\eAutokuca\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -176,11 +176,11 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "C:\\Users\\User\\Desktop\\RS2 ispravni\\RS2---Project\\eAutokuca\\eAutokuca.Models\\eAutokuca.Models.csproj": {
-                "projectPath": "C:\\Users\\User\\Desktop\\RS2 ispravni\\RS2---Project\\eAutokuca\\eAutokuca.Models\\eAutokuca.Models.csproj"
+              "C:\\Users\\User\\Desktop\\RS2 sem\\RS2---Project\\eAutokuca\\eAutokuca.Models\\eAutokuca.Models.csproj": {
+                "projectPath": "C:\\Users\\User\\Desktop\\RS2 sem\\RS2---Project\\eAutokuca\\eAutokuca.Models\\eAutokuca.Models.csproj"
               },
-              "C:\\Users\\User\\Desktop\\RS2 ispravni\\RS2---Project\\eAutokuca\\eAutokuca.Services\\eAutokuca.Services.csproj": {
-                "projectPath": "C:\\Users\\User\\Desktop\\RS2 ispravni\\RS2---Project\\eAutokuca\\eAutokuca.Services\\eAutokuca.Services.csproj"
+              "C:\\Users\\User\\Desktop\\RS2 sem\\RS2---Project\\eAutokuca\\eAutokuca.Services\\eAutokuca.Services.csproj": {
+                "projectPath": "C:\\Users\\User\\Desktop\\RS2 sem\\RS2---Project\\eAutokuca\\eAutokuca.Services\\eAutokuca.Services.csproj"
               }
             }
           }

@@ -53,6 +53,10 @@ namespace eAutokuca.Services
             CreateMap<Models.Requests.StavkeNarudzbeInsert, Database.StavkeNarudzbe>();
             CreateMap<Models.Requests.StavkeNarudzbeUpdate, Database.StavkeNarudzbe>();
 
+            CreateMap<Database.Komentari, Models.Komentari>();
+            CreateMap<Models.Requests.KomentariInsert, Database.Komentari>();
+            CreateMap<Models.Requests.KomentariUpdate, Database.Komentari>();
+
         }
     }
 }

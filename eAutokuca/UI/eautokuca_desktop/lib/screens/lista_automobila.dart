@@ -30,11 +30,9 @@ class ListaAutomobila extends StatefulWidget {
   State<ListaAutomobila> createState() => _ListaAutomobilaState();
 }
 
-class _ListaAutomobilaState extends State<ListaAutomobila>
-    with TickerProviderStateMixin {
+class _ListaAutomobilaState extends State<ListaAutomobila> {
   late CarProvider _carProvider;
   final _formKey = GlobalKey<FormBuilderState>();
-  Map<String, dynamic> _initialValue = {};
   Map<String, dynamic>? filters;
   SearchResult<Car>? result;
   bool isLoading = true;
@@ -47,31 +45,9 @@ class _ListaAutomobilaState extends State<ListaAutomobila>
   int pageSize = 8;
 
   @override
-  void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
-    super.didChangeDependencies();
-    _carProvider = context.read<CarProvider>();
-  }
-
-  @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _initialValue = {
-      "motor": widget.car?.motor,
-      "mjenjac": widget.car?.mjenjac,
-      "boja": widget.car?.boja,
-      "cijena": widget.car?.cijena.toString(),
-      "godinaProizvodnje": widget.car?.godinaProizvodnje.toString(),
-      "predjeniKilometri": widget.car?.predjeniKilometri.toString(),
-      "brojSasije": widget.car?.brojSasije,
-      "snagaMotora": widget.car?.snagaMotora,
-      "brojVrata": widget.car?.brojVrata.toString(),
-      "model": widget.car?.model,
-      "marka": widget.car?.marka,
-      "status": widget.car?.status,
-      "slike": widget.car?.slike
-    };
     _carProvider = context.read<CarProvider>();
     getData();
   }
@@ -200,7 +176,7 @@ class _ListaAutomobilaState extends State<ListaAutomobila>
                 )
               : SizedBox.shrink(),
           SizedBox(width: 10),
-          currentPage < (result!.total ?? 0)
+          currentPage < (result!.total ?? 0.0)
               ? ElevatedButton(
                   onPressed: () {
                     setState(() {
@@ -418,12 +394,10 @@ class _ListaAutomobilaState extends State<ListaAutomobila>
 
   Future<void> fetchPaged(dynamic request) async {
     try {
-      //filters!['Page'] = _currentPage;
       var data = await _carProvider.Filtriraj(request);
       setState(() {
         result = data;
         isLoading = false;
-        //clearFilters=true;
       });
     } catch (e) {
       MyDialogs.showError(context, e.toString());

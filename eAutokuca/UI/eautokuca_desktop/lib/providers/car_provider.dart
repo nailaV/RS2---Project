@@ -84,6 +84,7 @@ class CarProvider extends BaseProvider<Car> {
     }
   }
 
+  // ignore: non_constant_identifier_names
   Future<SearchResult<Car>> Filtriraj(dynamic filters) async {
     var query = getQueryString(filters);
 

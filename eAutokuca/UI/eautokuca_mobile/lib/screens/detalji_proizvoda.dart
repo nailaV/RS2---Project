@@ -257,11 +257,11 @@ class _DetaljiProizvodaState extends State<DetaljiProizvoda> {
     try {
       var data =
           await _autodijeloviProvider.getById(widget.autodio!.autodioId!);
-      var lista =
-          await _autodijeloviProvider.recommend(widget.autodio!.autodioId!);
+      //var lista =
+      // await _autodijeloviProvider.recommend(widget.autodio!.autodioId!);
       setState(() {
         dio = data;
-        listaRekomed = lista;
+        // listaRekomed = lista;
         isLoading = false;
       });
     } catch (e) {

@@ -33,9 +33,9 @@ public partial class Automobil
 
     public byte[]? Slike { get; set; }
 
-    public bool IsFavorite { get; set; }
-
     public virtual ICollection<AutomobilFavoriti> AutomobilFavoritis { get; set; } = new List<AutomobilFavoriti>();
+
+    public virtual Komentari? Komentari { get; set; }
 
     public virtual ICollection<Oprema> Opremas { get; set; } = new List<Oprema>();
 

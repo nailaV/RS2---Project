@@ -22,6 +22,7 @@ builder.Services.AddTransient<IRecenzijeService, RecenzijeService>();
 builder.Services.AddTransient<IMailService, MailService>();
 builder.Services.AddTransient<INarudzbaService, NarudzbaService>();
 builder.Services.AddTransient<IStavkeNarudzbeService, StavkeNarudzbeService>();
+builder.Services.AddTransient<IKomentariService, KomentariService>();
 
 builder.Services.AddTransient<BaseState>();
 builder.Services.AddTransient<InitialState>();

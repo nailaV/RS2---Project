@@ -1,8 +1,11 @@
 // ignore_for_file: prefer_const_constructors, use_super_parameters, must_be_immutable, use_build_context_synchronously, prefer_const_literals_to_create_immutables, unused_field, unused_import
 
 import 'package:eautokuca_desktop/models/car.dart';
+import 'package:eautokuca_desktop/models/komentari.dart';
 import 'package:eautokuca_desktop/models/oprema.dart';
+import 'package:eautokuca_desktop/models/search_result.dart';
 import 'package:eautokuca_desktop/providers/car_provider.dart';
+import 'package:eautokuca_desktop/providers/komentari_provider.dart';
 import 'package:eautokuca_desktop/providers/oprema_provider.dart';
 import 'package:eautokuca_desktop/providers/report_provider.dart';
 import 'package:eautokuca_desktop/screens/lista_automobila.dart';
@@ -30,9 +33,11 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
   final _formKey = GlobalKey<FormBuilderState>();
   final _formKey1 = GlobalKey<FormBuilderState>();
   late Oprema? opremaAutomobila;
+  late SearchResult<Komentari>? komentariData;
   late CarProvider _carProvider;
   late ReportProvider _reportProvider;
   late OpremaProvider _opremaProvider;
+  late KomentariProvider _komentariProvider;
   bool imaOpremu = true;
 
   Map<String, dynamic> _initialValue = {};
@@ -61,13 +66,9 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
     _carProvider = context.read<CarProvider>();
     _opremaProvider = context.read<OpremaProvider>();
     _reportProvider = context.read<ReportProvider>();
+    _komentariProvider = context.read<KomentariProvider>();
     getData();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    // TODO: implement didChangeDependencies
+    getKomentare();
   }
 
   @override
@@ -538,6 +539,21 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
         opremaAutomobila = null;
         isLoading = false;
         imaOpremu = false;
+      });
+    }
+  }
+
+  Future<void> getKomentare() async {
+    try {
+      var data =
+          await _komentariProvider.getAll(filter: widget.car!.automobilId);
+      setState(() {
+        komentariData = data;
+        isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        isLoading = false;
       });
     }
   }

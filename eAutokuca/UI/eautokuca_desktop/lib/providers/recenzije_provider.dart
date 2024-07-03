@@ -24,6 +24,9 @@ class RecenzijeProvider extends BaseProvider<Recenzije> {
 
     if (isValidResponse(request)) {
       var data = jsonDecode(request.body);
+      if (data is int) {
+        data = data.toDouble();
+      }
       return data;
     } else {
       throw Exception("Greška...");

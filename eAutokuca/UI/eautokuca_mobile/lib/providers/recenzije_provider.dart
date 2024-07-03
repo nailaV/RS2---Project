@@ -20,8 +20,6 @@ class RecenzijeProvider extends BaseProvider<Recenzije> {
 
     var request = await http.get(uri, headers: headers);
 
-    print(url);
-
     if (isValidResponse(request)) {
       List<Recenzije> lista = [];
       var data = jsonDecode(request.body);

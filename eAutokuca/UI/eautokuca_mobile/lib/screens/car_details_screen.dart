@@ -1,4 +1,4 @@
-// ignore_for_file:  must_be_immutable,  use_super_parameters, prefer_const_constructors, prefer_const_literals_to_create_immutables, unused_element, unused_local_variable, unused_field
+// ignore_for_file:  must_be_immutable,  use_super_parameters, prefer_const_constructors, prefer_const_literals_to_create_immutables, unused_element, unused_local_variable, unused_field, unused_import
 
 import 'package:eautokuca_mobile/models/car.dart';
 import 'package:eautokuca_mobile/models/oprema.dart';
@@ -90,7 +90,7 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
               child: Column(
                 children: [
                   _buildFirstForm(),
-                  opremaAutomobila == null
+                  opremaAutomobila?.alarm == null
                       ? _buildNoDataField()
                       : _buildOprema(),
                   _buildButton(),
@@ -115,8 +115,11 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
         await _automobilFavoritProvider.ukloniFavorita(
             widget.car!.automobilId!, korisnikId!);
         MyDialogs.showSuccess(context, "Uspješno uklonjen favorit.", () {
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (builder) => FavoritiScreen()));
+          Navigator.of(context).pop();
+          setState(() {
+            isLoading = true;
+          });
+          getData();
         });
         setState(() {});
       },
@@ -133,8 +136,11 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
             {"automobilId": widget.car?.automobilId, "korisnikId": korisnikId});
 
         MyDialogs.showSuccess(context, "Uspješno dodan favorit.", () {
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (builder) => ListaAutomobila()));
+          Navigator.of(context).pop();
+          setState(() {
+            isLoading = true;
+          });
+          getData();
         });
         setState(() {});
       },
@@ -150,11 +156,16 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
         hoverColor: Colors.blue,
         color: Colors.yellow[700],
         onPressed: () async {
-          await showDialog(
+          var result = await showDialog(
               context: context,
               builder: (context) {
                 return RezervisiTermin(carId: widget.car!.automobilId!);
               });
+          if (result != null) {
+            MyDialogs.showSuccess(context, "Rezervacija uspješna!", () {
+              Navigator.of(context).pop();
+            });
+          }
         },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -456,8 +467,7 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
         isLoading = false;
       });
     } catch (e) {
-      opremaAutomobila = null;
-      isLoading = false;
+      MyDialogs.showError(context, e.toString());
     }
   }
 }

@@ -30,7 +30,7 @@ namespace eAutokuca.Services
             var entity = await _context.Opremas.Where(x => x.AutomobilId == automobilId).FirstOrDefaultAsync();
             if (entity == null)
             {
-                throw new Exception("Dodatna oprema nije unesena");
+               return new Models.Oprema();
             }
             return _mapper.Map<Models.Oprema>(entity);
         }

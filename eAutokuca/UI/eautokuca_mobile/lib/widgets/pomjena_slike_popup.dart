@@ -1,4 +1,4 @@
-// ignore_for_file: unused_field, must_be_immutable
+// ignore_for_file: unused_field, must_be_immutable, unused_import
 
 import 'dart:convert';
 import 'dart:io';
@@ -138,8 +138,8 @@ class _PromjenaSlikeState extends State<PromjenaSlike> {
                 await _korisniciProvider.promjenaSlike(widget.korisnikId, map);
                 MyDialogs.showSuccess(context, "Uspješno promijenjena slika.",
                     () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (builder) => const KorisnickiProfil()));
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop({"OK": "OK"});
                 });
               } catch (e) {
                 MyDialogs.showError(context, e.toString());

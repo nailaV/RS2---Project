@@ -166,13 +166,19 @@ class _KorisnickiProfilState extends State<KorisnickiProfil> {
       children: [
         ElevatedButton.icon(
           onPressed: () async {
-            await showDialog(
+            var result = await showDialog(
                 context: context,
                 builder: (context) {
                   return PromjenaSlike(
                     korisnikId: korisnikInfo!.korisnikId!,
                   );
                 });
+            if (result != null) {
+              setState(() {
+                isLoading = true;
+              });
+              getData();
+            }
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.yellow[700],

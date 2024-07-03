@@ -21,6 +21,8 @@ public partial class AutokucaContext : DbContext
 
     public virtual DbSet<AutomobilFavoriti> AutomobilFavoritis { get; set; }
 
+    public virtual DbSet<Komentari> Komentaris { get; set; }
+
     public virtual DbSet<Korisnik> Korisniks { get; set; }
 
     public virtual DbSet<KorisnikUloga> KorisnikUlogas { get; set; }
@@ -70,7 +72,6 @@ public partial class AutokucaContext : DbContext
                 .HasMaxLength(20)
                 .IsUnicode(false);
             entity.Property(e => e.Cijena).HasColumnType("decimal(8, 2)");
-            entity.Property(e => e.IsFavorite).HasColumnName("isFavorite");
             entity.Property(e => e.Marka).HasMaxLength(30);
             entity.Property(e => e.Mjenjac)
                 .HasMaxLength(20)
@@ -94,6 +95,10 @@ public partial class AutokucaContext : DbContext
 
             entity.ToTable("AutomobilFavoriti");
 
+            entity.HasIndex(e => e.AutomobilId, "IX_AutomobilFavoriti_AutomobilId");
+
+            entity.HasIndex(e => e.KorisnikId, "IX_AutomobilFavoriti_KorisnikId");
+
             entity.HasOne(d => d.Automobil).WithMany(p => p.AutomobilFavoritis)
                 .HasForeignKey(d => d.AutomobilId)
                 .HasConstraintName("FK__Automobil__Autom__02FC7413");
@@ -101,6 +106,31 @@ public partial class AutokucaContext : DbContext
             entity.HasOne(d => d.Korisnik).WithMany(p => p.AutomobilFavoritis)
                 .HasForeignKey(d => d.KorisnikId)
                 .HasConstraintName("FK__Automobil__Koris__03F0984C");
+        });
+
+        modelBuilder.Entity<Komentari>(entity =>
+        {
+            entity.HasKey(e => e.KomentarId).HasName("PK__Komentar__C0C304BC7F9462DE");
+
+            entity.ToTable("Komentari");
+
+            entity.Property(e => e.KomentarId)
+                .ValueGeneratedNever()
+                .HasColumnName("KomentarID");
+            entity.Property(e => e.AutomobilId).HasColumnName("AutomobilID");
+            entity.Property(e => e.DatumDodavanja).HasColumnType("datetime");
+            entity.Property(e => e.KorisnikId).HasColumnName("KorisnikID");
+            entity.Property(e => e.Sadrzaj).HasMaxLength(255);
+
+            entity.HasOne(d => d.Komentar).WithOne(p => p.Komentari)
+                .HasForeignKey<Komentari>(d => d.KomentarId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__Komentari__Autom__6EF57B66");
+
+            entity.HasOne(d => d.KomentarNavigation).WithOne(p => p.Komentari)
+                .HasForeignKey<Komentari>(d => d.KomentarId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__Komentari__Koris__6E01572D");
         });
 
         modelBuilder.Entity<Korisnik>(entity =>
@@ -137,6 +167,10 @@ public partial class AutokucaContext : DbContext
 
             entity.ToTable("KorisnikUloga");
 
+            entity.HasIndex(e => e.KorisnikId, "IX_KorisnikUloga_KorisnikID");
+
+            entity.HasIndex(e => e.UlogaId, "IX_KorisnikUloga_UlogaID");
+
             entity.Property(e => e.KorisnikUlogaId).HasColumnName("KorisnikUlogaID");
             entity.Property(e => e.KorisnikId).HasColumnName("KorisnikID");
             entity.Property(e => e.UlogaId).HasColumnName("UlogaID");
@@ -155,6 +189,8 @@ public partial class AutokucaContext : DbContext
             entity.HasKey(e => e.NarudzbaId).HasName("PK__Narudzba__FBEC1357356F6270");
 
             entity.ToTable("Narudzba");
+
+            entity.HasIndex(e => e.KorisnikId, "IX_Narudzba_KorisnikID");
 
             entity.Property(e => e.NarudzbaId).HasColumnName("NarudzbaID");
             entity.Property(e => e.BrojTransakcije).IsUnicode(false);
@@ -176,6 +212,8 @@ public partial class AutokucaContext : DbContext
 
             entity.ToTable("Oprema");
 
+            entity.HasIndex(e => e.AutomobilId, "IX_Oprema_AutomobilID");
+
             entity.Property(e => e.OpremaId).HasColumnName("OpremaID");
             entity.Property(e => e.AutomobilId).HasColumnName("AutomobilID");
 
@@ -189,6 +227,8 @@ public partial class AutokucaContext : DbContext
             entity.HasKey(e => e.RecenzijeId).HasName("PK__Recenzij__C077A356F761E834");
 
             entity.ToTable("Recenzije");
+
+            entity.HasIndex(e => e.KorisnikId, "IX_Recenzije_KorisnikID");
 
             entity.Property(e => e.RecenzijeId).HasColumnName("RecenzijeID");
             entity.Property(e => e.KorisnikId).HasColumnName("KorisnikID");
@@ -204,6 +244,8 @@ public partial class AutokucaContext : DbContext
             entity.HasKey(e => e.ReportId).HasName("PK__Report__D5BD48E5372F2D7B");
 
             entity.ToTable("Report");
+
+            entity.HasIndex(e => e.AutomobilId, "IX_Report_AutomobilID");
 
             entity.Property(e => e.ReportId).HasColumnName("ReportID");
             entity.Property(e => e.AutomobilId).HasColumnName("AutomobilID");
@@ -221,6 +263,10 @@ public partial class AutokucaContext : DbContext
             entity.HasKey(e => e.RezervacijaId).HasName("PK__Rezervac__CABA44FD9A468A08");
 
             entity.ToTable("Rezervacija");
+
+            entity.HasIndex(e => e.AutomobilId, "IX_Rezervacija_AutomobilID");
+
+            entity.HasIndex(e => e.KorisnikId, "IX_Rezervacija_KorisnikID");
 
             entity.Property(e => e.RezervacijaId).HasColumnName("RezervacijaID");
             entity.Property(e => e.AutomobilId).HasColumnName("AutomobilID");
@@ -244,6 +290,10 @@ public partial class AutokucaContext : DbContext
             entity.HasKey(e => e.StavkeNarudzbeId).HasName("PK__StavkeNa__FA672E98AE68B56C");
 
             entity.ToTable("StavkeNarudzbe");
+
+            entity.HasIndex(e => e.AutodioId, "IX_StavkeNarudzbe_AutodioID");
+
+            entity.HasIndex(e => e.NaruzdbaId, "IX_StavkeNarudzbe_NaruzdbaID");
 
             entity.Property(e => e.StavkeNarudzbeId).HasColumnName("StavkeNarudzbeID");
             entity.Property(e => e.AutodioId).HasColumnName("AutodioID");

@@ -199,10 +199,7 @@ class _RezervisiTerminState extends State<RezervisiTermin> {
                   "datum": datumVrijeme
                 };
                 _rezervacijaProvider.kreirajRezervaciju(request);
-                MyDialogs.showSuccess(context, "Rezervacija uspješna!", () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (builder) => RezervisaniTermini()));
-                });
+                Navigator.of(context).pop({"OK": "OK"});
               } catch (e) {
                 MyDialogs.showError(context, e.toString());
               }
