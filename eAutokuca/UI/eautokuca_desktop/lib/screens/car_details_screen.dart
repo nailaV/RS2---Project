@@ -68,7 +68,6 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
     _reportProvider = context.read<ReportProvider>();
     _komentariProvider = context.read<KomentariProvider>();
     getData();
-    getKomentare();
   }
 
   @override
@@ -166,7 +165,9 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
                           padding: const EdgeInsets.all(12.0),
                           child: Column(
                             children: [
-                              _buildInputsOprema(),
+                              opremaAutomobila?.alarm == null
+                                  ? _buildNoDataField()
+                                  : _buildInputsOprema(),
                               SizedBox(
                                 height: 20,
                               ),
@@ -222,7 +223,7 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
                                         }
                                       },
                                       child: Text(
-                                        imaOpremu
+                                        opremaAutomobila?.alarm != null
                                             ? "Uredi opremu"
                                             : "Dodaj opremu",
                                         style: TextStyle(color: Colors.white),
@@ -233,6 +234,35 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
                         )))
               ],
             )));
+  }
+
+  Padding _buildNoDataField() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Center(
+        child: Container(
+            padding: EdgeInsets.only(left: 50, right: 50, top: 30, bottom: 30),
+            decoration: BoxDecoration(
+                border: Border.all(color: Colors.red),
+                borderRadius: BorderRadius.circular(30),
+                color: Colors.blueGrey[50]),
+            child: Column(
+              children: [
+                Icon(Icons.info),
+                SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  "Nema podataka o dodatnoj opremi za ovaj automobil ",
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold),
+                ),
+              ],
+            )),
+      ),
+    );
   }
 
   Widget _buildImage() {
@@ -543,18 +573,18 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
     }
   }
 
-  Future<void> getKomentare() async {
-    try {
-      var data =
-          await _komentariProvider.getAll(filter: widget.car!.automobilId);
-      setState(() {
-        komentariData = data;
-        isLoading = false;
-      });
-    } catch (e) {
-      setState(() {
-        isLoading = false;
-      });
-    }
-  }
+  // Future<void> getKomentare() async {
+  //   try {
+  //     var data =
+  //         await _komentariProvider.getAll(filter: widget.car!.automobilId);
+  //     setState(() {
+  //       komentariData = data;
+  //       isLoading = false;
+  //     });
+  //   } catch (e) {
+  //     setState(() {
+  //       isLoading = false;
+  //     });
+  //   }
+  // }
 }

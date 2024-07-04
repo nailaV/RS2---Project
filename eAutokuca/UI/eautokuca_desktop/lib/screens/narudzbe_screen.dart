@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, sort_child_properties_last
 
 import 'package:eautokuca_desktop/models/narudzba.dart';
 import 'package:eautokuca_desktop/models/search_result.dart';
@@ -178,12 +178,29 @@ class _NarudzbeScreenState extends State<NarudzbeScreen> {
       return Row(
         children: [
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () async {
+              await _narudzbaProvider.posaljiNarudzbu(order.narudzbaId!);
+              MyDialogs.showSuccess(context, "Uspješno poslana narudžba!", () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (builder) => NarudzbeScreen()));
+              });
+            },
             child: Text("Pošalji"),
           ),
           SizedBox(width: 5),
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () async {
+              await _narudzbaProvider.posaljiNarudzbu(order.narudzbaId!);
+              MyDialogs.showQuestion(
+                  context, "Da li ste sigurni da želite otkazati narudžbu?",
+                  () {
+                MyDialogs.showSuccess(context, "Uspješno otkazana narudžba!",
+                    () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (builder) => NarudzbeScreen()));
+                });
+              });
+            },
             child: Text("Otkaži"),
           ),
         ],
