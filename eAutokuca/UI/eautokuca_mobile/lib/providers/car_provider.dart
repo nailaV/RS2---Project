@@ -18,6 +18,25 @@ class CarProvider extends BaseProvider<Car> {
     return Car.fromJson(data);
   }
 
+  Future<List<Car>> recommend(int id) async {
+    var url = "$baseUrl$end/Recommend/$id";
+    var uri = Uri.parse(url);
+    var headers = createdHeaders();
+    var response = await http.get(uri, headers: headers);
+
+    if (isValidResponse(response)) {
+      List<Car> lista = [];
+      var data = jsonDecode(response.body);
+      for (var item in data) {
+        lista.add(fromJson(item));
+      }
+
+      return lista;
+    } else {
+      throw Exception("Greška pri učitavanju.");
+    }
+  }
+
   Future<List<String>> getSveMarke() async {
     var url = "$baseUrl$end/GetSveMarke";
     var uri = Uri.parse(url);

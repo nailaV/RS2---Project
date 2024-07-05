@@ -21,7 +21,8 @@ namespace eAutokuca.Services
         Task<PagedResult<Models.Automobil>> Filtriraj(AutomobilSearchObject? searchObject=null);
         public Task deaktiviraj(int id);
         public Task aktiviraj(int id);
-        
+        List<Models.Automobil> Recommend(int id);
+
 
     }
 }

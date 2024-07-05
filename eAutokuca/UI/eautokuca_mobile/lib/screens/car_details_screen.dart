@@ -1,9 +1,11 @@
-// ignore_for_file:  must_be_immutable,  use_super_parameters, prefer_const_constructors, prefer_const_literals_to_create_immutables, unused_element, unused_local_variable, unused_field, unused_import
+// ignore_for_file:  must_be_immutable,  use_super_parameters, prefer_const_constructors, prefer_const_literals_to_create_immutables, unused_element, unused_local_variable, unused_field, unused_import, prefer_final_fields
 
 import 'package:eautokuca_mobile/models/car.dart';
+import 'package:eautokuca_mobile/models/komentari.dart';
 import 'package:eautokuca_mobile/models/oprema.dart';
 import 'package:eautokuca_mobile/providers/automobilFavorit_provider.dart';
 import 'package:eautokuca_mobile/providers/car_provider.dart';
+import 'package:eautokuca_mobile/providers/komentari_provider.dart';
 import 'package:eautokuca_mobile/providers/korisnici_provider.dart';
 import 'package:eautokuca_mobile/providers/oprema_provider.dart';
 import 'package:eautokuca_mobile/providers/rezervacija_provider.dart';
@@ -33,12 +35,29 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
   late OpremaProvider _opremaProvider;
   late RezervacijaProvider _rezervacijaProvider;
   late AutomobilFavoritProvider _automobilFavoritProvider;
+  late KomentariProvider _komentariProvider;
   late KorisniciProvider _korisniciProvider;
   Map<String, dynamic> _initialValue = {};
+  late List<Komentari>? komentariResult = [];
   late Oprema? opremaAutomobila;
   bool isLoading = true;
   bool favorit = false;
   int? korisnikId;
+  bool isVisible = false;
+
+  void _toggleVisibility() {
+    setState(() {
+      isVisible = !isVisible;
+    });
+  }
+
+  TextEditingController _komentarController = TextEditingController();
+  bool isFormVisible = false;
+  void _toggleFormVisibility() {
+    setState(() {
+      isFormVisible = !isFormVisible;
+    });
+  }
 
   @override
   void initState() {
@@ -65,7 +84,7 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
     _rezervacijaProvider = context.read<RezervacijaProvider>();
     _automobilFavoritProvider = context.read<AutomobilFavoritProvider>();
     _korisniciProvider = context.read<KorisniciProvider>();
-
+    _komentariProvider = context.read<KomentariProvider>();
     getData();
   }
 
@@ -85,7 +104,7 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
     return MasterScreenWidget(
       title: "${widget.car?.marka} ${widget.car?.model}",
       child: isLoading
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
               child: Column(
                 children: [
@@ -237,6 +256,108 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         _buildImage(),
+                        Column(
+                          children: <Widget>[
+                            TextButton(
+                                onPressed: _toggleVisibility,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      isVisible
+                                          ? "Sakrij komentare"
+                                          : "Vidi komentare",
+                                      style: TextStyle(color: Colors.black),
+                                    ),
+                                    Icon(
+                                      isVisible
+                                          ? Icons.arrow_drop_up
+                                          : Icons.arrow_drop_down,
+                                      color: Colors.black,
+                                    )
+                                  ],
+                                )),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Visibility(
+                              visible: isVisible,
+                              child: (komentariResult != null &&
+                                      komentariResult!.isNotEmpty)
+                                  ? Column(
+                                      children: komentariResult!
+                                          .map((Komentari k) => buildRes(k))
+                                          .toList(),
+                                    )
+                                  : _buildNoComments(),
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            TextButton(
+                              onPressed: _toggleFormVisibility,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    !isFormVisible
+                                        ? "Ostavi komentar"
+                                        : "Odustani",
+                                    style: TextStyle(color: Colors.black),
+                                  ),
+                                  Icon(
+                                    !isFormVisible ? Icons.add : Icons.close,
+                                    color: Colors.black,
+                                  )
+                                ],
+                              ),
+                            ),
+                            Visibility(
+                                visible: isFormVisible,
+                                child: Column(
+                                  children: [
+                                    TextField(
+                                      controller: _komentarController,
+                                      decoration: InputDecoration(
+                                          labelText: "Unesi komentar...",
+                                          border: OutlineInputBorder()),
+                                      maxLines: 3,
+                                    ),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    ElevatedButton(
+                                        onPressed: () {
+                                          try {
+                                            var request = {
+                                              "automobilId":
+                                                  widget.car!.automobilId!,
+                                              "korisnikId": korisnikId,
+                                              "sadrzaj":
+                                                  _komentarController.text
+                                            };
+                                            _komentariProvider
+                                                .dodajKomentar(request);
+                                            MyDialogs.showSuccess(
+                                                context, "Dodan komentar", () {
+                                              Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                      builder: (builder) =>
+                                                          ListaAutomobila()));
+                                            });
+                                          } catch (e) {
+                                            MyDialogs.showError(
+                                                context, e.toString());
+                                          }
+                                        },
+                                        child: Text(
+                                          "Komentariši",
+                                          style: TextStyle(color: Colors.black),
+                                        ))
+                                  ],
+                                ))
+                          ],
+                        ),
                         SizedBox(height: 10),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -302,6 +423,97 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  Padding _buildNoComments() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Center(
+        child: Container(
+            padding: EdgeInsets.only(left: 50, right: 50, top: 30, bottom: 30),
+            decoration: BoxDecoration(
+                border: Border.all(color: Colors.red),
+                borderRadius: BorderRadius.circular(30),
+                color: Colors.blueGrey[50]),
+            child: Column(
+              children: [
+                Icon(Icons.info),
+                SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  "Nema komentara.",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold),
+                ),
+              ],
+            )),
+      ),
+    );
+  }
+
+  Container buildRes(Komentari object) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(15),
+      margin: const EdgeInsets.only(bottom: 10),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey.shade300),
+        borderRadius: BorderRadius.circular(15),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.3),
+            spreadRadius: 2,
+            blurRadius: 5,
+            offset: Offset(0, 3),
+          ),
+        ],
+        color: Colors.white,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          buildRow(Icons.person, "Korisnik", object.user),
+          const SizedBox(height: 10),
+          if (object.sadrzaj != null)
+            buildRow(Icons.comment_rounded, "Komentar", object.sadrzaj!),
+          const SizedBox(height: 10),
+          buildRow(Icons.watch_later_outlined, "Datum", object.datum),
+        ],
+      ),
+    );
+  }
+
+  Row buildRow(IconData icon, String label, String value) {
+    return Row(
+      children: [
+        Icon(icon, color: Colors.black),
+        SizedBox(width: 8),
+        Text(
+          "$label:",
+          style: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+            fontSize: 16,
+          ),
+        ),
+        SizedBox(width: 8),
+        Expanded(
+          child: Text(
+            value,
+            style: TextStyle(
+              color: Colors.black87,
+              fontWeight: FontWeight.normal,
+              fontSize: 16,
+            ),
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+      ],
     );
   }
 
@@ -460,13 +672,34 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
       setState(() {
         favorit = jelFavorit;
       });
+
       var data =
+          await _komentariProvider.getKomentareZaAuto(widget.car!.automobilId!);
+
+      var data1 =
           await _opremaProvider.getOpremuZaAutomobil(widget.car!.automobilId!);
       setState(() {
-        opremaAutomobila = data;
+        komentariResult = data;
+        opremaAutomobila = data1;
         isLoading = false;
       });
     } catch (e) {
+      MyDialogs.showError(context, e.toString());
+    }
+  }
+
+  Future<void> getKomentare() async {
+    try {
+      var data =
+          await _komentariProvider.getKomentareZaAuto(widget.car!.automobilId!);
+      setState(() {
+        komentariResult = data;
+        isLoading = false;
+      });
+    } on Exception catch (e) {
+      setState(() {
+        isLoading = false;
+      });
       MyDialogs.showError(context, e.toString());
     }
   }

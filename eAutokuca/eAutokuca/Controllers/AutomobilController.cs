@@ -59,5 +59,12 @@ namespace eAutokuca.Controllers
         {
             await _service.aktiviraj(id);
         }
+
+        [Authorize(Roles = "Admin, ObicanUser")]
+        [HttpGet("Recommend/{id}")]
+        public List<Models.Automobil> Recommend(int id)
+        {
+            return _service.Recommend(id);
+        }
     }
 }

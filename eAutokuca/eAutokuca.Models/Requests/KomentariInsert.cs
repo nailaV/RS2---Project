@@ -8,6 +8,8 @@ namespace eAutokuca.Models.Requests
 {
     public class KomentariInsert
     {
-
+        public string Sadrzaj { get; set; }
+        public int KorisnikId { get; set; }
+        public int AutomobilId { get; set; }
     }
 }

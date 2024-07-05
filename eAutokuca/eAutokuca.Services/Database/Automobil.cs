@@ -35,7 +35,7 @@ public partial class Automobil
 
     public virtual ICollection<AutomobilFavoriti> AutomobilFavoritis { get; set; } = new List<AutomobilFavoriti>();
 
-    public virtual Komentari? Komentari { get; set; }
+    public virtual ICollection<Komentari> Komentaris { get; set; } = new List<Komentari>();
 
     public virtual ICollection<Oprema> Opremas { get; set; } = new List<Oprema>();
 

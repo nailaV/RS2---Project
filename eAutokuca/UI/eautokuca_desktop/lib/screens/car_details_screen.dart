@@ -13,6 +13,7 @@ import 'package:eautokuca_desktop/utils/popup_dialogs.dart';
 import 'package:eautokuca_desktop/utils/utils.dart';
 import 'package:eautokuca_desktop/widgets/dodaj_opremu_popup.dart';
 import 'package:eautokuca_desktop/widgets/edit_automobil_popup.dart';
+import 'package:eautokuca_desktop/widgets/komentari_popup.dart';
 import 'package:eautokuca_desktop/widgets/master_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -33,12 +34,19 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
   final _formKey = GlobalKey<FormBuilderState>();
   final _formKey1 = GlobalKey<FormBuilderState>();
   late Oprema? opremaAutomobila;
-  late SearchResult<Komentari>? komentariData;
+  late List<Komentari>? komentariResult = [];
   late CarProvider _carProvider;
   late ReportProvider _reportProvider;
   late OpremaProvider _opremaProvider;
   late KomentariProvider _komentariProvider;
   bool imaOpremu = true;
+  bool isVisible = false;
+
+  void _toggleVisibility() {
+    setState(() {
+      isVisible = !isVisible;
+    });
+  }
 
   Map<String, dynamic> _initialValue = {};
 
@@ -68,6 +76,7 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
     _reportProvider = context.read<ReportProvider>();
     _komentariProvider = context.read<KomentariProvider>();
     getData();
+    getKomentare();
   }
 
   @override
@@ -131,6 +140,43 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
                     child: Column(
                       children: [
                         _buildImage(),
+                        Column(
+                          children: <Widget>[
+                            TextButton(
+                                onPressed: _toggleVisibility,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      isVisible
+                                          ? "Sakrij komentare"
+                                          : "Vidi komentare",
+                                      style: TextStyle(color: Colors.black),
+                                    ),
+                                    Icon(
+                                      isVisible
+                                          ? Icons.arrow_drop_up
+                                          : Icons.arrow_drop_down,
+                                      color: Colors.black,
+                                    )
+                                  ],
+                                )),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Visibility(
+                              visible: isVisible,
+                              child: (komentariResult != null &&
+                                      komentariResult!.isNotEmpty)
+                                  ? Column(
+                                      children: komentariResult!
+                                          .map((Komentari k) => buildRes(k))
+                                          .toList(),
+                                    )
+                                  : _buildNoComments(),
+                            ),
+                          ],
+                        ),
                         _buildInputs(),
                         SizedBox(
                           height: 20,
@@ -145,6 +191,67 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  Container buildRes(Komentari object) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(15),
+      margin: const EdgeInsets.only(bottom: 10),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey.shade300),
+        borderRadius: BorderRadius.circular(15),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.3),
+            spreadRadius: 2,
+            blurRadius: 5,
+            offset: Offset(0, 3),
+          ),
+        ],
+        color: Colors.white,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          buildRow(Icons.person, "Korisnik", object.user),
+          const SizedBox(height: 10),
+          if (object.sadrzaj != null)
+            buildRow(Icons.comment_rounded, "Komentar", object.sadrzaj!),
+          const SizedBox(height: 10),
+          buildRow(Icons.watch_later_outlined, "Datum", object.datum),
+        ],
+      ),
+    );
+  }
+
+  Row buildRow(IconData icon, String label, String value) {
+    return Row(
+      children: [
+        Icon(icon, color: Colors.black),
+        SizedBox(width: 8),
+        Text(
+          "$label:",
+          style: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+            fontSize: 16,
+          ),
+        ),
+        SizedBox(width: 8),
+        Expanded(
+          child: Text(
+            value,
+            style: TextStyle(
+              color: Colors.black87,
+              fontWeight: FontWeight.normal,
+              fontSize: 16,
+            ),
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+      ],
     );
   }
 
@@ -253,7 +360,37 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
                   height: 10,
                 ),
                 Text(
-                  "Nema podataka o dodatnoj opremi za ovaj automobil ",
+                  "Nema podataka o dodatnoj opremi za ovaj automobil.",
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold),
+                ),
+              ],
+            )),
+      ),
+    );
+  }
+
+  Padding _buildNoComments() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Center(
+        child: Container(
+            padding: EdgeInsets.only(left: 50, right: 50, top: 30, bottom: 30),
+            decoration: BoxDecoration(
+                border: Border.all(color: Colors.red),
+                borderRadius: BorderRadius.circular(30),
+                color: Colors.blueGrey[50]),
+            child: Column(
+              children: [
+                Icon(Icons.info),
+                SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  "Nema komentara.",
+                  textAlign: TextAlign.center,
                   style: TextStyle(
                       color: Colors.black,
                       fontSize: 20,
@@ -573,18 +710,19 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
     }
   }
 
-  // Future<void> getKomentare() async {
-  //   try {
-  //     var data =
-  //         await _komentariProvider.getAll(filter: widget.car!.automobilId);
-  //     setState(() {
-  //       komentariData = data;
-  //       isLoading = false;
-  //     });
-  //   } catch (e) {
-  //     setState(() {
-  //       isLoading = false;
-  //     });
-  //   }
-  // }
+  Future<void> getKomentare() async {
+    try {
+      var data =
+          await _komentariProvider.getKomentareZaAuto(widget.car!.automobilId!);
+      setState(() {
+        komentariResult = data;
+        isLoading = false;
+      });
+    } on Exception catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+      MyDialogs.showError(context, e.toString());
+    }
+  }
 }

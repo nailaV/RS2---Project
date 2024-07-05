@@ -11,6 +11,7 @@ import 'package:eautokuca_desktop/screens/car_details_screen.dart';
 import 'package:eautokuca_desktop/utils/popup_dialogs.dart';
 import 'package:eautokuca_desktop/utils/utils.dart';
 import 'package:eautokuca_desktop/widgets/filter_popup.dart';
+import 'package:eautokuca_desktop/widgets/komentari_popup.dart';
 //import 'package:eautokuca_desktop/screens/car_details_screen.dart';
 import 'package:eautokuca_desktop/widgets/master_screen.dart';
 import 'package:eautokuca_desktop/widgets/novi_automobil_popup.dart';

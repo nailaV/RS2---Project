@@ -33,11 +33,7 @@ namespace eAutokuca.Controllers
             await _service.deaktiviraj(id);
         }
 
-        [HttpGet("recommend")]
-        public List<Models.Autodio> Recommend(int autodioID)
-        {
-            return _service.Recommend(autodioID);
-        }
+       
 
 
 

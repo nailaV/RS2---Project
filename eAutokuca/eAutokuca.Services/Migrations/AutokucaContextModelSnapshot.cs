@@ -343,8 +343,11 @@ namespace eAutokuca.Services.Migrations
             modelBuilder.Entity("eAutokuca.Services.Database.Komentari", b =>
                 {
                     b.Property<int>("KomentarId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("KomentarID");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("KomentarId"));
 
                     b.Property<int?>("AutomobilId")
                         .HasColumnType("int")
@@ -362,7 +365,11 @@ namespace eAutokuca.Services.Migrations
                         .HasColumnType("nvarchar(255)");
 
                     b.HasKey("KomentarId")
-                        .HasName("PK__Komentar__C0C304BC7F9462DE");
+                        .HasName("PK__Komentar__C0C304BC02E648F7");
+
+                    b.HasIndex("AutomobilId");
+
+                    b.HasIndex("KorisnikId");
 
                     b.ToTable("Komentari", (string)null);
 
@@ -371,7 +378,7 @@ namespace eAutokuca.Services.Migrations
                         {
                             KomentarId = 1,
                             AutomobilId = 1,
-                            DatumDodavanja = new DateTime(2024, 7, 3, 21, 44, 35, 447, DateTimeKind.Local).AddTicks(305),
+                            DatumDodavanja = new DateTime(2024, 7, 5, 11, 13, 18, 78, DateTimeKind.Local).AddTicks(7869),
                             KorisnikId = 2,
                             Sadrzaj = "Imam vec jedan ovakav automobil. Sve preporuke."
                         },
@@ -379,7 +386,7 @@ namespace eAutokuca.Services.Migrations
                         {
                             KomentarId = 2,
                             AutomobilId = 2,
-                            DatumDodavanja = new DateTime(2024, 7, 3, 21, 44, 35, 447, DateTimeKind.Local).AddTicks(308),
+                            DatumDodavanja = new DateTime(2024, 7, 5, 11, 13, 18, 78, DateTimeKind.Local).AddTicks(7872),
                             KorisnikId = 2,
                             Sadrzaj = "Mali potrosac. Odlicno."
                         });
@@ -452,7 +459,7 @@ namespace eAutokuca.Services.Migrations
                         new
                         {
                             KorisnikId = 1,
-                            DatumRegistracije = new DateTime(2024, 7, 3, 21, 44, 35, 446, DateTimeKind.Local).AddTicks(9927),
+                            DatumRegistracije = new DateTime(2024, 7, 5, 11, 13, 18, 78, DateTimeKind.Local).AddTicks(7597),
                             Email = "naila.vejo@edu.fit.ba",
                             Ime = "Admin",
                             LozinkaHash = "slK9Ytl1fXfVit13Q3+Fl/+BKpk=",
@@ -465,7 +472,7 @@ namespace eAutokuca.Services.Migrations
                         new
                         {
                             KorisnikId = 2,
-                            DatumRegistracije = new DateTime(2024, 7, 3, 21, 44, 35, 447, DateTimeKind.Local).AddTicks(30),
+                            DatumRegistracije = new DateTime(2024, 7, 5, 11, 13, 18, 78, DateTimeKind.Local).AddTicks(7645),
                             Email = "naila.vejo4@gmail.com",
                             Ime = "Mobile",
                             LozinkaHash = "dFn/EoU6AWNtwiLKuf+ur6jwjWk=",
@@ -816,14 +823,14 @@ namespace eAutokuca.Services.Migrations
                         {
                             ReportId = 1,
                             AutomobilId = 3,
-                            DatumProdaje = new DateTime(2024, 7, 3, 21, 44, 35, 447, DateTimeKind.Local).AddTicks(290),
+                            DatumProdaje = new DateTime(2024, 7, 5, 11, 13, 18, 78, DateTimeKind.Local).AddTicks(7856),
                             Prihodi = 19500m
                         },
                         new
                         {
                             ReportId = 2,
                             AutomobilId = 4,
-                            DatumProdaje = new DateTime(2024, 7, 3, 21, 44, 35, 447, DateTimeKind.Local).AddTicks(294),
+                            DatumProdaje = new DateTime(2024, 7, 5, 11, 13, 18, 78, DateTimeKind.Local).AddTicks(7859),
                             Prihodi = 35560m
                         });
                 });
@@ -1048,21 +1055,19 @@ namespace eAutokuca.Services.Migrations
 
             modelBuilder.Entity("eAutokuca.Services.Database.Komentari", b =>
                 {
-                    b.HasOne("eAutokuca.Services.Database.Automobil", "Komentar")
-                        .WithOne("Komentari")
-                        .HasForeignKey("eAutokuca.Services.Database.Komentari", "KomentarId")
-                        .IsRequired()
-                        .HasConstraintName("FK__Komentari__Autom__6EF57B66");
+                    b.HasOne("eAutokuca.Services.Database.Automobil", "Automobil")
+                        .WithMany("Komentaris")
+                        .HasForeignKey("AutomobilId")
+                        .HasConstraintName("FK__Komentari__Autom__7D439ABD");
 
-                    b.HasOne("eAutokuca.Services.Database.Korisnik", "KomentarNavigation")
-                        .WithOne("Komentari")
-                        .HasForeignKey("eAutokuca.Services.Database.Komentari", "KomentarId")
-                        .IsRequired()
-                        .HasConstraintName("FK__Komentari__Koris__6E01572D");
+                    b.HasOne("eAutokuca.Services.Database.Korisnik", "Korisnik")
+                        .WithMany("Komentaris")
+                        .HasForeignKey("KorisnikId")
+                        .HasConstraintName("FK__Komentari__Koris__7C4F7684");
 
-                    b.Navigation("Komentar");
+                    b.Navigation("Automobil");
 
-                    b.Navigation("KomentarNavigation");
+                    b.Navigation("Korisnik");
                 });
 
             modelBuilder.Entity("eAutokuca.Services.Database.KorisnikUloga", b =>
@@ -1166,7 +1171,7 @@ namespace eAutokuca.Services.Migrations
                 {
                     b.Navigation("AutomobilFavoritis");
 
-                    b.Navigation("Komentari");
+                    b.Navigation("Komentaris");
 
                     b.Navigation("Opremas");
 
@@ -1179,7 +1184,7 @@ namespace eAutokuca.Services.Migrations
                 {
                     b.Navigation("AutomobilFavoritis");
 
-                    b.Navigation("Komentari");
+                    b.Navigation("Komentaris");
 
                     b.Navigation("KorisnikUlogas");
 

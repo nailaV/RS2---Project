@@ -12,10 +12,14 @@ namespace eAutokuca.Models
 
         public string? Sadrzaj { get; set; }
 
+        public DateTime? DatumDodavanja { get; set; }
+
         public int? KorisnikId { get; set; }
 
         public int? AutomobilId { get; set; }
 
- 
+        public virtual Automobil? Automobil { get; set; }
+
+        public virtual Korisnik? Korisnik { get; set; }
     }
 }

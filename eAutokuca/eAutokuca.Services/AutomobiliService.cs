@@ -5,6 +5,9 @@ using eAutokuca.Models.SearchObjects;
 using eAutokuca.Services.AutomobiliStateMachine;
 using eAutokuca.Services.Database;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.ML;
+using Microsoft.ML.Data;
+using Microsoft.ML.Trainers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -213,6 +216,93 @@ namespace eAutokuca.Services
             }
             entity.Status = "Aktivan";
             await _context.SaveChangesAsync();
+        }
+
+
+        static MLContext mlContext = null;
+        static object isLocked = new object();
+        static ITransformer model = null;
+        public List<Models.Automobil> Recommend(int userId)
+        {
+            lock (isLocked)
+            {
+                if (mlContext == null)
+                {
+                    mlContext = new MLContext();
+
+                    var rezervacija = _context.Rezervacijas.Include(x => x.Automobil).ToList();
+
+                    if (rezervacija.Count == 0)
+                    {
+                        return new List<Models.Automobil>();
+                    }
+
+                    var data = new List<UserItemEntry>();
+
+                    foreach (var x in rezervacija)
+                    {
+                        data.Add(new UserItemEntry()
+                        {
+                            UserId = (uint)x.KorisnikId,
+                            ItemId = (uint)x.AutomobilId,
+                            Rating = 1
+                        });
+                    }
+
+                    var trainData = mlContext.Data.LoadFromEnumerable(data);
+
+                    MatrixFactorizationTrainer.Options options = new MatrixFactorizationTrainer.Options();
+                    options.MatrixColumnIndexColumnName = nameof(UserItemEntry.UserId);
+                    options.MatrixRowIndexColumnName = nameof(UserItemEntry.ItemId);
+                    options.LabelColumnName = "Rating";
+                    options.LossFunction = MatrixFactorizationTrainer.LossFunctionType.SquareLossOneClass;
+                    options.Alpha = 0.01;
+                    options.Lambda = 0.025;
+                    options.NumberOfIterations = 100;
+                    options.C = 0.00001;
+
+                    var est = mlContext.Recommendation().Trainers.MatrixFactorization(options);
+
+                    model = est.Fit(trainData);
+                }
+            }
+
+            var cars = _context.Automobils.Where(x => x.Status == "Aktivan" && !_context.Rezervacijas.Any(y => y.KorisnikId == userId && y.AutomobilId == x.AutomobilId)).ToList();
+
+            var predictionResult = new List<Tuple<Database.Automobil, float>>();
+
+            foreach (var car in cars)
+            {
+                var predictionEngine = mlContext.Model.CreatePredictionEngine<UserItemEntry, UserBasedPrediction>(model);
+                var prediction = predictionEngine.Predict(
+                    new UserItemEntry()
+                    {
+                        UserId = (uint)userId,
+                        ItemId = (uint)car.AutomobilId
+                    });
+
+                predictionResult.Add(new Tuple<Database.Automobil, float>(car, prediction.Score));
+            }
+
+            var finalResult = predictionResult.OrderByDescending(x => x.Item2).Select(y => y.Item1).Take(3).ToList();
+
+            return _mapper.Map<List<Models.Automobil>>(finalResult);
+        }
+
+        public class UserItemEntry
+        {
+            [KeyType(count: 10)]
+            public uint UserId { get; set; }
+
+            [KeyType(count: 10)]
+            public uint ItemId { get; set; }
+
+            public float Rating { get; set; }
+        }
+
+        public class UserBasedPrediction
+        {
+            public float Score { get; set; }
         }
     }
 }

@@ -3,6 +3,7 @@
 import 'package:eautokuca_mobile/providers/autodijelovi_provider.dart';
 import 'package:eautokuca_mobile/providers/automobilFavorit_provider.dart';
 import 'package:eautokuca_mobile/providers/car_provider.dart';
+import 'package:eautokuca_mobile/providers/komentari_provider.dart';
 import 'package:eautokuca_mobile/providers/korisnici_provider.dart';
 import 'package:eautokuca_mobile/providers/kosarica_provider.dart';
 import 'package:eautokuca_mobile/providers/narudzba_provider.dart';
@@ -33,6 +34,7 @@ void main() {
       ChangeNotifierProvider(create: (_) => KosaricaProvider()),
       ChangeNotifierProvider(create: (_) => RecenzijeProvider()),
       ChangeNotifierProvider(create: (_) => NarudzbaProvider()),
+      ChangeNotifierProvider(create: (_) => KomentariProvider()),
     ],
     child: const MyApp(),
   ));

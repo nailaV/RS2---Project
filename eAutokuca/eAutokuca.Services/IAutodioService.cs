@@ -13,6 +13,6 @@ namespace eAutokuca.Services
         public Task aktiviraj(int id);
         public Task deaktiviraj(int id);
 
-        List<Models.Autodio> Recommend(int autodioID);
+        //List<Models.Autodio> Recommend(int autodioID);
     }
 }

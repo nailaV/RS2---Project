@@ -41,7 +41,9 @@ public partial class AutokucaContext : DbContext
 
     public virtual DbSet<Uloga> Ulogas { get; set; }
 
-
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("Server=localhost;Database=Autokuca;Integrated Security=True; TrustServerCertificate=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -110,27 +112,27 @@ public partial class AutokucaContext : DbContext
 
         modelBuilder.Entity<Komentari>(entity =>
         {
-            entity.HasKey(e => e.KomentarId).HasName("PK__Komentar__C0C304BC7F9462DE");
+            entity.HasKey(e => e.KomentarId).HasName("PK__Komentar__C0C304BC02E648F7");
 
             entity.ToTable("Komentari");
 
-            entity.Property(e => e.KomentarId)
-                .ValueGeneratedNever()
-                .HasColumnName("KomentarID");
+            entity.HasIndex(e => e.AutomobilId, "IX_Komentari_AutomobilID");
+
+            entity.HasIndex(e => e.KorisnikId, "IX_Komentari_KorisnikID");
+
+            entity.Property(e => e.KomentarId).HasColumnName("KomentarID");
             entity.Property(e => e.AutomobilId).HasColumnName("AutomobilID");
             entity.Property(e => e.DatumDodavanja).HasColumnType("datetime");
             entity.Property(e => e.KorisnikId).HasColumnName("KorisnikID");
             entity.Property(e => e.Sadrzaj).HasMaxLength(255);
 
-            entity.HasOne(d => d.Komentar).WithOne(p => p.Komentari)
-                .HasForeignKey<Komentari>(d => d.KomentarId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Komentari__Autom__6EF57B66");
+            entity.HasOne(d => d.Automobil).WithMany(p => p.Komentaris)
+                .HasForeignKey(d => d.AutomobilId)
+                .HasConstraintName("FK__Komentari__Autom__7D439ABD");
 
-            entity.HasOne(d => d.KomentarNavigation).WithOne(p => p.Komentari)
-                .HasForeignKey<Komentari>(d => d.KomentarId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Komentari__Koris__6E01572D");
+            entity.HasOne(d => d.Korisnik).WithMany(p => p.Komentaris)
+                .HasForeignKey(d => d.KorisnikId)
+                .HasConstraintName("FK__Komentari__Koris__7C4F7684");
         });
 
         modelBuilder.Entity<Korisnik>(entity =>

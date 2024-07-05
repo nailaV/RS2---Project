@@ -1,7 +1,6 @@
-// ignore_for_file: must_be_immutable, prefer_const_constructors
+// ignore_for_file: must_be_immutable, prefer_const_constructors, unnecessary_null_comparison
 
 import 'package:eautokuca_mobile/models/car.dart';
-import 'package:eautokuca_mobile/models/korisnici.dart';
 import 'package:eautokuca_mobile/models/search_result.dart';
 import 'package:eautokuca_mobile/providers/car_provider.dart';
 import 'package:eautokuca_mobile/providers/korisnici_provider.dart';
@@ -27,11 +26,12 @@ class _ListaAutomobilaState extends State<ListaAutomobila> {
   late CarProvider _carProvider;
   SearchResult<Car>? carData;
   late KorisniciProvider _korisniciProvider;
-  Korisnici? korisnikInfo;
   TextEditingController _markaModelController = TextEditingController();
   Map<String, dynamic>? filters;
   int currentPage = 1;
   int pageSize = 3;
+  List<Car> listaRekomed = [];
+  int korisnikId = 0;
 
   bool isLoading = false;
 
@@ -47,14 +47,16 @@ class _ListaAutomobilaState extends State<ListaAutomobila> {
     super.initState();
     _carProvider = context.read<CarProvider>();
     _korisniciProvider = context.read<KorisniciProvider>();
-    getSveAutomobile();
-    getKorisniciInfo();
+    //getUserId();
+    //getRekomended();
+    //getSveAutomobile();
+    LoadData();
   }
 
   @override
   Widget build(BuildContext context) {
     return MasterScreenWidget(
-      title: "Dobrodošli, ${korisnikInfo?.ime ?? ""}",
+      title: "Dobrodošli!",
       child: isLoading
           ? const Center(
               child: CircularProgressIndicator(),
@@ -82,6 +84,44 @@ class _ListaAutomobilaState extends State<ListaAutomobila> {
                     ),
                   ),
                   _buildLogoSearch(),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: Align(
+                      alignment: Alignment.topLeft,
+                      child: Text(
+                        "Korisnici slični Vama su rezervisali:",
+                        style: TextStyle(
+                          color: Colors.yellow[700],
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                  (listaRekomed != null && listaRekomed.isNotEmpty)
+                      ? Column(
+                          children: listaRekomed
+                              .map((Car e) => buildProductContainer(e))
+                              .toList(),
+                        )
+                      : Text("No data here"),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: Align(
+                      alignment: Alignment.topLeft,
+                      child: Text(
+                        "NAJNOVIJA PONUDA",
+                        style: TextStyle(
+                          color: Colors.yellow[700],
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
                   (carData != null)
                       ? Column(
                           children: carData?.list
@@ -97,6 +137,84 @@ class _ListaAutomobilaState extends State<ListaAutomobila> {
                 ],
               ),
             ),
+    );
+  }
+
+  GestureDetector buildProductContainer(Car item) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (builder) => CarDetailsScreen(
+                  car: item,
+                )));
+      },
+      child: Container(
+        width: double.infinity,
+        margin: const EdgeInsets.only(bottom: 10, left: 15, right: 15),
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(15),
+          color: Colors.blueGrey[50],
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(5),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Colors.blueGrey[50],
+              ),
+              height: 150,
+              width: 150,
+              child: item.slike != ""
+                  ? SizedBox(
+                      width: double.infinity,
+                      height: double.infinity,
+                      child: imageFromBase64String(item.slike!),
+                    )
+                  : const Center(
+                      child: Icon(
+                        Icons.no_photography,
+                        size: 35,
+                        color: Colors.black87,
+                      ),
+                    ),
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    item.marka ?? "",
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      color: Colors.black,
+                      letterSpacing: 1,
+                    ),
+                  ),
+                  const SizedBox(height: 5),
+                  Text(
+                    "${item.cijena}KM",
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 1,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Icon(Icons.arrow_forward_ios)
+          ],
+        ),
+      ),
     );
   }
 
@@ -372,12 +490,32 @@ class _ListaAutomobilaState extends State<ListaAutomobila> {
     }
   }
 
-  Future<void> getKorisniciInfo() async {
+  Future<void> LoadData() async {
     try {
-      var data =
-          await _korisniciProvider.getByUseranme(Authorization.username!);
+      await getUserId();
+      await getRekomended();
+      await getSveAutomobile();
+    } catch (e) {
+      MyDialogs.showError(context, e.toString());
+    }
+  }
+
+  Future<void> getUserId() async {
+    try {
+      var id = await _korisniciProvider.getKorisnikID();
       setState(() {
-        korisnikInfo = data;
+        korisnikId = id;
+      });
+    } catch (e) {
+      MyDialogs.showError(context, e.toString());
+    }
+  }
+
+  Future<void> getRekomended() async {
+    try {
+      var lista = await _carProvider.recommend(korisnikId);
+      setState(() {
+        listaRekomed = lista;
       });
     } on Exception catch (e) {
       MyDialogs.showError(context, e.toString());
@@ -386,6 +524,7 @@ class _ListaAutomobilaState extends State<ListaAutomobila> {
 
   Future<void> getSveAutomobile() async {
     try {
+      var lista = await _carProvider.recommend(korisnikId);
       var data = await _carProvider.Filtriraj({
         "PageSize": pageSize,
         "Page": currentPage,
@@ -393,6 +532,7 @@ class _ListaAutomobilaState extends State<ListaAutomobila> {
       });
       setState(() {
         carData = data;
+        listaRekomed = lista;
         isLoading = false;
       });
     } on Exception catch (e) {

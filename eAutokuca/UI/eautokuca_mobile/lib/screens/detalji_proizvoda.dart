@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, unused_import
 
 import 'package:eautokuca_mobile/models/autodijelovi.dart';
 import 'package:eautokuca_mobile/providers/autodijelovi_provider.dart';
@@ -26,7 +26,6 @@ class _DetaljiProizvodaState extends State<DetaljiProizvoda> {
   late KosaricaProvider _kosaricaProvider;
   bool isLoading = true;
   late Autodijelovi? dio;
-  List<Autodijelovi> listaRekomed = [];
 
   @override
   void initState() {
@@ -69,16 +68,6 @@ class _DetaljiProizvodaState extends State<DetaljiProizvoda> {
                   dio!.kolicinaNaStanju != null
                       ? _buildSecondPart()
                       : _buildNoDataField(),
-                  listaRekomed.isNotEmpty
-                      ? SizedBox(
-                          height: 330,
-                          child: ListView.builder(
-                              itemCount: listaRekomed.length,
-                              scrollDirection: Axis.horizontal,
-                              itemBuilder: (context, index) =>
-                                  buildProductContainer(listaRekomed[index])),
-                        )
-                      : Text("No data to recommend"),
                 ],
               ),
             ),
@@ -151,10 +140,14 @@ class _DetaljiProizvodaState extends State<DetaljiProizvoda> {
                     await _kosaricaProvider.dodajUkosaricu(
                         widget.autodio!, context);
                     MyDialogs.showSuccess(
-                        context, "Uspješno dodan proizvod u košaricu", () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (builder) => ShopMainScreen()));
+                        context, "Uspješno dodan proizvod u košaricu.", () {
+                      Navigator.of(context).pop();
+                      setState(() {
+                        isLoading = true;
+                      });
+                      getData();
                     });
+                    setState(() {});
                   } catch (e) {
                     MyDialogs.showError(context, e.toString());
                   }
@@ -257,11 +250,8 @@ class _DetaljiProizvodaState extends State<DetaljiProizvoda> {
     try {
       var data =
           await _autodijeloviProvider.getById(widget.autodio!.autodioId!);
-      //var lista =
-      // await _autodijeloviProvider.recommend(widget.autodio!.autodioId!);
       setState(() {
         dio = data;
-        // listaRekomed = lista;
         isLoading = false;
       });
     } catch (e) {

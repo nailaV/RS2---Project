@@ -29,7 +29,7 @@ public partial class Korisnik
 
     public virtual ICollection<AutomobilFavoriti> AutomobilFavoritis { get; set; } = new List<AutomobilFavoriti>();
 
-    public virtual Komentari? Komentari { get; set; }
+    public virtual ICollection<Komentari> Komentaris { get; set; } = new List<Komentari>();
 
     public virtual ICollection<KorisnikUloga> KorisnikUlogas { get; set; } = new List<KorisnikUloga>();
 
