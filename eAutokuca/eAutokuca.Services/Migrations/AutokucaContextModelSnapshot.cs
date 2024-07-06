@@ -382,7 +382,7 @@ namespace eAutokuca.Services.Migrations
                         {
                             KomentarId = 1,
                             AutomobilId = 1,
-                            DatumDodavanja = new DateTime(2024, 7, 6, 19, 38, 30, 590, DateTimeKind.Local).AddTicks(4824),
+                            DatumDodavanja = new DateTime(2024, 7, 6, 20, 13, 56, 184, DateTimeKind.Local).AddTicks(7813),
                             KorisnikId = 2,
                             Sadrzaj = "Imam vec jedan ovakav automobil. Sve preporuke.",
                             Stanje = "Aktivan"
@@ -391,7 +391,7 @@ namespace eAutokuca.Services.Migrations
                         {
                             KomentarId = 2,
                             AutomobilId = 2,
-                            DatumDodavanja = new DateTime(2024, 7, 6, 19, 38, 30, 590, DateTimeKind.Local).AddTicks(4827),
+                            DatumDodavanja = new DateTime(2024, 7, 6, 20, 13, 56, 184, DateTimeKind.Local).AddTicks(7818),
                             KorisnikId = 2,
                             Sadrzaj = "Mali potrosac. Odlicno.",
                             Stanje = "Aktivan"
@@ -465,7 +465,7 @@ namespace eAutokuca.Services.Migrations
                         new
                         {
                             KorisnikId = 1,
-                            DatumRegistracije = new DateTime(2024, 7, 6, 19, 38, 30, 590, DateTimeKind.Local).AddTicks(4537),
+                            DatumRegistracije = new DateTime(2024, 7, 6, 20, 13, 56, 184, DateTimeKind.Local).AddTicks(7342),
                             Email = "naila.vejo@edu.fit.ba",
                             Ime = "Admin",
                             LozinkaHash = "slK9Ytl1fXfVit13Q3+Fl/+BKpk=",
@@ -478,7 +478,7 @@ namespace eAutokuca.Services.Migrations
                         new
                         {
                             KorisnikId = 2,
-                            DatumRegistracije = new DateTime(2024, 7, 6, 19, 38, 30, 590, DateTimeKind.Local).AddTicks(4584),
+                            DatumRegistracije = new DateTime(2024, 7, 6, 20, 13, 56, 184, DateTimeKind.Local).AddTicks(7402),
                             Email = "naila.vejo4@gmail.com",
                             Ime = "Mobile",
                             LozinkaHash = "dFn/EoU6AWNtwiLKuf+ur6jwjWk=",
@@ -880,14 +880,14 @@ namespace eAutokuca.Services.Migrations
                         {
                             ReportId = 1,
                             AutomobilId = 3,
-                            DatumProdaje = new DateTime(2024, 7, 6, 19, 38, 30, 590, DateTimeKind.Local).AddTicks(4810),
+                            DatumProdaje = new DateTime(2024, 7, 6, 20, 13, 56, 184, DateTimeKind.Local).AddTicks(7786),
                             Prihodi = 19500m
                         },
                         new
                         {
                             ReportId = 2,
                             AutomobilId = 4,
-                            DatumProdaje = new DateTime(2024, 7, 6, 19, 38, 30, 590, DateTimeKind.Local).AddTicks(4814),
+                            DatumProdaje = new DateTime(2024, 7, 6, 20, 13, 56, 184, DateTimeKind.Local).AddTicks(7793),
                             Prihodi = 35560m
                         });
                 });
