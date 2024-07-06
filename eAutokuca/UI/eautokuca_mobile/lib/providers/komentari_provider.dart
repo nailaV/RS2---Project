@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_null_comparison
+
 import 'dart:convert';
 
 import 'package:eautokuca_mobile/models/komentari.dart';
@@ -46,6 +48,21 @@ class KomentariProvider extends BaseProvider<Komentari> {
       return fromJson(data);
     } else {
       throw new Exception("Unknown error.");
+    }
+  }
+
+  Future<void> sakrijKomentar(int id) async {
+    if (id == null) {
+      throw Exception("Invalid comment ID");
+    }
+    var url = "$baseUrl$end/sakrijKomentar/$id";
+    var uri = Uri.parse(url);
+    var headers = createdHeaders();
+
+    var request = await http.post(uri, headers: headers);
+
+    if (!isValidResponse(request)) {
+      throw Exception("Greška...");
     }
   }
 }

@@ -76,7 +76,6 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
     _reportProvider = context.read<ReportProvider>();
     _komentariProvider = context.read<KomentariProvider>();
     getData();
-    getKomentare();
   }
 
   @override
@@ -215,12 +214,34 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          buildRow(Icons.person, "Korisnik", object.user),
+          if (object.stanje != null)
+            buildRow(
+                Icons.check_circle_outline_rounded, "Stanje", object.stanje!),
           const SizedBox(height: 10),
           if (object.sadrzaj != null)
             buildRow(Icons.comment_rounded, "Komentar", object.sadrzaj!),
           const SizedBox(height: 10),
           buildRow(Icons.watch_later_outlined, "Datum", object.datum),
+          SizedBox(
+            height: 10,
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              try {
+                await _komentariProvider.delete(object.komentarId!);
+                MyDialogs.showSuccess(context, "Konačno obrisan komentar", () {
+                  Navigator.of(context).pop();
+                  setState(() {
+                    isLoading = true;
+                  });
+                  getData();
+                });
+              } catch (e) {
+                MyDialogs.showError(context, e.toString());
+              }
+            },
+            child: Text("Obriši komentar"),
+          )
         ],
       ),
     );
@@ -699,6 +720,11 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
           await _opremaProvider.getOpremuZaAutomobil(widget.car!.automobilId!);
       setState(() {
         opremaAutomobila = data;
+      });
+      var comment =
+          await _komentariProvider.getKomentareAdmin(widget.car!.automobilId!);
+      setState(() {
+        komentariResult = comment;
         isLoading = false;
       });
     } catch (e) {
@@ -707,22 +733,6 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
         isLoading = false;
         imaOpremu = false;
       });
-    }
-  }
-
-  Future<void> getKomentare() async {
-    try {
-      var data =
-          await _komentariProvider.getKomentareZaAuto(widget.car!.automobilId!);
-      setState(() {
-        komentariResult = data;
-        isLoading = false;
-      });
-    } on Exception catch (e) {
-      setState(() {
-        isLoading = false;
-      });
-      MyDialogs.showError(context, e.toString());
     }
   }
 }

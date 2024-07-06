@@ -45,7 +45,7 @@ namespace eAutokuca.Controllers
         }
 
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, ObicanUser")]
         [HttpPut("Otkazi/{rezervacijaId}")]
         public async Task Otkazi(int rezervacijaId)
         {

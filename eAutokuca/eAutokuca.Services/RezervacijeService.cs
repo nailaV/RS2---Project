@@ -85,7 +85,7 @@ namespace eAutokuca.Services
 
         public async Task<List<Models.Rezervacija>> getRezervacijeZaUsera(string username)
         {
-           var result = await _context.Rezervacijas.Where(x=> x.Korisnik.Username == username ).Include("Automobil").ToListAsync();
+           var result = await _context.Rezervacijas.Where(x=> x.Korisnik.Username == username && x.Status=="Aktivna" ).Include("Automobil").ToListAsync();
             if (result.Count == 0)
             {
                 return new List<Models.Rezervacija>();

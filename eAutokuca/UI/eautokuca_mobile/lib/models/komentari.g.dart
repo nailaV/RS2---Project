@@ -7,7 +7,7 @@ part of 'komentari.dart';
 // **************************************************************************
 
 Komentari _$KomentariFromJson(Map<String, dynamic> json) => Komentari(
-      (json['komnetarId'] as num?)?.toInt(),
+      (json['komentarId'] as num?)?.toInt(),
       json['sadrzaj'] as String?,
       json['datumDodavanja'] == null
           ? null
@@ -21,7 +21,7 @@ Komentari _$KomentariFromJson(Map<String, dynamic> json) => Komentari(
     );
 
 Map<String, dynamic> _$KomentariToJson(Komentari instance) => <String, dynamic>{
-      'komnetarId': instance.komnetarId,
+      'komentarId': instance.komentarId,
       'sadrzaj': instance.sadrzaj,
       'datumDodavanja': instance.datumDodavanja?.toIso8601String(),
       'korisnik': instance.korisnik,

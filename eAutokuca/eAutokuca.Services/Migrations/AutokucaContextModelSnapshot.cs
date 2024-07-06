@@ -364,12 +364,16 @@ namespace eAutokuca.Services.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
+                    b.Property<string>("Stanje")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
                     b.HasKey("KomentarId")
                         .HasName("PK__Komentar__C0C304BC02E648F7");
 
-                    b.HasIndex("AutomobilId");
+                    b.HasIndex(new[] { "AutomobilId" }, "IX_Komentari_AutomobilID");
 
-                    b.HasIndex("KorisnikId");
+                    b.HasIndex(new[] { "KorisnikId" }, "IX_Komentari_KorisnikID");
 
                     b.ToTable("Komentari", (string)null);
 
@@ -378,17 +382,19 @@ namespace eAutokuca.Services.Migrations
                         {
                             KomentarId = 1,
                             AutomobilId = 1,
-                            DatumDodavanja = new DateTime(2024, 7, 5, 11, 13, 18, 78, DateTimeKind.Local).AddTicks(7869),
+                            DatumDodavanja = new DateTime(2024, 7, 6, 19, 38, 30, 590, DateTimeKind.Local).AddTicks(4824),
                             KorisnikId = 2,
-                            Sadrzaj = "Imam vec jedan ovakav automobil. Sve preporuke."
+                            Sadrzaj = "Imam vec jedan ovakav automobil. Sve preporuke.",
+                            Stanje = "Aktivan"
                         },
                         new
                         {
                             KomentarId = 2,
                             AutomobilId = 2,
-                            DatumDodavanja = new DateTime(2024, 7, 5, 11, 13, 18, 78, DateTimeKind.Local).AddTicks(7872),
+                            DatumDodavanja = new DateTime(2024, 7, 6, 19, 38, 30, 590, DateTimeKind.Local).AddTicks(4827),
                             KorisnikId = 2,
-                            Sadrzaj = "Mali potrosac. Odlicno."
+                            Sadrzaj = "Mali potrosac. Odlicno.",
+                            Stanje = "Aktivan"
                         });
                 });
 
@@ -459,7 +465,7 @@ namespace eAutokuca.Services.Migrations
                         new
                         {
                             KorisnikId = 1,
-                            DatumRegistracije = new DateTime(2024, 7, 5, 11, 13, 18, 78, DateTimeKind.Local).AddTicks(7597),
+                            DatumRegistracije = new DateTime(2024, 7, 6, 19, 38, 30, 590, DateTimeKind.Local).AddTicks(4537),
                             Email = "naila.vejo@edu.fit.ba",
                             Ime = "Admin",
                             LozinkaHash = "slK9Ytl1fXfVit13Q3+Fl/+BKpk=",
@@ -472,7 +478,7 @@ namespace eAutokuca.Services.Migrations
                         new
                         {
                             KorisnikId = 2,
-                            DatumRegistracije = new DateTime(2024, 7, 5, 11, 13, 18, 78, DateTimeKind.Local).AddTicks(7645),
+                            DatumRegistracije = new DateTime(2024, 7, 6, 19, 38, 30, 590, DateTimeKind.Local).AddTicks(4584),
                             Email = "naila.vejo4@gmail.com",
                             Ime = "Mobile",
                             LozinkaHash = "dFn/EoU6AWNtwiLKuf+ur6jwjWk=",
@@ -583,7 +589,7 @@ namespace eAutokuca.Services.Migrations
                             NarudzbaId = 3,
                             DatumNarudzbe = new DateTime(2024, 3, 7, 10, 0, 0, 0, DateTimeKind.Unspecified),
                             KorisnikId = 2,
-                            Status = "Pending",
+                            Status = "Otkazana",
                             UkupniIznos = 300m
                         },
                         new
@@ -607,7 +613,7 @@ namespace eAutokuca.Services.Migrations
                             NarudzbaId = 6,
                             DatumNarudzbe = new DateTime(2024, 3, 5, 10, 0, 0, 0, DateTimeKind.Unspecified),
                             KorisnikId = 2,
-                            Status = "Pending",
+                            Status = "Poslana",
                             UkupniIznos = 300m
                         },
                         new
@@ -615,7 +621,7 @@ namespace eAutokuca.Services.Migrations
                             NarudzbaId = 7,
                             DatumNarudzbe = new DateTime(2024, 5, 9, 10, 0, 0, 0, DateTimeKind.Unspecified),
                             KorisnikId = 2,
-                            Status = "Pending",
+                            Status = "Poslana",
                             UkupniIznos = 300m
                         },
                         new
@@ -639,7 +645,7 @@ namespace eAutokuca.Services.Migrations
                             NarudzbaId = 10,
                             DatumNarudzbe = new DateTime(2024, 6, 1, 10, 0, 0, 0, DateTimeKind.Unspecified),
                             KorisnikId = 2,
-                            Status = "Pending",
+                            Status = "Otkazana",
                             UkupniIznos = 300m
                         });
                 });
@@ -723,7 +729,7 @@ namespace eAutokuca.Services.Migrations
                             OpremaId = 2,
                             Alarm = true,
                             AutoPilot = true,
-                            AutomobilId = 3,
+                            AutomobilId = 2,
                             Bluetooth = true,
                             DaljinskoKljucanje = true,
                             GrijanjeSjedista = true,
@@ -740,7 +746,7 @@ namespace eAutokuca.Services.Migrations
                             OpremaId = 3,
                             Alarm = true,
                             AutoPilot = true,
-                            AutomobilId = 6,
+                            AutomobilId = 3,
                             Bluetooth = true,
                             DaljinskoKljucanje = true,
                             GrijanjeSjedista = true,
@@ -750,6 +756,57 @@ namespace eAutokuca.Services.Migrations
                             ServoVolan = false,
                             Tempomat = false,
                             Xenon = true,
+                            ZracniJastuci = true
+                        },
+                        new
+                        {
+                            OpremaId = 4,
+                            Alarm = true,
+                            AutoPilot = true,
+                            AutomobilId = 4,
+                            Bluetooth = false,
+                            DaljinskoKljucanje = true,
+                            GrijanjeSjedista = true,
+                            GrijanjeVolana = true,
+                            Navigacija = true,
+                            ParkingSenzori = true,
+                            ServoVolan = true,
+                            Tempomat = false,
+                            Xenon = false,
+                            ZracniJastuci = true
+                        },
+                        new
+                        {
+                            OpremaId = 5,
+                            Alarm = true,
+                            AutoPilot = true,
+                            AutomobilId = 5,
+                            Bluetooth = false,
+                            DaljinskoKljucanje = true,
+                            GrijanjeSjedista = true,
+                            GrijanjeVolana = true,
+                            Navigacija = true,
+                            ParkingSenzori = true,
+                            ServoVolan = true,
+                            Tempomat = false,
+                            Xenon = false,
+                            ZracniJastuci = true
+                        },
+                        new
+                        {
+                            OpremaId = 6,
+                            Alarm = true,
+                            AutoPilot = true,
+                            AutomobilId = 6,
+                            Bluetooth = false,
+                            DaljinskoKljucanje = true,
+                            GrijanjeSjedista = true,
+                            GrijanjeVolana = true,
+                            Navigacija = true,
+                            ParkingSenzori = true,
+                            ServoVolan = true,
+                            Tempomat = false,
+                            Xenon = false,
                             ZracniJastuci = true
                         });
                 });
@@ -823,14 +880,14 @@ namespace eAutokuca.Services.Migrations
                         {
                             ReportId = 1,
                             AutomobilId = 3,
-                            DatumProdaje = new DateTime(2024, 7, 5, 11, 13, 18, 78, DateTimeKind.Local).AddTicks(7856),
+                            DatumProdaje = new DateTime(2024, 7, 6, 19, 38, 30, 590, DateTimeKind.Local).AddTicks(4810),
                             Prihodi = 19500m
                         },
                         new
                         {
                             ReportId = 2,
                             AutomobilId = 4,
-                            DatumProdaje = new DateTime(2024, 7, 5, 11, 13, 18, 78, DateTimeKind.Local).AddTicks(7859),
+                            DatumProdaje = new DateTime(2024, 7, 6, 19, 38, 30, 590, DateTimeKind.Local).AddTicks(4814),
                             Prihodi = 35560m
                         });
                 });
@@ -873,24 +930,24 @@ namespace eAutokuca.Services.Migrations
                         new
                         {
                             RezervacijaId = 1,
-                            AutomobilId = 2,
-                            DatumVrijemeRezervacije = new DateTime(2024, 3, 8, 10, 0, 0, 0, DateTimeKind.Unspecified),
+                            AutomobilId = 3,
+                            DatumVrijemeRezervacije = new DateTime(2024, 7, 6, 10, 0, 0, 0, DateTimeKind.Unspecified),
                             KorisnikId = 2,
                             Status = "Zavrsena"
                         },
                         new
                         {
                             RezervacijaId = 2,
-                            AutomobilId = 5,
-                            DatumVrijemeRezervacije = new DateTime(2024, 3, 8, 9, 0, 0, 0, DateTimeKind.Unspecified),
+                            AutomobilId = 1,
+                            DatumVrijemeRezervacije = new DateTime(2024, 7, 7, 9, 0, 0, 0, DateTimeKind.Unspecified),
                             KorisnikId = 2,
                             Status = "Aktivna"
                         },
                         new
                         {
                             RezervacijaId = 3,
-                            AutomobilId = 6,
-                            DatumVrijemeRezervacije = new DateTime(2024, 3, 8, 12, 0, 0, 0, DateTimeKind.Unspecified),
+                            AutomobilId = 2,
+                            DatumVrijemeRezervacije = new DateTime(2024, 7, 7, 12, 0, 0, 0, DateTimeKind.Unspecified),
                             KorisnikId = 2,
                             Status = "Aktivna"
                         });

@@ -18,6 +18,7 @@ import 'package:eautokuca_mobile/widgets/rezervacija_popup.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:provider/provider.dart';
 
 class CarDetailsScreen extends StatefulWidget {
@@ -53,6 +54,8 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
 
   TextEditingController _komentarController = TextEditingController();
   bool isFormVisible = false;
+  final _formKey2 = GlobalKey<FormBuilderState>();
+
   void _toggleFormVisibility() {
     setState(() {
       isFormVisible = !isFormVisible;
@@ -314,47 +317,63 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
                             ),
                             Visibility(
                                 visible: isFormVisible,
-                                child: Column(
-                                  children: [
-                                    TextField(
-                                      controller: _komentarController,
-                                      decoration: InputDecoration(
+                                child: Form(
+                                  key: _formKey2,
+                                  child: Column(
+                                    children: [
+                                      FormBuilderTextField(
+                                        controller: _komentarController,
+                                        decoration: InputDecoration(
                                           labelText: "Unesi komentar...",
-                                          border: OutlineInputBorder()),
-                                      maxLines: 3,
-                                    ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    ElevatedButton(
+                                          border: OutlineInputBorder(),
+                                        ),
+                                        maxLines: 3,
+                                        autovalidateMode:
+                                            AutovalidateMode.onUserInteraction,
+                                        validator:
+                                            FormBuilderValidators.required(
+                                                errorText:
+                                                    "Polje je obavezno."),
+                                        name: 'sadrzaj',
+                                      ),
+                                      SizedBox(height: 10),
+                                      ElevatedButton(
                                         onPressed: () {
-                                          try {
-                                            var request = {
-                                              "automobilId":
-                                                  widget.car!.automobilId!,
-                                              "korisnikId": korisnikId,
-                                              "sadrzaj":
-                                                  _komentarController.text
-                                            };
-                                            _komentariProvider
-                                                .dodajKomentar(request);
-                                            MyDialogs.showSuccess(
-                                                context, "Dodan komentar", () {
-                                              Navigator.of(context).push(
-                                                  MaterialPageRoute(
-                                                      builder: (builder) =>
-                                                          ListaAutomobila()));
-                                            });
-                                          } catch (e) {
-                                            MyDialogs.showError(
-                                                context, e.toString());
+                                          if (_formKey.currentState!
+                                              .validate()) {
+                                            try {
+                                              var request = {
+                                                "automobilId":
+                                                    widget.car!.automobilId,
+                                                "korisnikId": korisnikId,
+                                                "sadrzaj":
+                                                    _komentarController.text
+                                              };
+                                              _komentariProvider
+                                                  .dodajKomentar(request);
+
+                                              MyDialogs.showSuccess(
+                                                  context, "Dodan komentar",
+                                                  () {
+                                                Navigator.of(context).pop();
+                                                setState(() {
+                                                  isLoading = true;
+                                                });
+                                                getData();
+                                              });
+                                            } catch (e) {
+                                              MyDialogs.showError(
+                                                  context, e.toString());
+                                            }
                                           }
                                         },
                                         child: Text(
                                           "Komentariši",
                                           style: TextStyle(color: Colors.black),
-                                        ))
-                                  ],
+                                        ),
+                                      )
+                                    ],
+                                  ),
                                 ))
                           ],
                         ),
@@ -483,6 +502,26 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
             buildRow(Icons.comment_rounded, "Komentar", object.sadrzaj!),
           const SizedBox(height: 10),
           buildRow(Icons.watch_later_outlined, "Datum", object.datum),
+          SizedBox(
+            height: 10,
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              try {
+                await _komentariProvider.sakrijKomentar(object.komentarId!);
+                MyDialogs.showSuccess(context, "Uspješno obrisan komentar", () {
+                  Navigator.of(context).pop();
+                  setState(() {
+                    isLoading = true;
+                  });
+                  getData();
+                });
+              } catch (e) {
+                MyDialogs.showError(context, e.toString());
+              }
+            },
+            child: Text("Obriši komentar"),
+          )
         ],
       ),
     );
@@ -684,22 +723,6 @@ class _CarDetailsScreenState extends State<CarDetailsScreen> {
         isLoading = false;
       });
     } catch (e) {
-      MyDialogs.showError(context, e.toString());
-    }
-  }
-
-  Future<void> getKomentare() async {
-    try {
-      var data =
-          await _komentariProvider.getKomentareZaAuto(widget.car!.automobilId!);
-      setState(() {
-        komentariResult = data;
-        isLoading = false;
-      });
-    } on Exception catch (e) {
-      setState(() {
-        isLoading = false;
-      });
       MyDialogs.showError(context, e.toString());
     }
   }

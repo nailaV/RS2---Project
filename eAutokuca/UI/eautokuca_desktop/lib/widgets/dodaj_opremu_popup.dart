@@ -64,7 +64,6 @@ class _DodajOpremuState extends State<DodajOpremu> {
                       color: Colors.blueGrey,
                       height: 25,
                     ),
-                    //_buildForm(),
                     FormBuilder(
                         key: _formKey,
                         child: Row(
@@ -144,10 +143,6 @@ class _DodajOpremuState extends State<DodajOpremu> {
         if (_formKey.currentState!.saveAndValidate()) {
           Navigator.of(context).pop(_formKey.currentState!.value);
         }
-        // setState(() {
-        //   isLoading = true;
-        // });
-        // insertuj();
       },
       child: const Text(
         'Dodaj',

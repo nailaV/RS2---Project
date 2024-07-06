@@ -7,13 +7,13 @@ part 'komentari.g.dart';
 
 @JsonSerializable()
 class Komentari {
-  int? komnetarId;
+  int? komentarId;
   String? sadrzaj;
   DateTime? datumDodavanja;
   Korisnici? korisnik;
   Car? automobil;
 
-  Komentari(this.komnetarId, this.sadrzaj, this.datumDodavanja, this.korisnik,
+  Komentari(this.komentarId, this.sadrzaj, this.datumDodavanja, this.korisnik,
       this.automobil);
 
   String get datum {

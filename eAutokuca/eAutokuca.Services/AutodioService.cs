@@ -4,7 +4,6 @@ using eAutokuca.Models;
 using eAutokuca.Models.Requests;
 using eAutokuca.Models.SearchObjects;
 using eAutokuca.Services.Database;
-using eAutokuca.Services.Migrations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.ML;

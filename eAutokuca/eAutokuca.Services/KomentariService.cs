@@ -27,7 +27,7 @@ namespace eAutokuca.Services
         public async Task<List<Models.Komentari>> getKomentareZaAuto(int autoId)
         {
             var auto = await _context.Automobils.Where(x => x.AutomobilId == autoId).FirstOrDefaultAsync();
-            var result = await _context.Komentaris.Where(x => x.AutomobilId == auto.AutomobilId).ToListAsync();
+            var result = await _context.Komentaris.Where(x => x.AutomobilId == auto.AutomobilId && x.Stanje=="Aktivan").ToListAsync();
             if(result.Count==0)
             {
                 return new List<Models.Komentari>();
@@ -39,6 +39,7 @@ namespace eAutokuca.Services
         {
             var komentar = new Database.Komentari();
             komentar.DatumDodavanja = DateTime.Now;
+            komentar.Stanje = "Aktivan";
             komentar.Sadrzaj = req.Sadrzaj;
             komentar.KorisnikId= req.KorisnikId;
             komentar.AutomobilId=req.AutomobilId;
@@ -48,5 +49,26 @@ namespace eAutokuca.Services
             return _mapper.Map<Models.Komentari>(komentar); 
         }
 
+        public async Task sakrijKomentar(int id)
+        {
+            var entity = await _context.Komentaris.FindAsync(id);
+            if (entity == null)
+            {
+                throw new Exception("Komentar ne postoji");
+            }
+            entity.Stanje = "Obrisan";
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<List<Models.Komentari>> getKomentareAdmin(int autoId)
+        {
+            var auto = await _context.Automobils.Where(x => x.AutomobilId == autoId).FirstOrDefaultAsync();
+            var result = await _context.Komentaris.Where(x => x.AutomobilId == auto.AutomobilId).ToListAsync();
+            if (result.Count == 0)
+            {
+                return new List<Models.Komentari>();
+            }
+            return _mapper.Map<List<Models.Komentari>>(result);
+        }
     }
 }

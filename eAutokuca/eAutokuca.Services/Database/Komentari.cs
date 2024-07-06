@@ -15,6 +15,8 @@ public partial class Komentari
 
     public int? AutomobilId { get; set; }
 
+    public string? Stanje { get; set; }
+
     public virtual Automobil? Automobil { get; set; }
 
     public virtual Korisnik? Korisnik { get; set; }

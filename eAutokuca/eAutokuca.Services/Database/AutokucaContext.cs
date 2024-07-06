@@ -41,9 +41,7 @@ public partial class AutokucaContext : DbContext
 
     public virtual DbSet<Uloga> Ulogas { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=localhost;Database=Autokuca;Integrated Security=True; TrustServerCertificate=True");
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -125,6 +123,7 @@ public partial class AutokucaContext : DbContext
             entity.Property(e => e.DatumDodavanja).HasColumnType("datetime");
             entity.Property(e => e.KorisnikId).HasColumnName("KorisnikID");
             entity.Property(e => e.Sadrzaj).HasMaxLength(255);
+            entity.Property(e => e.Stanje).HasMaxLength(255);
 
             entity.HasOne(d => d.Automobil).WithMany(p => p.Komentaris)
                 .HasForeignKey(d => d.AutomobilId)

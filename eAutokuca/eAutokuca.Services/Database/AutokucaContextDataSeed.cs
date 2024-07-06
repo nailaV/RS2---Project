@@ -66,17 +66,20 @@ namespace eAutokuca.Services.Database
 
             modelBuilder.Entity<Rezervacija>().HasData//6
             (
-                new Rezervacija() { RezervacijaId = 1, KorisnikId = 2, DatumVrijemeRezervacije = new DateTime(2024, 3, 8, 10, 0, 0), Status = "Zavrsena", AutomobilId = 2 },
-                new Rezervacija() { RezervacijaId = 2, KorisnikId = 2, DatumVrijemeRezervacije = new DateTime(2024, 3, 8, 9, 0, 0), Status = "Aktivna", AutomobilId = 5 },
-                new Rezervacija() { RezervacijaId = 3, KorisnikId = 2, DatumVrijemeRezervacije = new DateTime(2024, 3, 8, 12, 0, 0), Status = "Aktivna", AutomobilId = 6 }
+                new Rezervacija() { RezervacijaId = 1, KorisnikId = 2, DatumVrijemeRezervacije = new DateTime(2024, 7, 6, 10, 0, 0), Status = "Zavrsena", AutomobilId = 3 },
+                new Rezervacija() { RezervacijaId = 2, KorisnikId = 2, DatumVrijemeRezervacije = new DateTime(2024, 7, 7, 9, 0, 0), Status = "Aktivna", AutomobilId = 1 },
+                new Rezervacija() { RezervacijaId = 3, KorisnikId = 2, DatumVrijemeRezervacije = new DateTime(2024, 7, 7, 12, 0, 0), Status = "Aktivna", AutomobilId = 2 }
 
             );
 
             modelBuilder.Entity<Oprema>().HasData//7
             (
                 new Oprema() { OpremaId = 1, AutomobilId = 1, ZracniJastuci = true, Alarm = true, Xenon = false, ParkingSenzori = true, DaljinskoKljucanje = true, Bluetooth = false, ServoVolan = true, Navigacija = true, AutoPilot = true, GrijanjeSjedista = true, GrijanjeVolana = true, Tempomat = false },
-                new Oprema() { OpremaId = 2, AutomobilId = 3, ZracniJastuci = true, Alarm = true, Xenon = true, ParkingSenzori = false, DaljinskoKljucanje = true, Bluetooth = true, ServoVolan = true, Navigacija = true, AutoPilot = true, GrijanjeSjedista = true, GrijanjeVolana = false, Tempomat = false },
-                new Oprema() { OpremaId = 3, AutomobilId = 6, ZracniJastuci = true, Alarm = true, Xenon = true, ParkingSenzori = true, DaljinskoKljucanje = true, Bluetooth = true, ServoVolan = false, Navigacija = true, AutoPilot = true, GrijanjeSjedista = true, GrijanjeVolana = true, Tempomat = false }
+                new Oprema() { OpremaId = 2, AutomobilId = 2, ZracniJastuci = true, Alarm = true, Xenon = true, ParkingSenzori = false, DaljinskoKljucanje = true, Bluetooth = true, ServoVolan = true, Navigacija = true, AutoPilot = true, GrijanjeSjedista = true, GrijanjeVolana = false, Tempomat = false },
+                new Oprema() { OpremaId = 3, AutomobilId = 3, ZracniJastuci = true, Alarm = true, Xenon = true, ParkingSenzori = true, DaljinskoKljucanje = true, Bluetooth = true, ServoVolan = false, Navigacija = true, AutoPilot = true, GrijanjeSjedista = true, GrijanjeVolana = true, Tempomat = false },
+                new Oprema() { OpremaId = 4, AutomobilId = 4, ZracniJastuci = true, Alarm = true, Xenon = false, ParkingSenzori = true, DaljinskoKljucanje = true, Bluetooth = false, ServoVolan = true, Navigacija = true, AutoPilot = true, GrijanjeSjedista = true, GrijanjeVolana = true, Tempomat = false },
+                new Oprema() { OpremaId = 5, AutomobilId = 5, ZracniJastuci = true, Alarm = true, Xenon = false, ParkingSenzori = true, DaljinskoKljucanje = true, Bluetooth = false, ServoVolan = true, Navigacija = true, AutoPilot = true, GrijanjeSjedista = true, GrijanjeVolana = true, Tempomat = false },
+                new Oprema() { OpremaId = 6, AutomobilId = 6, ZracniJastuci = true, Alarm = true, Xenon = false, ParkingSenzori = true, DaljinskoKljucanje = true, Bluetooth = false, ServoVolan = true, Navigacija = true, AutoPilot = true, GrijanjeSjedista = true, GrijanjeVolana = true, Tempomat = false }
             );
 
             modelBuilder.Entity<Autodio>().HasData//8
@@ -102,14 +105,14 @@ namespace eAutokuca.Services.Database
             (
                 new Narudzba() { NarudzbaId = 1, UkupniIznos = (decimal)300.00, KorisnikId = 2, DatumNarudzbe = new DateTime(2024, 3, 8, 10, 0, 0), Status = "Pending" },
                 new Narudzba() { NarudzbaId = 2, UkupniIznos = (decimal)300.00, KorisnikId = 2, DatumNarudzbe = new DateTime(2024, 5, 8, 10, 0, 0), Status = "Pending" },
-                new Narudzba() { NarudzbaId = 3, UkupniIznos = (decimal)300.00, KorisnikId = 2, DatumNarudzbe = new DateTime(2024, 3, 7, 10, 0, 0), Status = "Pending" },
+                new Narudzba() { NarudzbaId = 3, UkupniIznos = (decimal)300.00, KorisnikId = 2, DatumNarudzbe = new DateTime(2024, 3, 7, 10, 0, 0), Status = "Otkazana" },
                 new Narudzba() { NarudzbaId = 4, UkupniIznos = (decimal)300.00, KorisnikId = 2, DatumNarudzbe = new DateTime(2024, 4, 9, 10, 0, 0), Status = "Pending" },
                 new Narudzba() { NarudzbaId = 5, UkupniIznos = (decimal)300.00, KorisnikId = 2, DatumNarudzbe = new DateTime(2024, 5, 1, 10, 0, 0), Status = "Pending" },
-                new Narudzba() { NarudzbaId = 6, UkupniIznos = (decimal)300.00, KorisnikId = 2, DatumNarudzbe = new DateTime(2024, 3, 5, 10, 0, 0), Status = "Pending" },
-                new Narudzba() { NarudzbaId = 7, UkupniIznos = (decimal)300.00, KorisnikId = 2, DatumNarudzbe = new DateTime(2024, 5, 9, 10, 0, 0), Status = "Pending" },
+                new Narudzba() { NarudzbaId = 6, UkupniIznos = (decimal)300.00, KorisnikId = 2, DatumNarudzbe = new DateTime(2024, 3, 5, 10, 0, 0), Status = "Poslana" },
+                new Narudzba() { NarudzbaId = 7, UkupniIznos = (decimal)300.00, KorisnikId = 2, DatumNarudzbe = new DateTime(2024, 5, 9, 10, 0, 0), Status = "Poslana" },
                 new Narudzba() { NarudzbaId = 8, UkupniIznos = (decimal)300.00, KorisnikId = 2, DatumNarudzbe = new DateTime(2024, 6, 1, 10, 0, 0), Status = "Pending" },
                 new Narudzba() { NarudzbaId = 9, UkupniIznos = (decimal)300.00, KorisnikId = 2, DatumNarudzbe = new DateTime(2024, 5, 9, 10, 0, 0), Status = "Pending" },
-                new Narudzba() { NarudzbaId = 10, UkupniIznos = (decimal)300.00, KorisnikId = 2, DatumNarudzbe = new DateTime(2024, 6, 1, 10, 0, 0), Status = "Pending" }
+                new Narudzba() { NarudzbaId = 10, UkupniIznos = (decimal)300.00, KorisnikId = 2, DatumNarudzbe = new DateTime(2024, 6, 1, 10, 0, 0), Status = "Otkazana" }
             );
 
             modelBuilder.Entity<StavkeNarudzbe>().HasData//11 - nereferentna
@@ -134,8 +137,8 @@ namespace eAutokuca.Services.Database
 
             modelBuilder.Entity<Komentari>().HasData//13
                 (
-                new Komentari() { KomentarId=1, AutomobilId=1, DatumDodavanja=DateTime.Now, KorisnikId=2, Sadrzaj="Imam vec jedan ovakav automobil. Sve preporuke."},
-                new Komentari() { KomentarId = 2, AutomobilId = 2, DatumDodavanja = DateTime.Now, KorisnikId = 2, Sadrzaj = "Mali potrosac. Odlicno." }
+                new Komentari() { KomentarId=1, AutomobilId=1, DatumDodavanja=DateTime.Now, KorisnikId=2, Sadrzaj="Imam vec jedan ovakav automobil. Sve preporuke.", Stanje="Aktivan"},
+                new Komentari() { KomentarId = 2, AutomobilId = 2, DatumDodavanja = DateTime.Now, KorisnikId = 2, Sadrzaj = "Mali potrosac. Odlicno.", Stanje= "Aktivan" }
                 );
 
            

@@ -47,9 +47,6 @@ class _ListaAutomobilaState extends State<ListaAutomobila> {
     super.initState();
     _carProvider = context.read<CarProvider>();
     _korisniciProvider = context.read<KorisniciProvider>();
-    //getUserId();
-    //getRekomended();
-    //getSveAutomobile();
     LoadData();
   }
 
@@ -104,7 +101,7 @@ class _ListaAutomobilaState extends State<ListaAutomobila> {
                               .map((Car e) => buildProductContainer(e))
                               .toList(),
                         )
-                      : Text("No data here"),
+                      : Text("No data to recommend."),
                   SizedBox(
                     height: 20,
                   ),

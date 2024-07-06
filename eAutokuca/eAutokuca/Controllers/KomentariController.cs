@@ -30,5 +30,18 @@ namespace eAutokuca.Controllers
         {
             return await _service.dodajKomentar(req);
         }
+
+       
+        [HttpPost("sakrijKomentar/{id}")]
+        public async Task sakrijKomentar(int id)
+        {
+            await _service.sakrijKomentar(id);
+        }
+
+        [HttpGet("getKomentareAdmin")]
+        public async Task<List<Models.Komentari>> getKomentareAdmin(int autoId)
+        {
+            return await _service.getKomentareAdmin(autoId);
+        }
     }
 }

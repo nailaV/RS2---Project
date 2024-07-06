@@ -282,8 +282,13 @@ class _KosaricaScreenState extends State<KosaricaScreen> {
         _kosaricaProvider.total = 0;
       });
       MyDialogs.showSuccess(context, 'Uspješna transakcija.', () {
-        Navigator.of(context).push(
-            MaterialPageRoute(builder: (builder) => const KosaricaScreen()));
+        Navigator.of(context).pop();
+        setState(() {
+          isLoading = true;
+        });
+        _kosaricaProvider.kosarica.items.isNotEmpty
+            ? _buildProductCardList()
+            : _buildNoDataField();
       });
     } catch (e) {
       MyDialogs.showError(context, e.toString());

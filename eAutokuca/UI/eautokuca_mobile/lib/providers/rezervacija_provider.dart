@@ -67,4 +67,15 @@ class RezervacijaProvider extends BaseProvider<Rezervacija> {
       throw new Exception("Unknown error.");
     }
   }
+
+  Future<void> otkazi(int rezervacijaId) async {
+    var url = "$baseUrl$end/Otkazi/$rezervacijaId";
+    var uri = Uri.parse(url);
+    var headers = createdHeaders();
+    var request = await http.put(uri, headers: headers);
+
+    if (!isValidResponse(request)) {
+      throw Exception("Greška...");
+    }
+  }
 }

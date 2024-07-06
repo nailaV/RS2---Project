@@ -118,6 +118,24 @@ class _RezervisaniTerminiState extends State<RezervisaniTermini> {
                 )
               ],
             ),
+            const SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: () async {
+                try {
+                  await _rezervacijaProvider.otkazi(object.rezervacijaId!);
+                  MyDialogs.showSuccess(context, "Uspješno otkazan termin", () {
+                    Navigator.of(context).pop();
+                    setState(() {
+                      isLoading = true;
+                    });
+                    getData();
+                  });
+                } catch (e) {
+                  MyDialogs.showError(context, e.toString());
+                }
+              },
+              child: Text("Otkaži termin"),
+            )
           ],
         ));
   }

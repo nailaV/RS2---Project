@@ -17,6 +17,7 @@ namespace eAutokuca.Models
         public int? KorisnikId { get; set; }
 
         public int? AutomobilId { get; set; }
+        public string? Stanje { get; set; }
 
         public virtual Automobil? Automobil { get; set; }
 

@@ -13,5 +13,8 @@ namespace eAutokuca.Services
     {
         public Task<List<Models.Komentari>> getKomentareZaAuto(int autoId);
         public Task<Models.Komentari> dodajKomentar(KomentariInsert req);
+
+        public Task sakrijKomentar(int komentarId);
+        public Task<List<Models.Komentari>> getKomentareAdmin(int autoId);
     }
 }
